@@ -78,7 +78,9 @@ namespace WiredPlayers.vehicles
 
         public static Vehicle CreateIngameVehicle(VehicleModel vehModel)
         {
-            Vehicle vehicle = NAPI.Vehicle.CreateVehicle(NAPI.Util.VehicleNameToModel(vehModel.model), vehModel.position, vehModel.rotation.Z, new Color(0, 0, 0), new Color(0, 0, 0));
+            Random random = new Random();
+            int randomNumber = random.Next(0, 10000);
+            Vehicle vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)NAPI.Util.GetHashKey(vehModel.model), vehModel.position, vehModel.rotation.Z, new Color(0, 0, 0), new Color(0, 0, 0));
             vehicle.NumberPlate = vehModel.plate == string.Empty ? "LS " + (1000 + vehModel.id) : vehModel.plate;
             vehicle.EngineStatus = vehModel.engine != 0;
             vehicle.Locked = vehModel.locked != 0;
