@@ -2,12 +2,12 @@
 using WiredPlayers.database;
 using WiredPlayers.globals;
 using WiredPlayers.model;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.general;
 using WiredPlayers.messages.information;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace WiredPlayers.house
 {
@@ -69,7 +69,7 @@ namespace WiredPlayers.house
 
         public static bool HasPlayerHouseKeys(Client player, HouseModel house)
         {
-            return (player.Name == house.owner || player.GetData(EntityData.PLAYER_RENT_HOUSE) == house.id);
+            return player.Name == house.owner || player.GetData(EntityData.PLAYER_RENT_HOUSE) == house.id;
         }
 
         public static string GetHouseLabelText(HouseModel house)

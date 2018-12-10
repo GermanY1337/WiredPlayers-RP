@@ -4,11 +4,11 @@ using WiredPlayers.database;
 using WiredPlayers.globals;
 using WiredPlayers.model;
 using WiredPlayers.vehicles;
+using WiredPlayers.messages.error;
+using WiredPlayers.messages.information;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using WiredPlayers.messages.error;
-using WiredPlayers.messages.information;
 
 namespace WiredPlayers.jobs
 {
@@ -214,9 +214,11 @@ namespace WiredPlayers.jobs
             {
                 // Add component to database
                 TunningModel tunningModel = new TunningModel();
-                tunningModel.slot = slot;
-                tunningModel.component = mod;
-                tunningModel.vehicle = vehicleId;
+                {
+                    tunningModel.slot = slot;
+                    tunningModel.component = mod;
+                    tunningModel.vehicle = vehicleId;
+                }
 
                 Task.Factory.StartNew(() =>
                 {

@@ -9,5 +9,6 @@
         public int slot { get; set; }
         public int drawable { get; set; }
         public int texture { get; set; }
+        public string name { get; set; }
     }
 }

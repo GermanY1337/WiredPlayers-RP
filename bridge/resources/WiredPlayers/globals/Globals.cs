@@ -10,16 +10,17 @@ using WiredPlayers.vehicles;
 using WiredPlayers.drivingschool;
 using WiredPlayers.factions;
 using WiredPlayers.jobs;
+using WiredPlayers.character;
 using WiredPlayers.messages.general;
+using WiredPlayers.messages.error;
+using WiredPlayers.messages.information;
+using WiredPlayers.messages.success;
+using WiredPlayers.messages.administration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using System;
-using WiredPlayers.messages.error;
-using WiredPlayers.messages.information;
-using WiredPlayers.messages.success;
-using WiredPlayers.messages.administration;
 
 namespace WiredPlayers.globals
 {
@@ -27,14 +28,13 @@ namespace WiredPlayers.globals
     {
         private int fastFoodId = 1;
         public static int orderGenerationTime;
-        public static List<FastFoodOrderModel> fastFoodOrderList;
+        public static List<FastfoodOrderModel> fastFoodOrderList;
+        public static List<OrderModel> truckerOrderList;
         public static List<ClothesModel> clothesList;
         public static List<TattooModel> tattooList;
         public static List<ItemModel> itemList;
         public static List<ScoreModel> scoreList;
         public static List<AdminTicketModel> adminTicketList;
-        private Timer minuteTimer;
-        private Timer playersCheckTimer;
 
         public static Client GetPlayerById(int id)
         {
@@ -120,129 +120,92 @@ namespace WiredPlayers.globals
             NAPI.World.SetTime(currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
 
             int totalSeconds = GetTotalSeconds();
-            foreach (Client player in NAPI.Pools.GetAllPlayers())
+            List<Client> onlinePlayers = NAPI.Pools.GetAllPlayers().Where(pl => pl.HasData(EntityData.PLAYER_PLAYING)).ToList();
+
+            foreach (Client player in onlinePlayers)
             {
-                if (player.HasData(EntityData.PLAYER_PLAYING) == true)
+                int played = player.GetData(EntityData.PLAYER_PLAYED);
+                if (played > 0 && played % 60 == 0)
                 {
-                    int played = player.GetData(EntityData.PLAYER_PLAYED);
-                    if (played > 0 && played % 60 == 0)
+                    // Reduce job cooldown
+                    int employeeCooldown = player.GetData(EntityData.PLAYER_EMPLOYEE_COOLDOWN);
+                    if (employeeCooldown > 0)
                     {
-                        // Reduce job cooldown
-                        int employeeCooldown = player.GetData(EntityData.PLAYER_EMPLOYEE_COOLDOWN);
-                        if (employeeCooldown > 0)
-                        {
-                            player.SetData(EntityData.PLAYER_EMPLOYEE_COOLDOWN, employeeCooldown - 1);
-                        }
-
-                        // Generate the payday
-                        GeneratePlayerPayday(player);
-                    }
-                    player.SetData(EntityData.PLAYER_PLAYED, played + 1);
-
-                    // Check if the player is injured waiting for the hospital respawn
-                    if (player.HasData(EntityData.TIME_HOSPITAL_RESPAWN) == true)
-                    {
-                        if (player.GetData(EntityData.TIME_HOSPITAL_RESPAWN) <= totalSeconds)
-                        {
-                            player.SendChatMessage(Constants.COLOR_INFO + InfoRes.player_can_die);
-                        }
+                        player.SetData(EntityData.PLAYER_EMPLOYEE_COOLDOWN, employeeCooldown - 1);
                     }
 
-                    // Check if the player has job cooldown
-                    int jobCooldown = player.GetData(EntityData.PLAYER_JOB_COOLDOWN);
-                    if (jobCooldown > 0)
+                    // Generate the payday
+                    GeneratePlayerPayday(player);
+                }
+                player.SetData(EntityData.PLAYER_PLAYED, played + 1);
+
+                // Check if the player is injured waiting for the hospital respawn
+                if (player.HasData(EntityData.TIME_HOSPITAL_RESPAWN) == true)
+                {
+                    if (player.GetData(EntityData.TIME_HOSPITAL_RESPAWN) <= totalSeconds)
                     {
-                        player.SetData(EntityData.PLAYER_JOB_COOLDOWN, jobCooldown - 1);
+                        player.SendChatMessage(Constants.COLOR_INFO + InfoRes.player_can_die);
                     }
+                }
 
-                    // Check if the player's in jail
-                    if (player.HasData(EntityData.PLAYER_JAILED) == true)
+                // Check if the player has job cooldown
+                int jobCooldown = player.GetData(EntityData.PLAYER_JOB_COOLDOWN);
+                if (jobCooldown > 0)
+                {
+                    player.SetData(EntityData.PLAYER_JOB_COOLDOWN, jobCooldown - 1);
+                }
+
+                // Check if the player's in jail
+                if (player.HasData(EntityData.PLAYER_JAILED) == true)
+                {
+                    int jailTime = player.GetData(EntityData.PLAYER_JAILED);
+                    if (jailTime == 1)
                     {
-                        int jailTime = player.GetData(EntityData.PLAYER_JAILED);
-                        if (jailTime == 1)
+                        if (player.GetData(EntityData.PLAYER_JAIL_TYPE) == Constants.JAIL_TYPE_IC)
                         {
-                            if (player.GetData(EntityData.PLAYER_JAIL_TYPE) == Constants.JAIL_TYPE_IC)
-                            {
-                                player.Position = Constants.JAIL_SPAWNS[3];
-                            }
-                            else
-                            {
-                                player.Position = Constants.JAIL_SPAWNS[4];
-                            }
-
-                            // Remove player from jail
-                            player.SetData(EntityData.PLAYER_JAILED, 0);
-                            player.SetData(EntityData.PLAYER_JAIL_TYPE, 0);
-
-                            player.SendChatMessage(Constants.COLOR_INFO + InfoRes.player_unjailed);
-                        }
-                        else if (jailTime > 0)
-                        {
-                            jailTime--;
-                            player.SetData(EntityData.PLAYER_JAILED, jailTime);
-                        }
-                    }
-
-                    if (player.HasData(EntityData.PLAYER_DRUNK_LEVEL) == true)
-                    {
-                        // Lower alcohol level
-                        float drunkLevel = player.GetData(EntityData.PLAYER_DRUNK_LEVEL) - 0.05f;
-
-                        if (drunkLevel <= 0.0f)
-                        {
-                            player.ResetData(EntityData.PLAYER_DRUNK_LEVEL);
+                            player.Position = Constants.JAIL_SPAWNS[3];
                         }
                         else
                         {
-                            if (drunkLevel < Constants.WASTED_LEVEL)
-                            {
-                                player.ResetSharedData(EntityData.PLAYER_WALKING_STYLE);
-                                NAPI.ClientEvent.TriggerClientEventForAll("resetPlayerWalkingStyle", player.Handle);
-                            }
-
-                            player.SetData(EntityData.PLAYER_DRUNK_LEVEL, drunkLevel);
+                            player.Position = Constants.JAIL_SPAWNS[4];
                         }
+
+                        // Remove player from jail
+                        player.SetData(EntityData.PLAYER_JAILED, 0);
+                        player.SetData(EntityData.PLAYER_JAIL_TYPE, 0);
+
+                        player.SendChatMessage(Constants.COLOR_INFO + InfoRes.player_unjailed);
                     }
-
-                    PlayerModel character = new PlayerModel();
-
-                    character.position = player.Position;
-                    character.rotation = player.Rotation;
-                    character.health = player.Health;
-                    character.armor = player.Armor;
-                    character.id = player.GetData(EntityData.PLAYER_SQL_ID);
-                    character.phone = player.GetData(EntityData.PLAYER_PHONE);
-                    character.radio = player.GetData(EntityData.PLAYER_RADIO);
-                    character.killed = player.GetData(EntityData.PLAYER_KILLED);
-                    character.faction = player.GetData(EntityData.PLAYER_FACTION);
-                    character.job = player.GetData(EntityData.PLAYER_JOB);
-                    character.rank = player.GetData(EntityData.PLAYER_RANK);
-                    character.duty = player.GetData(EntityData.PLAYER_ON_DUTY);
-                    character.carKeys = player.GetData(EntityData.PLAYER_VEHICLE_KEYS);
-                    character.documentation = player.GetData(EntityData.PLAYER_DOCUMENTATION);
-                    character.licenses = player.GetData(EntityData.PLAYER_LICENSES);
-                    character.insurance = player.GetData(EntityData.PLAYER_MEDICAL_INSURANCE);
-                    character.weaponLicense = player.GetData(EntityData.PLAYER_WEAPON_LICENSE);
-                    character.houseRent = player.GetData(EntityData.PLAYER_RENT_HOUSE);
-                    character.houseEntered = player.GetData(EntityData.PLAYER_HOUSE_ENTERED);
-                    character.businessEntered = player.GetData(EntityData.PLAYER_BUSINESS_ENTERED);
-                    character.employeeCooldown = player.GetData(EntityData.PLAYER_EMPLOYEE_COOLDOWN);
-                    character.jobCooldown = player.GetData(EntityData.PLAYER_JOB_COOLDOWN);
-                    character.jobDeliver = player.GetData(EntityData.PLAYER_JOB_DELIVER);
-                    character.jobPoints = player.GetData(EntityData.PLAYER_JOB_POINTS);
-                    character.rolePoints = player.GetData(EntityData.PLAYER_ROLE_POINTS);
-                    character.played = player.GetData(EntityData.PLAYER_PLAYED);
-                    character.jailed = player.GetData(EntityData.PLAYER_JAIL_TYPE) + "," + player.GetData(EntityData.PLAYER_JAILED);
-
-                    character.money = player.GetSharedData(EntityData.PLAYER_MONEY);
-                    character.bank = player.GetSharedData(EntityData.PLAYER_BANK);
-
-                    Task.Factory.StartNew(() =>
+                    else if (jailTime > 0)
                     {
-                        // Save the player into database
-                        Database.SaveCharacterInformation(character);
-                    });
+                        jailTime--;
+                        player.SetData(EntityData.PLAYER_JAILED, jailTime);
+                    }
                 }
+
+                if (player.HasData(EntityData.PLAYER_DRUNK_LEVEL) == true)
+                {
+                    // Lower alcohol level
+                    float drunkLevel = player.GetData(EntityData.PLAYER_DRUNK_LEVEL) - 0.05f;
+
+                    if (drunkLevel <= 0.0f)
+                    {
+                        player.ResetData(EntityData.PLAYER_DRUNK_LEVEL);
+                    }
+                    else
+                    {
+                        if (drunkLevel < Constants.WASTED_LEVEL)
+                        {
+                            player.ResetSharedData(EntityData.PLAYER_WALKING_STYLE);
+                            NAPI.ClientEvent.TriggerClientEventForAll("resetPlayerWalkingStyle", player.Handle);
+                        }
+
+                        player.SetData(EntityData.PLAYER_DRUNK_LEVEL, drunkLevel);
+                    }
+                }
+
+                // Save the character's data
+                Character.SaveCharacterData(player);
             }
 
             // Generate new fastfood orders
@@ -252,14 +215,17 @@ namespace WiredPlayers.globals
                 int generatedOrders = rnd.Next(7, 20);
                 for (int i = 0; i < generatedOrders; i++)
                 {
-                    FastFoodOrderModel order = new FastFoodOrderModel();
-                    order.id = fastFoodId;
-                    order.pizzas = rnd.Next(0, 4);
-                    order.hamburgers = rnd.Next(0, 4);
-                    order.sandwitches = rnd.Next(0, 4);
-                    order.position = GetPlayerFastFoodDeliveryDestination();
-                    order.limit = totalSeconds + 300;
-                    order.taken = false;
+                    FastfoodOrderModel order = new FastfoodOrderModel();
+                    {
+                        order.id = fastFoodId;
+                        order.pizzas = rnd.Next(0, 4);
+                        order.hamburgers = rnd.Next(0, 4);
+                        order.sandwitches = rnd.Next(0, 4);
+                        order.position = GetPlayerFastFoodDeliveryDestination();
+                        order.limit = totalSeconds + 300;
+                        order.taken = false;
+                    }
+
                     fastFoodOrderList.Add(order);
                     fastFoodId++;
                 }
@@ -271,41 +237,8 @@ namespace WiredPlayers.globals
             // Remove old orders
             fastFoodOrderList.RemoveAll(order => !order.taken && order.limit <= totalSeconds);
 
-            List<VehicleModel> vehicleList = new List<VehicleModel>();
-
-            foreach (Vehicle vehicle in NAPI.Pools.GetAllVehicles())
-            {
-                if (!vehicle.HasData(EntityData.VEHICLE_TESTING) && vehicle.GetData(EntityData.VEHICLE_FACTION) == 0)
-                {
-                    VehicleModel vehicleModel = new VehicleModel();
-                    vehicleModel.id = vehicle.GetData(EntityData.VEHICLE_ID);
-                    vehicleModel.model = vehicle.GetData(EntityData.VEHICLE_MODEL);
-                    vehicleModel.position = vehicle.Position;
-                    vehicleModel.rotation = vehicle.Rotation;
-                    vehicleModel.dimension = vehicle.Dimension;
-                    vehicleModel.colorType = vehicle.GetData(EntityData.VEHICLE_COLOR_TYPE);
-                    vehicleModel.firstColor = vehicle.GetData(EntityData.VEHICLE_FIRST_COLOR);
-                    vehicleModel.secondColor = vehicle.GetData(EntityData.VEHICLE_SECOND_COLOR);
-                    vehicleModel.pearlescent = vehicle.GetData(EntityData.VEHICLE_PEARLESCENT_COLOR);
-                    vehicleModel.faction = vehicle.GetData(EntityData.VEHICLE_FACTION);
-                    vehicleModel.plate = vehicle.GetData(EntityData.VEHICLE_PLATE);
-                    vehicleModel.owner = vehicle.GetData(EntityData.VEHICLE_OWNER);
-                    vehicleModel.price = vehicle.GetData(EntityData.VEHICLE_PRICE);
-                    vehicleModel.parking = vehicle.GetData(EntityData.VEHICLE_PARKING);
-                    vehicleModel.parked = vehicle.GetData(EntityData.VEHICLE_PARKED);
-                    vehicleModel.gas = vehicle.GetData(EntityData.VEHICLE_GAS);
-                    vehicleModel.kms = vehicle.GetData(EntityData.VEHICLE_KMS);
-
-                    // Add vehicle into the list
-                    vehicleList.Add(vehicleModel);
-                }
-            }
-
-            Task.Factory.StartNew(() =>
-            {
-                // Save all the vehicles
-                Database.SaveAllVehicles(vehicleList);
-            });
+            // Save all the vehicles
+            Vehicles.SaveAllVehicles();
         }
 
         private void GeneratePlayerPayday(Client player)
@@ -519,11 +452,13 @@ namespace WiredPlayers.globals
                     {
                         // Create the item into the inventory
                         InventoryModel inventoryItem = new InventoryModel();
-                        inventoryItem.id = item.id;
-                        inventoryItem.hash = item.hash;
-                        inventoryItem.description = businessItem.description;
-                        inventoryItem.type = businessItem.type;
-                        inventoryItem.amount = item.amount;
+                        {
+                            inventoryItem.id = item.id;
+                            inventoryItem.hash = item.hash;
+                            inventoryItem.description = businessItem.description;
+                            inventoryItem.type = businessItem.type;
+                            inventoryItem.amount = item.amount;
+                        }
 
                         // Add the item to the inventory
                         inventory.Add(inventoryItem);
@@ -546,11 +481,13 @@ namespace WiredPlayers.globals
                     {
                         // Create the item into the inventory
                         InventoryModel inventoryItem = new InventoryModel();
-                        inventoryItem.id = item.id;
-                        inventoryItem.hash = item.hash;
-                        inventoryItem.description = businessItem.description;
-                        inventoryItem.type = businessItem.type;
-                        inventoryItem.amount = item.amount;
+                        {
+                            inventoryItem.id = item.id;
+                            inventoryItem.hash = item.hash;
+                            inventoryItem.description = businessItem.description;
+                            inventoryItem.type = businessItem.type;
+                            inventoryItem.amount = item.amount;
+                        }
 
                         // Add the item to the inventory
                         inventory.Add(inventoryItem);
@@ -763,7 +700,8 @@ namespace WiredPlayers.globals
         {
             scoreList = new List<ScoreModel>();
             adminTicketList = new List<AdminTicketModel>();
-            fastFoodOrderList = new List<FastFoodOrderModel>();
+            fastFoodOrderList = new List<FastfoodOrderModel>();
+            truckerOrderList = new List<OrderModel>();
 
             // Area in the lobby to change the character
             NAPI.TextLabel.CreateTextLabel(GenRes.character_help, new Vector3(152.2911f, -1001.088f, -99f), 20.0f, 0.75f, 4, new Color(255, 255, 255), false);
@@ -808,8 +746,8 @@ namespace WiredPlayers.globals
             orderGenerationTime = GetTotalSeconds() + rnd.Next(0, 1) * 60;
 
             // Permanent timers
-            playersCheckTimer = new Timer(UpdatePlayerList, null, 500, 500);
-            minuteTimer = new Timer(OnMinuteSpent, null, 60000, 60000);
+            new Timer(UpdatePlayerList, null, 500, 500);
+            new Timer(OnMinuteSpent, null, 60000, 60000);
         }
 
         [ServerEvent(Event.PlayerDisconnected)]
@@ -850,48 +788,12 @@ namespace WiredPlayers.globals
                     }
                 }
 
-                PlayerModel character = new PlayerModel();
+                // Save the character's data
+                Character.SaveCharacterData(player);
 
-                character.position = player.Position;
-                character.rotation = player.Rotation;
-                character.health = player.Health;
-                character.armor = player.Armor;
-                character.id = player.GetData(EntityData.PLAYER_SQL_ID);
-                character.phone = player.GetData(EntityData.PLAYER_PHONE);
-                character.radio = player.GetData(EntityData.PLAYER_RADIO);
-                character.killed = player.GetData(EntityData.PLAYER_KILLED);
-                character.faction = player.GetData(EntityData.PLAYER_FACTION);
-                character.job = player.GetData(EntityData.PLAYER_JOB);
-                character.rank = player.GetData(EntityData.PLAYER_RANK);
-                character.duty = player.GetData(EntityData.PLAYER_ON_DUTY);
-                character.carKeys = player.GetData(EntityData.PLAYER_VEHICLE_KEYS);
-                character.documentation = player.GetData(EntityData.PLAYER_DOCUMENTATION);
-                character.licenses = player.GetData(EntityData.PLAYER_LICENSES);
-                character.insurance = player.GetData(EntityData.PLAYER_MEDICAL_INSURANCE);
-                character.weaponLicense = player.GetData(EntityData.PLAYER_WEAPON_LICENSE);
-                character.houseRent = player.GetData(EntityData.PLAYER_RENT_HOUSE);
-                character.houseEntered = player.GetData(EntityData.PLAYER_HOUSE_ENTERED);
-                character.businessEntered = player.GetData(EntityData.PLAYER_BUSINESS_ENTERED);
-                character.employeeCooldown = player.GetData(EntityData.PLAYER_EMPLOYEE_COOLDOWN);
-                character.jobCooldown = player.GetData(EntityData.PLAYER_JOB_COOLDOWN);
-                character.jobDeliver = player.GetData(EntityData.PLAYER_JOB_DELIVER);
-                character.jobPoints = player.GetData(EntityData.PLAYER_JOB_POINTS);
-                character.rolePoints = player.GetData(EntityData.PLAYER_ROLE_POINTS);
-                character.played = player.GetData(EntityData.PLAYER_PLAYED);
-                character.jailed = player.GetData(EntityData.PLAYER_JAIL_TYPE) + "," + player.GetData(EntityData.PLAYER_JAILED);
-
-                character.money = player.GetSharedData(EntityData.PLAYER_MONEY);
-                character.bank = player.GetSharedData(EntityData.PLAYER_BANK);
-
-                // Warnt the players near to the disconnected one
+                // Warn the players near to the disconnected one
                 string message = string.Format(InfoRes.player_disconnected, player.Name, reason);
                 Chat.SendMessageToNearbyPlayers(player, message, Constants.MESSAGE_DISCONNECT, 10.0f);
-
-                Task.Factory.StartNew(() =>
-                {
-                    // Save player into database
-                    Database.SaveCharacterInformation(character);
-                });
             }
         }
 
@@ -1267,13 +1169,14 @@ namespace WiredPlayers.globals
                             {
                                 // Create the item
                                 itemModel = new ItemModel();
-                                itemModel.hash = Constants.ITEM_HASH_BOTTLE_BEER_AM;
-                                itemModel.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
-                                itemModel.ownerIdentifier = player.GetData(EntityData.PLAYER_SQL_ID);
-                                itemModel.amount = Constants.ITEM_OPEN_BEER_AMOUNT;
-                                itemModel.position = new Vector3(0.0f, 0.0f, 0.0f);
-                                itemModel.dimension = player.Dimension;
-
+                                {
+                                    itemModel.hash = Constants.ITEM_HASH_BOTTLE_BEER_AM;
+                                    itemModel.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
+                                    itemModel.ownerIdentifier = player.GetData(EntityData.PLAYER_SQL_ID);
+                                    itemModel.amount = Constants.ITEM_OPEN_BEER_AMOUNT;
+                                    itemModel.position = new Vector3(0.0f, 0.0f, 0.0f);
+                                    itemModel.dimension = player.Dimension;
+                                }
 
                                 Task.Factory.StartNew(() =>
                                 {
@@ -1687,13 +1590,15 @@ namespace WiredPlayers.globals
                                 if (item == null)
                                 {
                                     item = new ItemModel();
-                                    item.amount = amount;
-                                    item.dimension = 0;
-                                    item.position = new Vector3(0.0f, 0.0f, 0.0f);
-                                    item.hash = Constants.ITEM_HASH_BUSINESS_PRODUCTS;
-                                    item.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
-                                    item.ownerIdentifier = playerId;
-                                    item.objectHandle = null;
+                                    {
+                                        item.amount = amount;
+                                        item.dimension = 0;
+                                        item.position = new Vector3(0.0f, 0.0f, 0.0f);
+                                        item.hash = Constants.ITEM_HASH_BUSINESS_PRODUCTS;
+                                        item.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
+                                        item.ownerIdentifier = playerId;
+                                        item.objectHandle = null;
+                                    }
 
                                     Task.Factory.StartNew(() =>
                                     {
@@ -2467,11 +2372,13 @@ namespace WiredPlayers.globals
 
                                     // Update the vehicle's color
                                     VehicleModel vehicleModel = new VehicleModel();
-                                    vehicleModel.id = vehicle.GetData(EntityData.VEHICLE_ID);
-                                    vehicleModel.colorType = colorType;
-                                    vehicleModel.firstColor = firstColor;
-                                    vehicleModel.secondColor = secondColor;
-                                    vehicleModel.pearlescent = pearlescentColor;
+                                    {
+                                        vehicleModel.id = vehicle.GetData(EntityData.VEHICLE_ID);
+                                        vehicleModel.colorType = colorType;
+                                        vehicleModel.firstColor = firstColor;
+                                        vehicleModel.secondColor = secondColor;
+                                        vehicleModel.pearlescent = pearlescentColor;
+                                    }
 
                                     Task.Factory.StartNew(() =>
                                     {
@@ -3035,8 +2942,12 @@ namespace WiredPlayers.globals
 
             // Create a new ticket
             AdminTicketModel adminTicket = new AdminTicketModel();
-            adminTicket.playerId = player.Value;
-            adminTicket.question = message;
+            {
+                adminTicket.playerId = player.Value;
+                adminTicket.question = message;
+            }
+
+            // Add the ticket to the list
             adminTicketList.Add(adminTicket);
 
             // Send the message to the staff online

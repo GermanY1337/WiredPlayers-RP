@@ -3,12 +3,12 @@ using WiredPlayers.database;
 using WiredPlayers.globals;
 using WiredPlayers.model;
 using WiredPlayers.character;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using System.Threading.Tasks;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.information;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace WiredPlayers.business
 {
@@ -166,7 +166,7 @@ namespace WiredPlayers.business
 
         public static bool HasPlayerBusinessKeys(Client player, BusinessModel business)
         {
-            return (player.Name == business.owner);
+            return player.Name == business.owner;
         }
 
         private List<BusinessTattooModel> GetBusinessZoneTattoos(int sex, int zone)
@@ -221,7 +221,14 @@ namespace WiredPlayers.business
                     {
                         // We create the purchased item
                         itemModel = new ItemModel();
-                        itemModel.hash = businessItem.hash;
+                        {
+                            itemModel.hash = businessItem.hash;
+                            itemModel.ownerIdentifier = player.GetData(EntityData.PLAYER_SQL_ID);
+                            itemModel.amount = businessItem.uses * amount;
+                            itemModel.position = new Vector3(0.0f, 0.0f, 0.0f);
+                            itemModel.dimension = 0;
+                        }
+
                         if (businessItem.type == Constants.ITEM_TYPE_WEAPON)
                         {
                             itemModel.ownerEntity = Constants.ITEM_ENTITY_WHEEL;
@@ -230,10 +237,6 @@ namespace WiredPlayers.business
                         {
                             itemModel.ownerEntity = int.TryParse(itemModel.hash, out hash) ? Constants.ITEM_ENTITY_RIGHT_HAND : Constants.ITEM_ENTITY_PLAYER;
                         }
-                        itemModel.ownerIdentifier = player.GetData(EntityData.PLAYER_SQL_ID);
-                        itemModel.amount = businessItem.uses * amount;
-                        itemModel.position = new Vector3(0.0f, 0.0f, 0.0f);
-                        itemModel.dimension = 0;
 
                         Task.Factory.StartNew(() => {
                             // Adding the item to the list and database
@@ -247,7 +250,7 @@ namespace WiredPlayers.business
                         {
                             itemModel.ownerEntity = Constants.ITEM_ENTITY_RIGHT_HAND;
                         }
-                        itemModel.amount += (businessItem.uses * amount);
+                        itemModel.amount += businessItem.uses * amount;
 
                         Task.Factory.StartNew(() => {
                             // Update the item's amount
@@ -487,10 +490,12 @@ namespace WiredPlayers.business
             if (price <= playerMoney)
             {
                 TattooModel tattoo = new TattooModel();
-                tattoo.player = player.GetData(EntityData.PLAYER_SQL_ID);
-                tattoo.slot = tattooZone;
-                tattoo.library = businessTattoo.library;
-                tattoo.hash = sex == Constants.SEX_MALE ? businessTattoo.maleHash : businessTattoo.femaleHash;
+                {
+                    tattoo.player = player.GetData(EntityData.PLAYER_SQL_ID);
+                    tattoo.slot = tattooZone;
+                    tattoo.library = businessTattoo.library;
+                    tattoo.hash = sex == Constants.SEX_MALE ? businessTattoo.maleHash : businessTattoo.femaleHash;
+                }
 
                 Task.Factory.StartNew(() => {
                     if (Database.AddTattoo(tattoo) == true)

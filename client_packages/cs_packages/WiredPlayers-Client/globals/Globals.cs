@@ -48,6 +48,9 @@ namespace WiredPlayers_Client.globals
             // Remove weapons from the vehicles
             RAGE.Game.Player.DisablePlayerVehicleRewards();
 
+            // Remove the fade out after player's death
+            RAGE.Game.Misc.SetFadeOutAfterDeath(false);
+
             // Freeze the player until he logs in
             Player.LocalPlayer.FreezePosition(true);
         }

@@ -2,11 +2,11 @@
 using WiredPlayers.database;
 using WiredPlayers.globals;
 using WiredPlayers.model;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.general;
 using WiredPlayers.messages.information;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WiredPlayers.factions
 {
@@ -237,10 +237,12 @@ namespace WiredPlayers.factions
                 else
                 {
                     AnnoucementModel annoucement = new AnnoucementModel();
-                    annoucement.winner = player.GetData(EntityData.PLAYER_SQL_ID);
-                    annoucement.amount = Constants.PRICE_ANNOUNCEMENT;
-                    annoucement.annoucement = message;
-                    annoucement.given = false;
+                    {
+                        annoucement.winner = player.GetData(EntityData.PLAYER_SQL_ID);
+                        annoucement.amount = Constants.PRICE_ANNOUNCEMENT;
+                        annoucement.annoucement = message;
+                        annoucement.given = false;
+                    }
 
                     // Removes player money
                     player.SetSharedData(EntityData.PLAYER_MONEY, money - Constants.PRICE_ANNOUNCEMENT);

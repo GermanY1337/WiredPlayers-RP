@@ -4,20 +4,19 @@ using WiredPlayers.database;
 using WiredPlayers.model;
 using WiredPlayers.drivingschool;
 using WiredPlayers.weapons;
+using WiredPlayers.messages.error;
+using WiredPlayers.messages.information;
+using WiredPlayers.messages.general;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using System;
-using WiredPlayers.messages.error;
-using WiredPlayers.messages.information;
-using WiredPlayers.messages.general;
 
 namespace WiredPlayers.factions
 {
     public class Police : Script
     {
-        private static Timer reinforcesTimer;
         public static List<PoliceControlModel> policeControlList;
 
         public static void OnPlayerDisconnected(Client player, DisconnectionType type, string reason)
@@ -89,7 +88,7 @@ namespace WiredPlayers.factions
         public void OnResourceStart()
         {
             // Initialize reinforces updater
-            reinforcesTimer = new Timer(UpdateReinforcesRequests, null, 250, 250);
+            Timer reinforcesTimer = new Timer(UpdateReinforcesRequests, null, 250, 250);
             PDEquipmentLabel = NAPI.TextLabel.CreateTextLabel("/" + Commands.COM_EQUIPMENT, new Vector3(450.8223, -992.0941, 30.78958), 10.0f, 0.5f, 4, new Color(255, 255, 153), false, 0);
             NAPI.TextLabel.CreateTextLabel(GenRes.equipment_help, new Vector3(450.8223, -992.0941, 30.68958), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
         }
@@ -427,15 +426,18 @@ namespace WiredPlayers.factions
                     }
                     else
                     {
+                        FineModel fine = new FineModel();
+                        {
+                            fine.officer = player.Name;
+                            fine.target = target.Name;
+                            fine.amount = int.Parse(amount);
+                            fine.reason = reason;
+                        }
+
                         string playerMessage = string.Format(InfoRes.fine_given, target.Name);
                         string targetMessage = string.Format(InfoRes.fine_received, player.Name);
-                        FineModel fine = new FineModel();
-                        fine.officer = player.Name;
-                        fine.target = target.Name;
-                        fine.amount = int.Parse(amount);
-                        fine.reason = reason;
                         player.SendChatMessage(Constants.COLOR_INFO + playerMessage);
-                       target.SendChatMessage(Constants.COLOR_INFO + targetMessage);
+                        target.SendChatMessage(Constants.COLOR_INFO + targetMessage);
 
                         Task.Factory.StartNew(() =>
                         {
@@ -587,12 +589,14 @@ namespace WiredPlayers.factions
                                 else
                                 {
                                     bulletItem = new ItemModel();
-                                    bulletItem.hash = ammunition;
-                                    bulletItem.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
-                                    bulletItem.ownerIdentifier = playerId;
-                                    bulletItem.amount = 30;
-                                    bulletItem.position = new Vector3(0.0f, 0.0f, 0.0f);
-                                    bulletItem.dimension = 0;
+                                    {
+                                        bulletItem.hash = ammunition;
+                                        bulletItem.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
+                                        bulletItem.ownerIdentifier = playerId;
+                                        bulletItem.amount = 30;
+                                        bulletItem.position = new Vector3(0.0f, 0.0f, 0.0f);
+                                        bulletItem.dimension = 0;
+                                    }
 
                                     Task.Factory.StartNew(() =>
                                     {

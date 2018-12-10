@@ -13,12 +13,14 @@ namespace WiredPlayers.character
         {
             // Populate the head
             HeadBlend headBlend = new HeadBlend();
-            headBlend.ShapeFirst = Convert.ToByte(skinModel.firstHeadShape);
-            headBlend.ShapeSecond = Convert.ToByte(skinModel.secondHeadShape);
-            headBlend.SkinFirst = Convert.ToByte(skinModel.firstSkinTone);
-            headBlend.SkinSecond = Convert.ToByte(skinModel.secondSkinTone);
-            headBlend.ShapeMix = skinModel.headMix;
-            headBlend.SkinMix = skinModel.skinMix;
+            {
+                headBlend.ShapeFirst = Convert.ToByte(skinModel.firstHeadShape);
+                headBlend.ShapeSecond = Convert.ToByte(skinModel.secondHeadShape);
+                headBlend.SkinFirst = Convert.ToByte(skinModel.firstSkinTone);
+                headBlend.SkinSecond = Convert.ToByte(skinModel.secondSkinTone);
+                headBlend.ShapeMix = skinModel.headMix;
+                headBlend.SkinMix = skinModel.skinMix;
+            }
 
             // Get the hair and eyes colors
             byte eyeColor = Convert.ToByte(skinModel.eyesColor);
@@ -43,10 +45,12 @@ namespace WiredPlayers.character
 
                 // Create the overlay
                 HeadOverlay headOverlay = new HeadOverlay();
-                headOverlay.Index = Convert.ToByte(overlayData[0]);
-                headOverlay.Color = Convert.ToByte(overlayData[1]);
-                headOverlay.SecondaryColor = 0;
-                headOverlay.Opacity = 1.0f;
+                {
+                    headOverlay.Index = Convert.ToByte(overlayData[0]);
+                    headOverlay.Color = Convert.ToByte(overlayData[1]);
+                    headOverlay.SecondaryColor = 0;
+                    headOverlay.Opacity = 1.0f;
+                }
 
                 // Add the overlay
                 headOverlays[i] = headOverlay;
@@ -86,8 +90,11 @@ namespace WiredPlayers.character
             {
                 // Add each tattoo to the player
                 Decoration decoration = new Decoration();
-                decoration.Collection = NAPI.Util.GetHashKey(tattoo.library);
-                decoration.Overlay = NAPI.Util.GetHashKey(tattoo.hash);
+                {
+                    decoration.Collection = NAPI.Util.GetHashKey(tattoo.library);
+                    decoration.Overlay = NAPI.Util.GetHashKey(tattoo.hash);
+                }
+
                 player.SetDecoration(decoration);
             }
         }

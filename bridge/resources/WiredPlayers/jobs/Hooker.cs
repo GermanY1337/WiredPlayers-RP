@@ -1,16 +1,22 @@
 ﻿using GTANetworkAPI;
 using WiredPlayers.globals;
-using System.Collections.Generic;
-using System.Threading;
 using WiredPlayers.messages.success;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.information;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace WiredPlayers.jobs
 {
     public class Hooker : Script
     {
-        public static Dictionary<int, Timer> sexTimerList = new Dictionary<int, Timer>();
+        public static Dictionary<int, Timer> sexTimerList;
+
+        public Hooker()
+        {
+            // Initialize the variables
+            sexTimerList = new Dictionary<int, Timer>();
+        }
 
         public static void OnPlayerDisconnected(Client player, DisconnectionType type, string reason)
         {

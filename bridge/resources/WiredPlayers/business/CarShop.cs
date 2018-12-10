@@ -2,12 +2,12 @@
 using WiredPlayers.globals;
 using WiredPlayers.model;
 using WiredPlayers.vehicles;
-using System.Collections.Generic;
-using System;
-using System.Linq;
 using WiredPlayers.messages.general;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.information;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace WiredPlayers.business
 {
@@ -80,22 +80,24 @@ namespace WiredPlayers.business
                 {
                     // Basic data for vehicle creation
                     VehicleModel vehicleModel = new VehicleModel();
-                    vehicleModel.model = GetVehicleModel(vehicleHash);
-                    vehicleModel.plate = string.Empty;
-                    vehicleModel.position = spawns[i];
-                    vehicleModel.rotation = new Vector3(0.0, 0.0, 0.0);
-                    vehicleModel.owner = player.GetData(EntityData.PLAYER_NAME);
-                    vehicleModel.colorType = Constants.VEHICLE_COLOR_TYPE_CUSTOM;
-                    vehicleModel.firstColor = firstColor;
-                    vehicleModel.secondColor = secondColor;
-                    vehicleModel.pearlescent = 0;
-                    vehicleModel.price = vehiclePrice;
-                    vehicleModel.parking = 0;
-                    vehicleModel.parked = 0;
-                    vehicleModel.engine = 0;
-                    vehicleModel.locked = 0;
-                    vehicleModel.gas = 50.0f;
-                    vehicleModel.kms = 0.0f;
+                    {
+                        vehicleModel.model = GetVehicleModel(vehicleHash);
+                        vehicleModel.plate = string.Empty;
+                        vehicleModel.position = spawns[i];
+                        vehicleModel.rotation = new Vector3(0.0, 0.0, 0.0);
+                        vehicleModel.owner = player.GetData(EntityData.PLAYER_NAME);
+                        vehicleModel.colorType = Constants.VEHICLE_COLOR_TYPE_CUSTOM;
+                        vehicleModel.firstColor = firstColor;
+                        vehicleModel.secondColor = secondColor;
+                        vehicleModel.pearlescent = 0;
+                        vehicleModel.price = vehiclePrice;
+                        vehicleModel.parking = 0;
+                        vehicleModel.parked = 0;
+                        vehicleModel.engine = 0;
+                        vehicleModel.locked = 0;
+                        vehicleModel.gas = 50.0f;
+                        vehicleModel.kms = 0.0f;
+                    }
 
                     // Creating the purchased vehicle
                     Vehicles.CreateVehicle(player, vehicleModel, false);

@@ -10,12 +10,12 @@ using WiredPlayers.parking;
 using WiredPlayers.admin;
 using WiredPlayers.jobs;
 using WiredPlayers.factions;
+using WiredPlayers.messages.general;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
 using System.Text;
 using System;
-using System.Threading;
-using WiredPlayers.messages.general;
 
 namespace WiredPlayers.database
 {
@@ -96,7 +96,9 @@ namespace WiredPlayers.database
         {
 
             AccountModel account = new AccountModel();
-            account.status = 0;
+            {
+                account.status = 0;
+            }
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -629,12 +631,15 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         BankOperationModel bankOperation = new BankOperationModel();
-                        bankOperation.source = reader.GetString("source");
-                        bankOperation.receiver = reader.GetString("receiver");
-                        bankOperation.type = reader.GetString("type");
-                        bankOperation.amount = reader.GetInt32("amount");
-                        bankOperation.day = reader.GetString("date").Split(' ')[0];
-                        bankOperation.time = reader.GetString("hour");
+                        {
+                            bankOperation.source = reader.GetString("source");
+                            bankOperation.receiver = reader.GetString("receiver");
+                            bankOperation.type = reader.GetString("type");
+                            bankOperation.amount = reader.GetInt32("amount");
+                            bankOperation.day = reader.GetString("date").Split(' ')[0];
+                            bankOperation.time = reader.GetString("hour");
+                        }
+
                         operations.Add(bankOperation);
                     }
                 }
@@ -959,11 +964,12 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         TunningModel tunning = new TunningModel();
-
-                        tunning.id = reader.GetInt32("id");
-                        tunning.vehicle = reader.GetInt32("vehicle");
-                        tunning.slot = reader.GetInt32("slot");
-                        tunning.component = reader.GetInt32("component");
+                        {
+                            tunning.id = reader.GetInt32("id");
+                            tunning.vehicle = reader.GetInt32("vehicle");
+                            tunning.slot = reader.GetInt32("slot");
+                            tunning.component = reader.GetInt32("component");
+                        }
 
                         tunningList.Add(tunning);
                     }
@@ -1827,11 +1833,13 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         FineModel fine = new FineModel();
-                        fine.officer = reader.GetString("officer");
-                        fine.target = reader.GetString("target");
-                        fine.amount = reader.GetInt32("amount");
-                        fine.reason = reader.GetString("reason");
-                        fine.date = reader.GetString("date");
+                        {
+                            fine.officer = reader.GetString("officer");
+                            fine.target = reader.GetString("target");
+                            fine.amount = reader.GetInt32("amount");
+                            fine.reason = reader.GetString("reason");
+                            fine.date = reader.GetString("date");
+                        }
 
                         fineList.Add(fine);
                     }
@@ -1915,9 +1923,11 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         ChannelModel channel = new ChannelModel();
-                        channel.id = reader.GetInt32("id");
-                        channel.owner = reader.GetInt32("owner");
-                        channel.password = reader.GetString("password");
+                        {
+                            channel.id = reader.GetInt32("id");
+                            channel.owner = reader.GetInt32("owner");
+                            channel.password = reader.GetString("password");
+                        }
 
                         channelList.Add(channel);
                     }
@@ -2037,10 +2047,12 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         BloodModel blood = new BloodModel();
-                        blood.id = reader.GetInt32("id");
-                        blood.doctor = reader.GetInt32("doctor");
-                        blood.patient = reader.GetInt32("patient");
-                        blood.used = reader.GetBoolean("used");
+                        {
+                            blood.id = reader.GetInt32("id");
+                            blood.doctor = reader.GetInt32("doctor");
+                            blood.patient = reader.GetInt32("patient");
+                            blood.used = reader.GetBoolean("used");
+                        }
 
                         bloodList.Add(blood);
                     }
@@ -2065,12 +2077,14 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         AnnoucementModel announcementModel = new AnnoucementModel();
-                        announcementModel.id = reader.GetInt32("id");
-                        announcementModel.winner = reader.GetInt32("journalist");
-                        announcementModel.amount = reader.GetInt32("amount");
-                        announcementModel.annoucement = reader.GetString("annoucement");
-                        announcementModel.journalist = reader.GetInt32("winner");
-                        announcementModel.given = reader.GetBoolean("given");
+                        {
+                            announcementModel.id = reader.GetInt32("id");
+                            announcementModel.winner = reader.GetInt32("journalist");
+                            announcementModel.amount = reader.GetInt32("amount");
+                            announcementModel.annoucement = reader.GetString("annoucement");
+                            announcementModel.journalist = reader.GetInt32("winner");
+                            announcementModel.given = reader.GetBoolean("given");
+                        }
 
                         annoucementList.Add(announcementModel);
                     }
@@ -2186,13 +2200,15 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         ClothesModel clothes = new ClothesModel();
-                        clothes.id = reader.GetInt32("id");
-                        clothes.player = reader.GetInt32("player");
-                        clothes.type = reader.GetInt32("type");
-                        clothes.slot = reader.GetInt32("slot");
-                        clothes.drawable = reader.GetInt32("drawable");
-                        clothes.texture = reader.GetInt32("texture");
-                        clothes.dressed = reader.GetBoolean("dressed");
+                        {
+                            clothes.id = reader.GetInt32("id");
+                            clothes.player = reader.GetInt32("player");
+                            clothes.type = reader.GetInt32("type");
+                            clothes.slot = reader.GetInt32("slot");
+                            clothes.drawable = reader.GetInt32("drawable");
+                            clothes.texture = reader.GetInt32("texture");
+                            clothes.dressed = reader.GetBoolean("dressed");
+                        }
 
                         clothesList.Add(clothes);
                     }
@@ -2273,10 +2289,12 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         TattooModel tattoo = new TattooModel();
-                        tattoo.player = reader.GetInt32("player");
-                        tattoo.slot = reader.GetInt32("zone");
-                        tattoo.library = reader.GetString("library");
-                        tattoo.hash = reader.GetString("hash");
+                        {
+                            tattoo.player = reader.GetInt32("player");
+                            tattoo.slot = reader.GetInt32("zone");
+                            tattoo.library = reader.GetString("library");
+                            tattoo.hash = reader.GetString("hash");
+                        }
 
                         tattooList.Add(tattoo);
                     }
@@ -2331,10 +2349,12 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         ContactModel contact = new ContactModel();
-                        contact.id = reader.GetInt32("id");
-                        contact.owner = reader.GetInt32("owner");
-                        contact.contactNumber = reader.GetInt32("contactNumber");
-                        contact.contactName = reader.GetString("contactName");
+                        {
+                            contact.id = reader.GetInt32("id");
+                            contact.owner = reader.GetInt32("owner");
+                            contact.contactNumber = reader.GetInt32("contactNumber");
+                            contact.contactName = reader.GetString("contactName");
+                        }
 
                         contactList.Add(contact);
                     }
@@ -2484,8 +2504,10 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         TestModel test = new TestModel();
-                        test.id = reader.GetInt32("id");
-                        test.text = reader.GetString("question");
+                        {
+                            test.id = reader.GetInt32("id");
+                            test.text = reader.GetString("question");
+                        }
 
                         testList.Add(test);
                     }
@@ -2511,9 +2533,11 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         TestModel test = new TestModel();
-                        test.id = reader.GetInt32("id");
-                        test.text = reader.GetString("answer");
-                        test.question = question;
+                        {
+                            test.id = reader.GetInt32("id");
+                            test.text = reader.GetString("answer");
+                            test.question = question;
+                        }
 
                         testList.Add(test);
                     }
@@ -2611,9 +2635,11 @@ namespace WiredPlayers.database
                     while (reader.Read())
                     {
                         PermissionModel permission = new PermissionModel();
-                        permission.playerId = reader.GetInt32("playerId");
-                        permission.command = reader.GetString("command");
-                        permission.option = reader.GetString("option");
+                        {
+                            permission.playerId = reader.GetInt32("playerId");
+                            permission.command = reader.GetString("command");
+                            permission.option = reader.GetString("option");
+                        }
 
                         permissionList.Add(permission);
                     }

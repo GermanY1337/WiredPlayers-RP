@@ -2,12 +2,11 @@
 using WiredPlayers.database;
 using WiredPlayers.globals;
 using WiredPlayers.model;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
 using WiredPlayers.messages.information;
 using WiredPlayers.messages.general;
 using WiredPlayers.messages.error;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WiredPlayers.character
 {
@@ -75,9 +74,11 @@ namespace WiredPlayers.character
         {
             // Create the model for the new contact
             ContactModel contact = new ContactModel();
-            contact.owner = player.GetData(EntityData.PLAYER_PHONE);
-            contact.contactNumber = contactNumber;
-            contact.contactName = contactName;
+            {
+                contact.owner = player.GetData(EntityData.PLAYER_PHONE);
+                contact.contactNumber = contactNumber;
+                contact.contactName = contactName;
+            }
 
             Task.Factory.StartNew(() =>
             {

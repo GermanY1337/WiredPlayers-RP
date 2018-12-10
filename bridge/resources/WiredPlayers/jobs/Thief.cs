@@ -6,20 +6,26 @@ using WiredPlayers.house;
 using WiredPlayers.model;
 using WiredPlayers.vehicles;
 using WiredPlayers.factions;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Threading;
-using System;
 using WiredPlayers.messages.success;
 using WiredPlayers.messages.information;
 using WiredPlayers.messages.general;
 using WiredPlayers.messages.error;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
 
 namespace WiredPlayers.jobs
 {
     public class Thief : Script
     {
-        private static Dictionary<int, Timer> robberyTimerList = new Dictionary<int, Timer>();
+        private static Dictionary<int, Timer> robberyTimerList;
+
+        public Thief()
+        {
+            // Initialize the variables
+            robberyTimerList = new Dictionary<int, Timer>();
+        }
 
         public static void OnPlayerDisconnected(Client player, DisconnectionType type, string reason)
         {
@@ -93,13 +99,14 @@ namespace WiredPlayers.jobs
             if (stolenItemModel == null)
             {
                 stolenItemModel = new ItemModel();
-
-                stolenItemModel.amount = totalStolenItems;
-                stolenItemModel.hash = Constants.ITEM_HASH_STOLEN_OBJECTS;
-                stolenItemModel.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
-                stolenItemModel.ownerIdentifier = playerSqlId;
-                stolenItemModel.dimension = 0;
-                stolenItemModel.position = new Vector3(0.0f, 0.0f, 0.0f);
+                {
+                    stolenItemModel.amount = totalStolenItems;
+                    stolenItemModel.hash = Constants.ITEM_HASH_STOLEN_OBJECTS;
+                    stolenItemModel.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
+                    stolenItemModel.ownerIdentifier = playerSqlId;
+                    stolenItemModel.dimension = 0;
+                    stolenItemModel.position = new Vector3(0.0f, 0.0f, 0.0f);
+                }
 
                 Task.Factory.StartNew(() =>
                 {

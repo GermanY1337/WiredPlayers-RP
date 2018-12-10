@@ -1,7 +1,6 @@
 ﻿using GTANetworkAPI;
 using WiredPlayers.globals;
 using WiredPlayers.messages.error;
-using WiredPlayers.messages.general;
 
 namespace WiredPlayers.character
 {

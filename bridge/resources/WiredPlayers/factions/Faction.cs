@@ -3,15 +3,15 @@ using WiredPlayers.model;
 using WiredPlayers.globals;
 using WiredPlayers.chat;
 using WiredPlayers.database;
+using WiredPlayers.messages.error;
+using WiredPlayers.messages.information;
+using WiredPlayers.messages.general;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
 using System;
-using WiredPlayers.messages.error;
-using WiredPlayers.messages.information;
-using WiredPlayers.messages.general;
 
 namespace WiredPlayers.factions
 {
@@ -365,10 +365,11 @@ namespace WiredPlayers.factions
                                     // We create the new frequency
                                     MD5 md5Hash = MD5.Create();
                                     ChannelModel channel = new ChannelModel();
-                                    channel.owner = playerId;
-                                    channel.password = GetMd5Hash(md5Hash, arguments[1]);
-
-
+                                    {
+                                        channel.owner = playerId;
+                                        channel.password = GetMd5Hash(md5Hash, arguments[1]);
+                                    }
+                                    
                                     Task.Factory.StartNew(() =>
                                     {
                                         // Create the new channel

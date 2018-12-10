@@ -3,16 +3,13 @@ using WiredPlayers.model;
 using WiredPlayers.messages.general;
 using WiredPlayers.messages.jobs;
 using WiredPlayers.messages.items;
+using WiredPlayers.messages.description;
 using System.Collections.Generic;
-using System;
 
 namespace WiredPlayers.globals
 {
     public class Constants
     {
-        // Gamemode version
-        public const string GM_VERSION = "v1.3.1";
-
         public const int ENVIRONMENT_KILL = 65535;
         public const int ITEMS_PER_INVENTORY_PAGE = 16;
         public const decimal ITEMS_ROBBED_PER_TIME = 1.5m;
@@ -212,11 +209,11 @@ namespace WiredPlayers.globals
         public const string ITEM_HASH_SHOTGUN_AMMO_CLIP = "ShotgunAmmo";
 
         // Stack of the guns
-        public const Int32 STACK_PISTOL_CAPACITY = 32;
-        public const Int32 STACK_MACHINEGUN_CAPACITY = 100;
-        public const Int32 STACK_SHOTGUN_CAPACITY = 24;
-        public const Int32 STACK_ASSAULTRIFLE_CAPACITY = 60;
-        public const Int32 STACK_SNIPERRIFLE_CAPACITY = 8;
+        public const int STACK_PISTOL_CAPACITY = 32;
+        public const int STACK_MACHINEGUN_CAPACITY = 100;
+        public const int STACK_SHOTGUN_CAPACITY = 24;
+        public const int STACK_ASSAULTRIFLE_CAPACITY = 60;
+        public const int STACK_SNIPERRIFLE_CAPACITY = 8;
 
         // Miscelaneous items
         public const string ITEM_HASH_ID_CARD = "511938898";
@@ -305,6 +302,7 @@ namespace WiredPlayers.globals
         public const int JOB_HOOKER = 5;
         public const int JOB_FISHERMAN = 6;
         public const int JOB_TAXI = 7;
+        public const int JOB_TRUCKER = 8;
 
         // Database stored items' place
         public const string ITEM_ENTITY_GROUND = "Ground";
@@ -3274,6 +3272,16 @@ namespace WiredPlayers.globals
             new BusinessBlipModel(287, 75),
             new BusinessBlipModel(288, 73),
             new BusinessBlipModel(297, 52)
+        };
+
+        // Job points
+        public static List<JobPickModel> JOB_PICK_LIST = new List<JobPickModel>()
+        {
+            new JobPickModel(Constants.JOB_FASTFOOD, new Vector3(-1037.697f, -1397.189f, 5.553192f), DescRes.job_fastfoot),
+            new JobPickModel(Constants.JOB_HOOKER, new Vector3(136.58f, -1278.55f, 29.45f), DescRes.job_hooker),
+            new JobPickModel(Constants.JOB_GARBAGE, new Vector3(-322.088f, -1546.014f, 31.01991f), DescRes.job_garbage),
+            new JobPickModel(Constants.JOB_MECHANIC, new Vector3(486.5268f, -1314.683f, 29.22961f), DescRes.job_mechanic),
+            new JobPickModel(Constants.JOB_THIEF, new Vector3(-198.225f, -1699.521f, 33.46679f), DescRes.job_thief)
         };
 
         // ATMs

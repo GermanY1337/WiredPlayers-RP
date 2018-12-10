@@ -1,11 +1,11 @@
 ﻿using GTANetworkAPI;
 using WiredPlayers.globals;
 using WiredPlayers.factions;
-using System.Linq;
-using System;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.general;
 using WiredPlayers.messages.success;
+using System.Linq;
+using System;
 
 namespace WiredPlayers.chat
 {

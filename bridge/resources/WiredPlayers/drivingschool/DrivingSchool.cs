@@ -2,21 +2,26 @@
 using WiredPlayers.database;
 using WiredPlayers.globals;
 using WiredPlayers.model;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Threading;
-using System;
 using WiredPlayers.messages.success;
 using WiredPlayers.messages.information;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.general;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
 
 namespace WiredPlayers.drivingschool
 {
     public class DrivingSchool : Script
     {
-        private static Dictionary<int, Timer> drivingSchoolTimerList = new Dictionary<int, Timer>();
+        private static Dictionary<int, Timer> drivingSchoolTimerList;
 
+        public DrivingSchool()
+        {
+            // Initialize the variables
+            drivingSchoolTimerList = new Dictionary<int, Timer>();
+        }
 
         public static void OnPlayerDisconnected(Client player, DisconnectionType type, string reason)
         {

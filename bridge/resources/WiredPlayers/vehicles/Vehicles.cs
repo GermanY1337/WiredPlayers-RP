@@ -7,24 +7,28 @@ using WiredPlayers.business;
 using WiredPlayers.weapons;
 using WiredPlayers.chat;
 using WiredPlayers.jobs;
+using WiredPlayers.messages.error;
+using WiredPlayers.messages.information;
+using WiredPlayers.messages.success;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using System;
-using WiredPlayers.messages.error;
-using WiredPlayers.messages.information;
-using WiredPlayers.messages.success;
 
 namespace WiredPlayers.vehicles
 {
     public class Vehicles : Script
     {
-        private static Dictionary<int, Timer> gasTimerList = new Dictionary<int, Timer>();
-        private static Dictionary<int, Timer> vehicleRespawnTimerList = new Dictionary<int, Timer>();
+        private static Dictionary<int, Timer> gasTimerList;
+        private static Dictionary<int, Timer> vehicleRespawnTimerList;
 
         public void LoadDatabaseVehicles()
         {
+            // Create the timer dictionaries
+            gasTimerList = new Dictionary<int, Timer>();
+            vehicleRespawnTimerList = new Dictionary<int, Timer>();
+
             List<VehicleModel> vehicleList = Database.LoadAllVehicles();
             Parking.parkedCars = new List<ParkedCarModel>();
 
@@ -39,8 +43,10 @@ namespace WiredPlayers.vehicles
                 {
                     // Link the car to the parking
                     ParkedCarModel parkedCarModel = new ParkedCarModel();
-                    parkedCarModel.parkingId = vehModel.parking;
-                    parkedCarModel.vehicle = vehModel;
+                    {
+                        parkedCarModel.parkingId = vehModel.parking;
+                        parkedCarModel.vehicle = vehModel;
+                    }
                     
                     Parking.parkedCars.Add(parkedCarModel);
                 }
@@ -174,6 +180,45 @@ namespace WiredPlayers.vehicles
             return vehicle;
         }
 
+        public static void SaveAllVehicles()
+        {
+            List<VehicleModel> vehicleList = new List<VehicleModel>();
+            List<Vehicle> citizenVehicles = NAPI.Pools.GetAllVehicles().Where(veh => !veh.HasData(EntityData.VEHICLE_TESTING) && veh.GetData(EntityData.VEHICLE_FACTION) == 0).ToList();
+
+            foreach (Vehicle vehicle in citizenVehicles)
+            {
+                VehicleModel vehicleModel = new VehicleModel();
+                {
+                    vehicleModel.id = vehicle.GetData(EntityData.VEHICLE_ID);
+                    vehicleModel.model = vehicle.GetData(EntityData.VEHICLE_MODEL);
+                    vehicleModel.position = vehicle.Position;
+                    vehicleModel.rotation = vehicle.Rotation;
+                    vehicleModel.dimension = vehicle.Dimension;
+                    vehicleModel.colorType = vehicle.GetData(EntityData.VEHICLE_COLOR_TYPE);
+                    vehicleModel.firstColor = vehicle.GetData(EntityData.VEHICLE_FIRST_COLOR);
+                    vehicleModel.secondColor = vehicle.GetData(EntityData.VEHICLE_SECOND_COLOR);
+                    vehicleModel.pearlescent = vehicle.GetData(EntityData.VEHICLE_PEARLESCENT_COLOR);
+                    vehicleModel.faction = vehicle.GetData(EntityData.VEHICLE_FACTION);
+                    vehicleModel.plate = vehicle.GetData(EntityData.VEHICLE_PLATE);
+                    vehicleModel.owner = vehicle.GetData(EntityData.VEHICLE_OWNER);
+                    vehicleModel.price = vehicle.GetData(EntityData.VEHICLE_PRICE);
+                    vehicleModel.parking = vehicle.GetData(EntityData.VEHICLE_PARKING);
+                    vehicleModel.parked = vehicle.GetData(EntityData.VEHICLE_PARKED);
+                    vehicleModel.gas = vehicle.GetData(EntityData.VEHICLE_GAS);
+                    vehicleModel.kms = vehicle.GetData(EntityData.VEHICLE_KMS);
+                }
+
+                // Add vehicle into the list
+                vehicleList.Add(vehicleModel);
+            }
+
+            Task.Factory.StartNew(() =>
+            {
+                // Save all the vehicles
+                Database.SaveAllVehicles(vehicleList);
+            });
+        }
+
         private bool IsVehicleTrunkInUse(Vehicle vehicle)
         {
             bool trunkUsed = false;
@@ -200,23 +245,25 @@ namespace WiredPlayers.vehicles
 
             // Get the needed data for recreating the vehicle
             VehicleModel vehicleModel = new VehicleModel();
-            vehicleModel.id = vehicle.GetData(EntityData.VEHICLE_ID);
-            vehicleModel.model = vehicle.GetData(EntityData.VEHICLE_MODEL);
-            vehicleModel.position = vehicle.GetData(EntityData.VEHICLE_POSITION);
-            vehicleModel.rotation = vehicle.GetData(EntityData.VEHICLE_ROTATION);
-            vehicleModel.dimension = vehicle.GetData(EntityData.VEHICLE_DIMENSION);
-            vehicleModel.colorType = vehicle.GetData(EntityData.VEHICLE_COLOR_TYPE);
-            vehicleModel.firstColor = vehicle.GetData(EntityData.VEHICLE_FIRST_COLOR);
-            vehicleModel.secondColor = vehicle.GetData(EntityData.VEHICLE_SECOND_COLOR);
-            vehicleModel.pearlescent = vehicle.GetData(EntityData.VEHICLE_PEARLESCENT_COLOR);
-            vehicleModel.faction = vehicle.GetData(EntityData.VEHICLE_FACTION);
-            vehicleModel.plate = vehicle.GetData(EntityData.VEHICLE_PLATE);
-            vehicleModel.owner = vehicle.GetData(EntityData.VEHICLE_OWNER);
-            vehicleModel.price = vehicle.GetData(EntityData.VEHICLE_PRICE);
-            vehicleModel.parking = vehicle.GetData(EntityData.VEHICLE_PARKING);
-            vehicleModel.parked = vehicle.GetData(EntityData.VEHICLE_PARKED);
-            vehicleModel.gas = vehicle.GetData(EntityData.VEHICLE_GAS);
-            vehicleModel.kms = vehicle.GetData(EntityData.VEHICLE_KMS);
+            {
+                vehicleModel.id = vehicle.GetData(EntityData.VEHICLE_ID);
+                vehicleModel.model = vehicle.GetData(EntityData.VEHICLE_MODEL);
+                vehicleModel.position = vehicle.GetData(EntityData.VEHICLE_POSITION);
+                vehicleModel.rotation = vehicle.GetData(EntityData.VEHICLE_ROTATION);
+                vehicleModel.dimension = vehicle.GetData(EntityData.VEHICLE_DIMENSION);
+                vehicleModel.colorType = vehicle.GetData(EntityData.VEHICLE_COLOR_TYPE);
+                vehicleModel.firstColor = vehicle.GetData(EntityData.VEHICLE_FIRST_COLOR);
+                vehicleModel.secondColor = vehicle.GetData(EntityData.VEHICLE_SECOND_COLOR);
+                vehicleModel.pearlescent = vehicle.GetData(EntityData.VEHICLE_PEARLESCENT_COLOR);
+                vehicleModel.faction = vehicle.GetData(EntityData.VEHICLE_FACTION);
+                vehicleModel.plate = vehicle.GetData(EntityData.VEHICLE_PLATE);
+                vehicleModel.owner = vehicle.GetData(EntityData.VEHICLE_OWNER);
+                vehicleModel.price = vehicle.GetData(EntityData.VEHICLE_PRICE);
+                vehicleModel.parking = vehicle.GetData(EntityData.VEHICLE_PARKING);
+                vehicleModel.parked = vehicle.GetData(EntityData.VEHICLE_PARKED);
+                vehicleModel.gas = vehicle.GetData(EntityData.VEHICLE_GAS);
+                vehicleModel.kms = vehicle.GetData(EntityData.VEHICLE_KMS);
+            }
 
             NAPI.Task.Run(() =>
             {
@@ -232,8 +279,11 @@ namespace WiredPlayers.vehicles
                 {
                     // Link the vehicle to the scrapyard
                     ParkedCarModel parkedCar = new ParkedCarModel();
-                    parkedCar.parkingId = scrapyard.id;
-                    parkedCar.vehicle = vehicleModel;
+                    {
+                        parkedCar.parkingId = scrapyard.id;
+                        parkedCar.vehicle = vehicleModel;
+                    }
+
                     Parking.parkedCars.Add(parkedCar);
                     vehicleModel.parking = scrapyard.id;
                 }

@@ -4,12 +4,12 @@ using WiredPlayers.globals;
 using WiredPlayers.database;
 using WiredPlayers.house;
 using WiredPlayers.business;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.information;
 using WiredPlayers.messages.success;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
 
 namespace WiredPlayers.factions
 {
@@ -199,10 +199,12 @@ namespace WiredPlayers.factions
 
                             // We create blood model
                             BloodModel bloodModel = new BloodModel();
-                            bloodModel.doctor = player.GetData(EntityData.PLAYER_SQL_ID);
-                            bloodModel.patient = target.GetData(EntityData.PLAYER_SQL_ID);
-                            bloodModel.type = string.Empty;
-                            bloodModel.used = true;
+                            {
+                                bloodModel.doctor = player.GetData(EntityData.PLAYER_SQL_ID);
+                                bloodModel.patient = target.GetData(EntityData.PLAYER_SQL_ID);
+                                bloodModel.type = string.Empty;
+                                bloodModel.used = true;
+                            }
 
                             Task.Factory.StartNew(() =>
                             {
@@ -214,7 +216,7 @@ namespace WiredPlayers.factions
                                 string playerMessage = string.Format(InfoRes.player_reanimated, target.Name);
                                 string targetMessage = string.Format(SuccRes.target_reanimated, player.Name);
                                 player.SendChatMessage(Constants.COLOR_ADMIN_INFO + playerMessage);
-                               target.SendChatMessage(Constants.COLOR_SUCCESS + targetMessage);
+                                target.SendChatMessage(Constants.COLOR_SUCCESS + targetMessage);
                             });
                         }
                         else
@@ -256,10 +258,12 @@ namespace WiredPlayers.factions
                     {
                         // We create the blood model
                         BloodModel blood = new BloodModel();
-                        blood.doctor = player.GetData(EntityData.PLAYER_SQL_ID);
-                        blood.patient = target.GetData(EntityData.PLAYER_SQL_ID);
-                        blood.type = string.Empty;
-                        blood.used = false;
+                        {
+                            blood.doctor = player.GetData(EntityData.PLAYER_SQL_ID);
+                            blood.patient = target.GetData(EntityData.PLAYER_SQL_ID);
+                            blood.type = string.Empty;
+                            blood.used = false;
+                        }
 
                         Task.Factory.StartNew(() =>
                         {

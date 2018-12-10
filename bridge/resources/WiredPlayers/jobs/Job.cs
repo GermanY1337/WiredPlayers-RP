@@ -1,26 +1,15 @@
 ﻿using GTANetworkAPI;
 using WiredPlayers.globals;
 using WiredPlayers.model;
-using System.Collections.Generic;
 using WiredPlayers.character;
 using WiredPlayers.messages.error;
-using WiredPlayers.messages.information;
-using WiredPlayers.messages.description;
 using WiredPlayers.messages.general;
+using WiredPlayers.messages.information;
 
 namespace WiredPlayers.jobs
 {
     public class Job : Script
     {
-        private List<JobPickModel> jobList = new List<JobPickModel>()
-        {
-            new JobPickModel(Constants.JOB_FASTFOOD, new Vector3(-1037.697f, -1397.189f, 5.553192f), DescRes.job_fastfoot),
-            new JobPickModel(Constants.JOB_HOOKER, new Vector3(136.58f, -1278.55f, 29.45f), DescRes.job_hooker),
-            new JobPickModel(Constants.JOB_GARBAGE, new Vector3(-322.088f, -1546.014f, 31.01991f), DescRes.job_garbage),
-            new JobPickModel(Constants.JOB_MECHANIC, new Vector3(486.5268f, -1314.683f, 29.22961f), DescRes.job_mechanic),
-            new JobPickModel(Constants.JOB_THIEF, new Vector3(-198.225f, -1699.521f, 33.46679f), DescRes.job_thief)
-        };
-
         public static int GetJobPoints(Client player, int job)
         {
             string jobPointsString = player.GetData(EntityData.PLAYER_JOB_POINTS);
@@ -54,7 +43,7 @@ namespace WiredPlayers.jobs
             fastFoodBlip.ShortRange = true;
             fastFoodBlip.Sprite = 501;
 
-            foreach (JobPickModel job in jobList)
+            foreach (JobPickModel job in Constants.JOB_PICK_LIST)
             {
                 NAPI.TextLabel.CreateTextLabel("/" + Commands.COM_JOB, job.position, 10.0f, 0.5f, 4, new Color(255, 255, 153), false, 0);
                 NAPI.TextLabel.CreateTextLabel(GenRes.job_help, new Vector3(job.position.X, job.position.Y, job.position.Z - 0.1f), 10.0f, 0.5f, 4, new Color(0, 0, 0), false, 0);
@@ -70,7 +59,7 @@ namespace WiredPlayers.jobs
             switch (action.ToLower())
             {
                 case Commands.ARG_INFO:
-                    foreach (JobPickModel jobPick in jobList)
+                    foreach (JobPickModel jobPick in Constants.JOB_PICK_LIST)
                     {
                         if (player.Position.DistanceTo(jobPick.position) < 1.5f)
                         {
@@ -90,7 +79,7 @@ namespace WiredPlayers.jobs
                     }
                     else
                     {
-                        foreach (JobPickModel jobPick in jobList)
+                        foreach (JobPickModel jobPick in Constants.JOB_PICK_LIST)
                         {
                             if (player.Position.DistanceTo(jobPick.position) < 1.5f)
                             {
@@ -178,6 +167,39 @@ namespace WiredPlayers.jobs
 
                 // Notification sent to the player
                 player.SendNotification(InfoRes.player_on_duty);
+            }
+        }
+
+        [Command(Commands.COM_ORDERS)]
+        public void OrdersCommand(Client player)
+        {
+            if (player.GetData(EntityData.PLAYER_KILLED) != 0)
+            {
+                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_is_dead);
+            }
+            else if (player.GetData(EntityData.PLAYER_ON_DUTY) == 0)
+            {
+                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_not_on_duty);
+            }
+            else if (player.HasData(EntityData.PLAYER_DELIVER_ORDER) == true)
+            {
+                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.order_delivering);
+            }
+            else
+            {
+                if (player.GetData(EntityData.PLAYER_JOB) == Constants.JOB_FASTFOOD)
+                {
+                    // Get the fastfood deliverer orders
+                    FastFood.CheckFastfoodOrders(player);
+                    return;
+                }
+
+                if (player.GetData(EntityData.PLAYER_JOB) == Constants.JOB_TRUCKER)
+                {
+                    // Get the trucker orders
+                    Trucker.CheckTruckerOrders(player);
+                    return;
+                }
             }
         }
     }

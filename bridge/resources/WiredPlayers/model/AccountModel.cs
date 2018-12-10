@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WiredPlayers.model
+﻿namespace WiredPlayers.model
 {
     public class AccountModel
     {

@@ -2,13 +2,13 @@
 using WiredPlayers.database;
 using WiredPlayers.globals;
 using WiredPlayers.model;
+using WiredPlayers.messages.administration;
+using WiredPlayers.messages.error;
+using WiredPlayers.messages.information;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-using WiredPlayers.messages.administration;
-using WiredPlayers.messages.error;
-using WiredPlayers.messages.information;
 
 namespace WiredPlayers.weapons
 {
@@ -37,12 +37,14 @@ namespace WiredPlayers.weapons
         {
             // Create weapon model
             ItemModel weaponModel = new ItemModel();
-            weaponModel.hash = weapon.ToString();
-            weaponModel.amount = bullets;
-            weaponModel.ownerEntity = Constants.ITEM_ENTITY_WHEEL;
-            weaponModel.ownerIdentifier = player.GetData(EntityData.PLAYER_SQL_ID);
-            weaponModel.position = new Vector3(0.0f, 0.0f, 0.0f);
-            weaponModel.dimension = 0;
+            {
+                weaponModel.hash = weapon.ToString();
+                weaponModel.amount = bullets;
+                weaponModel.ownerEntity = Constants.ITEM_ENTITY_WHEEL;
+                weaponModel.ownerIdentifier = player.GetData(EntityData.PLAYER_SQL_ID);
+                weaponModel.position = new Vector3(0.0f, 0.0f, 0.0f);
+                weaponModel.dimension = 0;
+            }
 
             Task.Factory.StartNew(() =>
             {
@@ -233,11 +235,13 @@ namespace WiredPlayers.weapons
 
                 // We create the crate
                 WeaponCrateModel weaponCrate = new WeaponCrateModel();
-                weaponCrate.contentItem = crateContent.item;
-                weaponCrate.contentAmount = crateContent.amount;
-                weaponCrate.position = spawn;
-                weaponCrate.carriedEntity = string.Empty;
-                weaponCrate.crateObject = NAPI.Object.CreateObject(481432069, spawn, new Vector3(0.0f, 0.0f, 0.0f), 0);
+                {
+                    weaponCrate.contentItem = crateContent.item;
+                    weaponCrate.contentAmount = crateContent.amount;
+                    weaponCrate.position = spawn;
+                    weaponCrate.carriedEntity = string.Empty;
+                    weaponCrate.crateObject = NAPI.Object.CreateObject(481432069, spawn, new Vector3(0.0f, 0.0f, 0.0f), 0);
+                }
                 
                 weaponCrateList.Add(weaponCrate);                
                 currentSpawn++;
@@ -284,10 +288,12 @@ namespace WiredPlayers.weapons
                 {
                     // Unpack the weapon in the crate
                     ItemModel item = new ItemModel();
-                    item.hash = weaponCrate.contentItem;
-                    item.amount = weaponCrate.contentAmount;
-                    item.ownerEntity = Constants.ITEM_ENTITY_VEHICLE;
-                    item.ownerIdentifier = vehicleId;
+                    {
+                        item.hash = weaponCrate.contentItem;
+                        item.amount = weaponCrate.contentAmount;
+                        item.ownerEntity = Constants.ITEM_ENTITY_VEHICLE;
+                        item.ownerIdentifier = vehicleId;
+                    }
 
                     // Delete the crate
                     weaponCrate.carriedIdentifier = 0;

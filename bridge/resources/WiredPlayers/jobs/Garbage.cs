@@ -1,19 +1,25 @@
 ﻿using GTANetworkAPI;
 using WiredPlayers.globals;
 using WiredPlayers.model;
+using WiredPlayers.messages.error;
+using WiredPlayers.messages.general;
+using WiredPlayers.messages.information;
 using System.Collections.Generic;
 using System.Threading;
 using System.Linq;
 using System;
-using WiredPlayers.messages.error;
-using WiredPlayers.messages.general;
-using WiredPlayers.messages.information;
 
 namespace WiredPlayers.jobs
 {
     public class Garbage : Script
     {
-        private static Dictionary<int, Timer> garbageTimerList = new Dictionary<int, Timer>();
+        private static Dictionary<int, Timer> garbageTimerList;
+
+        public Garbage()
+        {
+            // Initialize the variables
+            garbageTimerList = new Dictionary<int, Timer>();
+        }
 
         public static void OnPlayerDisconnected(Client player, DisconnectionType type, string reason)
         {

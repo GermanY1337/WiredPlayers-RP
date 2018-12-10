@@ -1,18 +1,24 @@
 ﻿using GTANetworkAPI;
 using WiredPlayers.globals;
 using WiredPlayers.model;
+using WiredPlayers.messages.error;
+using WiredPlayers.messages.information;
 using System.Collections.Generic;
 using System.Threading;
 using System.Linq;
 using System;
-using WiredPlayers.messages.error;
-using WiredPlayers.messages.information;
 
 namespace WiredPlayers.jobs
 {
     public class FastFood : Script
     {
-        private static Dictionary<int, Timer> fastFoodTimerList = new Dictionary<int, Timer>();
+        private static Dictionary<int, Timer> fastFoodTimerList;
+
+        public FastFood()
+        {
+            // Initialize the class data
+            fastFoodTimerList = new Dictionary<int, Timer>();
+        }
 
         public static void OnPlayerDisconnected(Client player, DisconnectionType type, string reason)
         {
@@ -24,11 +30,33 @@ namespace WiredPlayers.jobs
             }
         }
 
+        public static void CheckFastfoodOrders(Client player)
+        {
+            // Get the deliverable orders
+            List<FastfoodOrderModel> fastFoodOrders = Globals.fastFoodOrderList.Where(o => !o.taken).ToList();
+
+            if (fastFoodOrders.Count == 0)
+            {
+                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.order_none);
+                return;
+            }
+
+            List<float> distancesList = new List<float>();
+
+            foreach (FastfoodOrderModel order in fastFoodOrders)
+            {
+                float distance = player.Position.DistanceTo(order.position);
+                distancesList.Add(distance);
+            }
+
+            player.TriggerEvent("showFastfoodOrders", NAPI.Util.ToJson(fastFoodOrders), NAPI.Util.ToJson(distancesList));
+        }
+
         private int GetFastFoodOrderAmount(Client player)
         {
             int amount = 0;
             int orderId = player.GetData(EntityData.PLAYER_DELIVER_ORDER);
-            foreach (FastFoodOrderModel order in Globals.fastFoodOrderList)
+            foreach (FastfoodOrderModel order in Globals.fastFoodOrderList)
             {
                 if (order.id == orderId)
                 {
@@ -41,11 +69,11 @@ namespace WiredPlayers.jobs
             return amount;
         }
 
-        private FastFoodOrderModel GetFastfoodOrderFromId(int orderId)
+        private FastfoodOrderModel GetFastfoodOrderFromId(int orderId)
         {
-            FastFoodOrderModel order = null;
+            FastfoodOrderModel order = null;
 
-            foreach (FastFoodOrderModel orderModel in Globals.fastFoodOrderList)
+            foreach (FastfoodOrderModel orderModel in Globals.fastFoodOrderList)
             {
                 if (orderModel.id == orderId)
                 {
@@ -118,7 +146,7 @@ namespace WiredPlayers.jobs
                     if (player.HasData(EntityData.PLAYER_JOB_VEHICLE) == false)
                     {
                         int orderId = player.GetData(EntityData.PLAYER_DELIVER_ORDER);
-                        FastFoodOrderModel order = GetFastfoodOrderFromId(orderId);
+                        FastfoodOrderModel order = GetFastfoodOrderFromId(orderId);
                         Checkpoint playerFastFoodCheckpoint = NAPI.Checkpoint.CreateCheckpoint(4, order.position, new Vector3(0.0f, 0.0f, 0.0f), 2.5f, new Color(198, 40, 40, 200));
 
                         player.SetData(EntityData.PLAYER_JOB_CHECKPOINT, playerFastFoodCheckpoint);
@@ -219,7 +247,7 @@ namespace WiredPlayers.jobs
         [RemoteEvent("takeFastFoodOrder")]
         public void TakeFastFoodOrderEvent(Client player, int orderId)
         {
-            foreach (FastFoodOrderModel order in Globals.fastFoodOrderList)
+            foreach (FastfoodOrderModel order in Globals.fastFoodOrderList)
             {
                 if (order.id == orderId)
                 {
@@ -250,50 +278,6 @@ namespace WiredPlayers.jobs
 
             // Order has been deleted
             player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.order_timeout);
-        }
-
-        [Command(Commands.COM_ORDERS)]
-        public void OrdersCommand(Client player)
-        {
-            if (player.GetData(EntityData.PLAYER_KILLED) != 0)
-            {
-                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_is_dead);
-            }
-            else if (player.GetData(EntityData.PLAYER_ON_DUTY) == 0)
-            {
-                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_not_on_duty);
-            }
-            else if (player.GetData(EntityData.PLAYER_JOB) != Constants.JOB_FASTFOOD)
-            {
-                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_fastfood);
-            }
-            else if (player.HasData(EntityData.PLAYER_DELIVER_ORDER) == true)
-            {
-                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.order_delivering);
-            }
-            else
-            {
-                // Get the deliverable orders
-                List<FastFoodOrderModel> fastFoodOrders = Globals.fastFoodOrderList.Where(o => !o.taken).ToList();
-
-                if (fastFoodOrders.Count > 0)
-                {
-
-                    List<float> distancesList = new List<float>();
-
-                    foreach (FastFoodOrderModel order in fastFoodOrders)
-                    {
-                        float distance = player.Position.DistanceTo(order.position);
-                        distancesList.Add(distance);
-                    }
-
-                    player.TriggerEvent("showFastfoodOrders", NAPI.Util.ToJson(fastFoodOrders), NAPI.Util.ToJson(distancesList));
-                }
-                else
-                {
-                    player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.order_none);
-                }
-            }
         }
     }
 }

@@ -8,15 +8,16 @@ using WiredPlayers.parking;
 using WiredPlayers.house;
 using WiredPlayers.weapons;
 using WiredPlayers.factions;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using System;
+using WiredPlayers.character;
 using WiredPlayers.messages.information;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.general;
 using WiredPlayers.messages.administration;
 using WiredPlayers.messages.success;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace WiredPlayers.admin
 {
@@ -981,16 +982,18 @@ namespace WiredPlayers.admin
                         {
                             string houseLabel = string.Empty;
                             house = new HouseModel();
-                            house.ipl = Constants.HOUSE_IPL_LIST[0].ipl;
-                            house.name = GenRes.house;
-                            house.position = player.Position;
-                            house.dimension = player.Dimension;
-                            house.price = 10000;
-                            house.owner = string.Empty;
-                            house.status = Constants.HOUSE_STATE_BUYABLE;
-                            house.tenants = 2;
-                            house.rental = 0;
-                            house.locked = true;
+                            {
+                                house.ipl = Constants.HOUSE_IPL_LIST[0].ipl;
+                                house.name = GenRes.house;
+                                house.position = player.Position;
+                                house.dimension = player.Dimension;
+                                house.price = 10000;
+                                house.owner = string.Empty;
+                                house.status = Constants.HOUSE_STATE_BUYABLE;
+                                house.tenants = 2;
+                                house.rental = 0;
+                                house.locked = true;
+                            }                            
 
                             Task.Factory.StartNew(() =>
                             {
@@ -1272,8 +1275,10 @@ namespace WiredPlayers.admin
                                     else
                                     {
                                         parking = new ParkingModel();
-                                        parking.type = type;
-                                        parking.position = player.Position;
+                                        {
+                                            parking.type = type;
+                                            parking.position = player.Position;
+                                        }
 
                                         Task.Factory.StartNew(() =>
                                         {
@@ -1644,48 +1649,11 @@ namespace WiredPlayers.admin
                 player.SendChatMessage(Constants.COLOR_ADMIN_INFO + message);
 
                 // Saving all connected players
-                foreach (Client target in NAPI.Pools.GetAllPlayers())
+                List<Client> connectedPlayers = NAPI.Pools.GetAllPlayers().Where(pl => pl.HasData(EntityData.PLAYER_PLAYING)).ToList();
+                foreach (Client target in connectedPlayers)
                 {
-                    if (target.HasData(EntityData.PLAYER_PLAYING) == true)
-                    {
-                        PlayerModel character = new PlayerModel();
-
-                        // Non shared data
-                        character.position = target.Position;
-                        character.rotation = target.Rotation;
-                        character.health = target.Health;
-                        character.armor = target.Armor;
-                        character.id = target.GetData(EntityData.PLAYER_SQL_ID);
-                        character.phone = target.GetData(EntityData.PLAYER_PHONE);
-                        character.radio = target.GetData(EntityData.PLAYER_RADIO);
-                        character.killed = target.GetData(EntityData.PLAYER_KILLED);
-                        character.faction = target.GetData(EntityData.PLAYER_FACTION);
-                        character.job = target.GetData(EntityData.PLAYER_JOB);
-                        character.rank = target.GetData(EntityData.PLAYER_RANK);
-                        character.duty = target.GetData(EntityData.PLAYER_ON_DUTY);
-                        character.carKeys = target.GetData(EntityData.PLAYER_VEHICLE_KEYS);
-                        character.documentation = target.GetData(EntityData.PLAYER_DOCUMENTATION);
-                        character.licenses = target.GetData(EntityData.PLAYER_LICENSES);
-                        character.insurance = target.GetData(EntityData.PLAYER_MEDICAL_INSURANCE);
-                        character.weaponLicense = target.GetData(EntityData.PLAYER_WEAPON_LICENSE);
-                        character.houseRent = target.GetData(EntityData.PLAYER_RENT_HOUSE);
-                        character.houseEntered = target.GetData(EntityData.PLAYER_HOUSE_ENTERED);
-                        character.businessEntered = target.GetData(EntityData.PLAYER_BUSINESS_ENTERED);
-                        character.employeeCooldown = target.GetData(EntityData.PLAYER_EMPLOYEE_COOLDOWN);
-                        character.jobCooldown = target.GetData(EntityData.PLAYER_JOB_COOLDOWN);
-                        character.jobDeliver = target.GetData(EntityData.PLAYER_JOB_DELIVER);
-                        character.jobPoints = target.GetData(EntityData.PLAYER_JOB_POINTS);
-                        character.rolePoints = target.GetData(EntityData.PLAYER_ROLE_POINTS);
-                        character.played = target.GetData(EntityData.PLAYER_PLAYED);
-                        character.jailed = target.GetData(EntityData.PLAYER_JAIL_TYPE) + "," + target.GetData(EntityData.PLAYER_JAILED);
-
-                        // Shared data
-                        character.money = target.GetSharedData(EntityData.PLAYER_MONEY);
-                        character.bank = target.GetSharedData(EntityData.PLAYER_BANK);
-
-                        // Saving the character information into the database
-                        Database.SaveCharacterInformation(character);
-                    }
+                    // Save the player into the database
+                    Character.SaveCharacterData(target);
                 }
 
                 // All the characters saved
@@ -1699,25 +1667,26 @@ namespace WiredPlayers.admin
                     if (vehicle.GetData(EntityData.VEHICLE_FACTION) == 0 && vehicle.GetData(EntityData.VEHICLE_PARKING) == 0)
                     {
                         VehicleModel vehicleModel = new VehicleModel();
-
-                        // Getting the needed values to be stored
-                        vehicleModel.id = vehicle.GetData(EntityData.VEHICLE_ID);
-                        vehicleModel.model = vehicle.GetData(EntityData.VEHICLE_MODEL);
-                        vehicleModel.position = vehicle.Position;
-                        vehicleModel.rotation = vehicle.Rotation;
-                        vehicleModel.dimension = vehicle.Dimension;
-                        vehicleModel.colorType = vehicle.GetData(EntityData.VEHICLE_COLOR_TYPE);
-                        vehicleModel.firstColor = vehicle.GetData(EntityData.VEHICLE_FIRST_COLOR);
-                        vehicleModel.secondColor = vehicle.GetData(EntityData.VEHICLE_SECOND_COLOR);
-                        vehicleModel.pearlescent = vehicle.GetData(EntityData.VEHICLE_PEARLESCENT_COLOR);
-                        vehicleModel.faction = vehicle.GetData(EntityData.VEHICLE_FACTION);
-                        vehicleModel.plate = vehicle.GetData(EntityData.VEHICLE_PLATE);
-                        vehicleModel.owner = vehicle.GetData(EntityData.VEHICLE_OWNER);
-                        vehicleModel.price = vehicle.GetData(EntityData.VEHICLE_PRICE);
-                        vehicleModel.parking = vehicle.GetData(EntityData.VEHICLE_PARKING);
-                        vehicleModel.parked = vehicle.GetData(EntityData.VEHICLE_PARKED);
-                        vehicleModel.gas = vehicle.GetData(EntityData.VEHICLE_GAS);
-                        vehicleModel.kms = vehicle.GetData(EntityData.VEHICLE_KMS);
+                        {
+                            // Getting the needed values to be stored
+                            vehicleModel.id = vehicle.GetData(EntityData.VEHICLE_ID);
+                            vehicleModel.model = vehicle.GetData(EntityData.VEHICLE_MODEL);
+                            vehicleModel.position = vehicle.Position;
+                            vehicleModel.rotation = vehicle.Rotation;
+                            vehicleModel.dimension = vehicle.Dimension;
+                            vehicleModel.colorType = vehicle.GetData(EntityData.VEHICLE_COLOR_TYPE);
+                            vehicleModel.firstColor = vehicle.GetData(EntityData.VEHICLE_FIRST_COLOR);
+                            vehicleModel.secondColor = vehicle.GetData(EntityData.VEHICLE_SECOND_COLOR);
+                            vehicleModel.pearlescent = vehicle.GetData(EntityData.VEHICLE_PEARLESCENT_COLOR);
+                            vehicleModel.faction = vehicle.GetData(EntityData.VEHICLE_FACTION);
+                            vehicleModel.plate = vehicle.GetData(EntityData.VEHICLE_PLATE);
+                            vehicleModel.owner = vehicle.GetData(EntityData.VEHICLE_OWNER);
+                            vehicleModel.price = vehicle.GetData(EntityData.VEHICLE_PRICE);
+                            vehicleModel.parking = vehicle.GetData(EntityData.VEHICLE_PARKING);
+                            vehicleModel.parked = vehicle.GetData(EntityData.VEHICLE_PARKED);
+                            vehicleModel.gas = vehicle.GetData(EntityData.VEHICLE_GAS);
+                            vehicleModel.kms = vehicle.GetData(EntityData.VEHICLE_KMS);
+                        }
 
                         // We add the vehicle to the list
                         vehicleList.Add(vehicleModel);

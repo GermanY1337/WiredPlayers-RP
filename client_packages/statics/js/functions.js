@@ -14,11 +14,11 @@ $(document).ready(function() {
 		$(document).localize();
 		messagesLoaded = true;
 	});
-    /*
+    
 	$('#colorpicker').farbtastic(function (color) {
 		var colorMain = $('#color-main').prop('checked');
 		mp.trigger('previewVehicleChangeColor', color, colorMain);
-	});*/
+	});
 });
 
 function loginAccount() {

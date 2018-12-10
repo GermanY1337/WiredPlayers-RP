@@ -2,9 +2,9 @@
 using WiredPlayers.database;
 using WiredPlayers.globals;
 using WiredPlayers.model;
+using WiredPlayers.messages.error;
 using System.Collections.Generic;
 using System;
-using WiredPlayers.messages.error;
 
 namespace WiredPlayers.house
 {
@@ -62,11 +62,14 @@ namespace WiredPlayers.house
                     {
                         case Commands.ARG_PLACE:
                             FurnitureModel furniture = new FurnitureModel();
-                            furniture.hash = NAPI.Util.GetHashKey("bkr_prop_weed_pallet");
-                            furniture.house = Convert.ToUInt32(houseId);
-                            furniture.position = player.Position;
-                            furniture.rotation = player.Rotation;
-                            furniture.handle = NAPI.Object.CreateObject(furniture.hash, furniture.position, furniture.rotation, (byte)furniture.house);
+                            {
+                                furniture.hash = NAPI.Util.GetHashKey("bkr_prop_weed_pallet");
+                                furniture.house = Convert.ToUInt32(houseId);
+                                furniture.position = player.Position;
+                                furniture.rotation = player.Rotation;
+                                furniture.handle = NAPI.Object.CreateObject(furniture.hash, furniture.position, furniture.rotation, (byte)furniture.house);
+                            }
+
                             furnitureList.Add(furniture);
                             break;
                         case Commands.ARG_MOVE:

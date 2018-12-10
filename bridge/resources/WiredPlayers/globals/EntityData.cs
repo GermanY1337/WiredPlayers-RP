@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace WiredPlayers.globals
+﻿namespace WiredPlayers.globals
 {
     public class EntityData
     {
-        // Datos del jugador
+        // Player's data
         public const string PLAYER_SQL_ID = "PLAYER_SQL_ID";
         public const string PLAYER_NAME = "PLAYER_NAME";
         public const string PLAYER_HEALTH = "PLAYER_HEALTH";
@@ -109,7 +107,7 @@ namespace WiredPlayers.globals
         public const string PLAYER_CREATOR_AREA = "PLAYER_CREATOR_AREA";
         public const string PLAYER_TAXI_PATH = "PLAYER_TAXI_PATH";
 
-        // Datos del vehículo
+        // Vehicle's data
         public const string VEHICLE_ID = "VEHICLE_ID";
         public const string VEHICLE_MODEL = "VEHICLE_MODEL";
         public const string VEHICLE_POSITION = "VEHICLE_POSITION";
@@ -131,10 +129,7 @@ namespace WiredPlayers.globals
         public const string VEHICLE_REFUELING = "VEHICLE_REFUELING";
         public const string VEHICLE_WEAPON_UNPACKING = "VEHICLE_WEAPON_UNPACKING";
 
-        // Datos de las formas de área
-        public const string SHAPE_CAPTION = "SHAPE_CAPTION";
-
-        // Datos genéricos
+        // Generic data
         public const string SERVER_TIME = "SERVER_TIME";
         public const string JOB_OFFER_PRICE = "JOB_OFFER_PRICE";
         public const string JOB_OFFER_PRODUCTS = "JOB_OFFER_PRODUCTS";

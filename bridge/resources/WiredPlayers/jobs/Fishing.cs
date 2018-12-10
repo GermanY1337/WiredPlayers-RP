@@ -2,18 +2,24 @@
 using WiredPlayers.globals;
 using WiredPlayers.model;
 using WiredPlayers.database;
+using WiredPlayers.messages.information;
+using WiredPlayers.messages.error;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-using WiredPlayers.messages.information;
-using WiredPlayers.messages.error;
 
 namespace WiredPlayers.jobs
 {
     public class Fishing : Script
     {
-        private static Dictionary<int, Timer> fishingTimerList = new Dictionary<int, Timer>();
+        private static Dictionary<int, Timer> fishingTimerList;
+
+        public Fishing()
+        {
+            // Initialize the variables
+            fishingTimerList = new Dictionary<int, Timer>();
+        }
 
         public static void OnPlayerDisconnected(Client player, DisconnectionType type, string reason)
         {
@@ -123,12 +129,14 @@ namespace WiredPlayers.jobs
                 if (fishItem == null)
                 {
                     fishItem = new ItemModel();
-                    fishItem.amount = fishWeight;
-                    fishItem.hash = Constants.ITEM_HASH_FISH;
-                    fishItem.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
-                    fishItem.ownerIdentifier = playerDatabaseId;
-                    fishItem.position = new Vector3(0.0f, 0.0f, 0.0f);
-                    fishItem.dimension = 0;
+                    {
+                        fishItem.amount = fishWeight;
+                        fishItem.hash = Constants.ITEM_HASH_FISH;
+                        fishItem.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
+                        fishItem.ownerIdentifier = playerDatabaseId;
+                        fishItem.position = new Vector3(0.0f, 0.0f, 0.0f);
+                        fishItem.dimension = 0;
+                    }
 
                     Task.Factory.StartNew(() =>
                     {

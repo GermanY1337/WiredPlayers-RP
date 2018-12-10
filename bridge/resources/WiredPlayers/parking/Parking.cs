@@ -4,13 +4,13 @@ using WiredPlayers.database;
 using WiredPlayers.globals;
 using WiredPlayers.vehicles;
 using WiredPlayers.house;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using System.Linq;
 using WiredPlayers.messages.general;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.information;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace WiredPlayers.parking
 {
@@ -109,31 +109,35 @@ namespace WiredPlayers.parking
         {
             // Get vehicle data
             VehicleModel vehicleModel = new VehicleModel();
-            vehicleModel.rotation = player.Vehicle.Rotation;
-            vehicleModel.id = player.Vehicle.GetData(EntityData.VEHICLE_ID);
-            vehicleModel.model = player.Vehicle.GetData(EntityData.VEHICLE_MODEL);
-            vehicleModel.colorType = player.Vehicle.GetData(EntityData.VEHICLE_COLOR_TYPE);
-            vehicleModel.firstColor = player.Vehicle.GetData(EntityData.VEHICLE_FIRST_COLOR);
-            vehicleModel.secondColor = player.Vehicle.GetData(EntityData.VEHICLE_SECOND_COLOR);
-            vehicleModel.pearlescent = player.Vehicle.GetData(EntityData.VEHICLE_PEARLESCENT_COLOR);
-            vehicleModel.faction = player.Vehicle.GetData(EntityData.VEHICLE_FACTION);
-            vehicleModel.plate = player.Vehicle.GetData(EntityData.VEHICLE_PLATE);
-            vehicleModel.owner = player.Vehicle.GetData(EntityData.VEHICLE_OWNER);
-            vehicleModel.price = player.Vehicle.GetData(EntityData.VEHICLE_PRICE);
-            vehicleModel.gas = player.Vehicle.GetData(EntityData.VEHICLE_GAS);
-            vehicleModel.kms = player.Vehicle.GetData(EntityData.VEHICLE_KMS);
+            {
+                vehicleModel.rotation = player.Vehicle.Rotation;
+                vehicleModel.id = player.Vehicle.GetData(EntityData.VEHICLE_ID);
+                vehicleModel.model = player.Vehicle.GetData(EntityData.VEHICLE_MODEL);
+                vehicleModel.colorType = player.Vehicle.GetData(EntityData.VEHICLE_COLOR_TYPE);
+                vehicleModel.firstColor = player.Vehicle.GetData(EntityData.VEHICLE_FIRST_COLOR);
+                vehicleModel.secondColor = player.Vehicle.GetData(EntityData.VEHICLE_SECOND_COLOR);
+                vehicleModel.pearlescent = player.Vehicle.GetData(EntityData.VEHICLE_PEARLESCENT_COLOR);
+                vehicleModel.faction = player.Vehicle.GetData(EntityData.VEHICLE_FACTION);
+                vehicleModel.plate = player.Vehicle.GetData(EntityData.VEHICLE_PLATE);
+                vehicleModel.owner = player.Vehicle.GetData(EntityData.VEHICLE_OWNER);
+                vehicleModel.price = player.Vehicle.GetData(EntityData.VEHICLE_PRICE);
+                vehicleModel.gas = player.Vehicle.GetData(EntityData.VEHICLE_GAS);
+                vehicleModel.kms = player.Vehicle.GetData(EntityData.VEHICLE_KMS);
 
-            // Update parking values
-            vehicleModel.position = parking.position;
-            vehicleModel.dimension = Convert.ToUInt32(parking.id);
-            vehicleModel.parking = parking.id;
-            vehicleModel.parked = 0;
+                // Update parking values
+                vehicleModel.position = parking.position;
+                vehicleModel.dimension = Convert.ToUInt32(parking.id);
+                vehicleModel.parking = parking.id;
+                vehicleModel.parked = 0;
+            }
 
             // Link vehicle to the parking
             ParkedCarModel parkedCarModel = new ParkedCarModel();
-            parkedCarModel.vehicle = vehicleModel;
-            parkedCarModel.parkingId = parking.id;
-            parkedCars.Add(parkedCarModel);
+            {
+                parkedCarModel.vehicle = vehicleModel;
+                parkedCarModel.parkingId = parking.id;
+                parkedCars.Add(parkedCarModel);
+            }
 
             // Save the vehicle and delete it from the game
             player.WarpOutOfVehicle();
