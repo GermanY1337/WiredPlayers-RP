@@ -1,3 +1,9 @@
+bla bla bla
+
+jo jo jo 
+
+her mit dem quark
+
 # WiredPlayers RolePlay GameMode
 WiredPlayers is a RolePlay project made for RAGE Multiplayer, it uses C# as main language for both server and client. I started with it back in March 2017 and I'm still upgrading its functionality with suggestions received from people using this gamemode.
 
