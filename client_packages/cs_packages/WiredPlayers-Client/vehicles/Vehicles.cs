@@ -51,16 +51,16 @@ namespace WiredPlayers_Client.vehicles
 
             // Get the total gas and kms
             string totalKms = Math.Round((double)(kms + distance) / 10) / 100 + " km";
-            string totalGas = Math.Round((double)(gas - consumed) * 100) / 100 + " litros";
+            string totalGas = Math.Round((double)(gas - consumed) * 100) / 100 + " Liter";
 
             // Draw the speedometer
-            RAGE.Game.UIText.Draw("Combustible: ", new Point(1025, 560), 0.5f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
+            RAGE.Game.UIText.Draw("Kraftstoff: ", new Point(1025, 560), 0.5f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
             RAGE.Game.UIText.Draw(totalGas, new Point(1175, 560), 0.5f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
-            RAGE.Game.UIText.Draw("Kilometraje: ", new Point(1025, 590), 0.5f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
+            RAGE.Game.UIText.Draw("Kilometerstand: ", new Point(1025, 590), 0.5f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
             RAGE.Game.UIText.Draw(totalKms, new Point(1175, 590), 0.5f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
-            RAGE.Game.UIText.Draw("Kmph: ", new Point(1025, 650), 0.5f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
+            RAGE.Game.UIText.Draw("km/h: ", new Point(1025, 650), 0.5f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
             RAGE.Game.UIText.Draw(speed.ToString(), new Point(1175, 650), 0.75f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
-            RAGE.Game.UIText.Draw("Integridad: ", new Point(1025, 620), 0.5f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
+            RAGE.Game.UIText.Draw("Zustand: ", new Point(1025, 620), 0.5f, Color.White, RAGE.Game.Font.ChaletComprimeCologne, false);
 
             if (healthPercent < 30)
             {
