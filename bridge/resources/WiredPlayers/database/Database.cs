@@ -39,7 +39,7 @@ namespace WiredPlayers.database
             string user = NAPI.Resource.GetSetting<string>(this, "username");
             string pass = NAPI.Resource.GetSetting<string>(this, "password");
             string db = NAPI.Resource.GetSetting<string>(this, "database");
-            connectionString = "SERVER=" + host + "; DATABASE=" + db + "; UID=" + user + "; PASSWORD=" + pass + "; SSLMODE=required;";
+            connectionString = "SERVER=" + host + "; DATABASE=" + db + "; UID=" + user + "; PASSWORD=" + pass + ";" + "SSLMODE=none;";
 
             // Business loading
             Business businessClass = new Business();

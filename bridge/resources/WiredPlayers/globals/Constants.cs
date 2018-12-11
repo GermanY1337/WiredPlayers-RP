@@ -140,6 +140,7 @@ namespace WiredPlayers.globals
         public const int VEHICLE_MOD_HORN = 14;
         public const int VEHICLE_MOD_SUSPENSION = 15;
         public const int VEHICLE_MOD_ARMOR = 16;
+        public const int VEHICLE_MOD_TURBO = 18;
         public const int VEHICLE_MOD_XENON = 22;
         public const int VEHICLE_MOD_FRONT_WHEELS = 23;
         public const int VEHICLE_MOD_BACK_WHEELS = 24;
@@ -3144,7 +3145,10 @@ namespace WiredPlayers.globals
             new TunningPriceModel(VEHICLE_MOD_ORNAMIENTS, 150),
             new TunningPriceModel(VEHICLE_MOD_STEERING_WHEEL, 100),
             new TunningPriceModel(VEHICLE_MOD_SHIFTER_LEAVERS, 100),
-            new TunningPriceModel(VEHICLE_MOD_HYDRAULICS, 1200)
+            new TunningPriceModel(VEHICLE_MOD_HYDRAULICS, 1200),
+            new TunningPriceModel(VEHICLE_MOD_ENGINE, 200),
+            new TunningPriceModel(VEHICLE_MOD_BRAKES, 200),
+            new TunningPriceModel(VEHICLE_MOD_TURBO, 200)
         };
 
         // Pawn shops

@@ -45,14 +45,15 @@ namespace WiredPlayers_Client.globals
 
         public static readonly List<CarPiece> CAR_PIECE_LIST = new List<CarPiece>()
         {
-            new CarPiece(0, "mechanic.spoiler", 250), new CarPiece(1, "mechanic.front-bumper", 250),new CarPiece(2, "mechanic.rear-bumper", 250),
-            new CarPiece(3, "mechanic.side-skirt", 250), new CarPiece(4, "mechanic.exhaust", 100), new CarPiece(5, "mechanic.frame", 500),
-            new CarPiece(6, "mechanic.grille", 200), new CarPiece(7, "mechanic.hood", 300), new CarPiece(8, "mechanic.fender", 100),
-            new CarPiece(9, "mechanic.right-fender", 100), new CarPiece(10, "mechanic.roof", 400), new CarPiece(14, "mechanic.horn", 100),
-            new CarPiece(15, "mechanic.suspension", 900), new CarPiece(22, "mechanic.xenon", 150), new CarPiece(23, "mechanic.front-wheels", 100),
-            new CarPiece(24, "mechanic.back-wheels", 100), new CarPiece(25, "mechanic.plaque", 100), new CarPiece(27, "mechanic.trim-design", 800),
-            new CarPiece(28, "mechanic.ornaments", 150), new CarPiece(33, "mechanic.steering-wheel", 100), new CarPiece(34, "mechanic.shift-lever", 100),
-            new CarPiece(38, "mechanic.hydraulics", 1200), new CarPiece(69, "mechanic.window-tint", 200)
+            new CarPiece(0, "Spoiler", 250), new CarPiece(1, "Front-Bumper", 250),new CarPiece(2, "Rear-Bumper", 250),
+            new CarPiece(3, "Side-Skirt", 250), new CarPiece(4, "Exhaust", 100), new CarPiece(5, "Frame", 500),
+            new CarPiece(6, "Grille", 200), new CarPiece(7, "Hood", 300), new CarPiece(8, "Fender", 100),
+            new CarPiece(9, "Right-Fender", 100), new CarPiece(10, "Roof", 400), new CarPiece(14, "Horn", 100),
+            new CarPiece(15, "Suspension", 900), new CarPiece(22, "Xenon", 150), new CarPiece(23, "Front-Wheels", 100),
+            new CarPiece(24, "Back-Wheels", 100), new CarPiece(25, "Plaque", 100), new CarPiece(27, "Trim-Design", 800),
+            new CarPiece(28, "Ornaments", 150), new CarPiece(33, "Steering-Wheel", 100), new CarPiece(34, "Shift-Lever", 100),
+            new CarPiece(38, "Hydraulics", 1200), new CarPiece(69, "Window-Tint", 200), new CarPiece(11, "Motor", 200),
+            new CarPiece(12, "Brakes", 200), new CarPiece(18, "Turbo", 200)
         };
     }
 }
