@@ -351,4 +351,10 @@
   <data name="hooker_f" xml:space="preserve">
     <value>Prostitute</value>
   </data>
+  <data name="trucker_f" xml:space="preserve">
+    <value>Trucker</value>
+  </data>
+  <data name="trucker_m" xml:space="preserve">
+    <value>Trucker</value>
+  </data>
 </root>

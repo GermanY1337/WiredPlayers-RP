@@ -188,6 +188,7 @@
         public const string COM_DOOR = "door";
         public const string COM_COMPLEMENT = "complement";
         public const string COM_PLAYER = "player";
+        public const string COM_DELIVER = "deliver";
 
         // Command arguments
         public const string ARG_INFO = "info";

@@ -855,4 +855,7 @@
   <data name="taxi_has_path" xml:space="preserve">
     <value>The taxi driver already has a destination point.</value>
   </data>
+  <data name="not_trucker" xml:space="preserve">
+    <value>You're not a trucker.</value>
+  </data>
 </root>

@@ -19,7 +19,7 @@ namespace WiredPlayers.messages.jobs {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class JobRes {
@@ -61,7 +61,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Auxiliary&quot;.
+        ///   Busca una cadena traducida similar a Auxiliary.
         /// </summary>
         public static string ems_1_f {
             get {
@@ -70,7 +70,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Auxiliary&quot;.
+        ///   Busca una cadena traducida similar a Auxiliary.
         /// </summary>
         public static string ems_1_m {
             get {
@@ -79,7 +79,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Principal&quot;.
+        ///   Busca una cadena traducida similar a Principal.
         /// </summary>
         public static string ems_10_f {
             get {
@@ -88,7 +88,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Principal&quot;.
+        ///   Busca una cadena traducida similar a Principal.
         /// </summary>
         public static string ems_10_m {
             get {
@@ -97,7 +97,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Nurse&quot;.
+        ///   Busca una cadena traducida similar a Nurse.
         /// </summary>
         public static string ems_2_f {
             get {
@@ -106,7 +106,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Nurse&quot;.
+        ///   Busca una cadena traducida similar a Nurse.
         /// </summary>
         public static string ems_2_m {
             get {
@@ -115,7 +115,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Adjunct surgeon&quot;.
+        ///   Busca una cadena traducida similar a Adjunct surgeon.
         /// </summary>
         public static string ems_3_f {
             get {
@@ -124,7 +124,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Adjunct surgeon&quot;.
+        ///   Busca una cadena traducida similar a Adjunct surgeon.
         /// </summary>
         public static string ems_3_m {
             get {
@@ -133,7 +133,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Paramedic&quot;.
+        ///   Busca una cadena traducida similar a Paramedic.
         /// </summary>
         public static string ems_4_f {
             get {
@@ -142,7 +142,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Paramedic&quot;.
+        ///   Busca una cadena traducida similar a Paramedic.
         /// </summary>
         public static string ems_4_m {
             get {
@@ -151,7 +151,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;First class surgeon&quot;.
+        ///   Busca una cadena traducida similar a First class surgeon.
         /// </summary>
         public static string ems_5_f {
             get {
@@ -160,7 +160,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;First class surgeon&quot;.
+        ///   Busca una cadena traducida similar a First class surgeon.
         /// </summary>
         public static string ems_5_m {
             get {
@@ -169,7 +169,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Medic&quot;.
+        ///   Busca una cadena traducida similar a Medic.
         /// </summary>
         public static string ems_6_f {
             get {
@@ -178,7 +178,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Medic&quot;.
+        ///   Busca una cadena traducida similar a Medic.
         /// </summary>
         public static string ems_6_m {
             get {
@@ -187,7 +187,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Chief surgeon&quot;.
+        ///   Busca una cadena traducida similar a Chief surgeon.
         /// </summary>
         public static string ems_7_f {
             get {
@@ -196,7 +196,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Chief surgeon&quot;.
+        ///   Busca una cadena traducida similar a Chief surgeon.
         /// </summary>
         public static string ems_7_m {
             get {
@@ -205,7 +205,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Head of emergency&quot;.
+        ///   Busca una cadena traducida similar a Head of emergency.
         /// </summary>
         public static string ems_8_f {
             get {
@@ -214,7 +214,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Head of emergency&quot;.
+        ///   Busca una cadena traducida similar a Head of emergency.
         /// </summary>
         public static string ems_8_m {
             get {
@@ -223,7 +223,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Vice principal&quot;.
+        ///   Busca una cadena traducida similar a Vice principal.
         /// </summary>
         public static string ems_9_f {
             get {
@@ -232,7 +232,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Vice principal&quot;.
+        ///   Busca una cadena traducida similar a Vice principal.
         /// </summary>
         public static string ems_9_m {
             get {
@@ -241,7 +241,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Delivery woman&quot;.
+        ///   Busca una cadena traducida similar a Delivery woman.
         /// </summary>
         public static string fastfood_f {
             get {
@@ -250,7 +250,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Delivery man&quot;.
+        ///   Busca una cadena traducida similar a Delivery man.
         /// </summary>
         public static string fastfood_m {
             get {
@@ -259,7 +259,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Garbage woman&quot;.
+        ///   Busca una cadena traducida similar a Garbage woman.
         /// </summary>
         public static string gargage_f {
             get {
@@ -268,7 +268,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Garbage man&quot;.
+        ///   Busca una cadena traducida similar a Garbage man.
         /// </summary>
         public static string gargage_m {
             get {
@@ -277,7 +277,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Prostitute&quot;.
+        ///   Busca una cadena traducida similar a Prostitute.
         /// </summary>
         public static string hooker_f {
             get {
@@ -286,7 +286,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Gigolo&quot;.
+        ///   Busca una cadena traducida similar a Gigolo.
         /// </summary>
         public static string hooker_m {
             get {
@@ -295,7 +295,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Snitch&quot;.
+        ///   Busca una cadena traducida similar a Snitch.
         /// </summary>
         public static string lspd_0_f {
             get {
@@ -304,7 +304,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Snitch&quot;.
+        ///   Busca una cadena traducida similar a Snitch.
         /// </summary>
         public static string lspd_0_m {
             get {
@@ -313,7 +313,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Cadet&quot;.
+        ///   Busca una cadena traducida similar a Cadet.
         /// </summary>
         public static string lspd_1_f {
             get {
@@ -322,7 +322,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Cadet&quot;.
+        ///   Busca una cadena traducida similar a Cadet.
         /// </summary>
         public static string lspd_1_m {
             get {
@@ -331,7 +331,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Officer&quot;.
+        ///   Busca una cadena traducida similar a Officer.
         /// </summary>
         public static string lspd_2_f {
             get {
@@ -340,7 +340,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Officer&quot;.
+        ///   Busca una cadena traducida similar a Officer.
         /// </summary>
         public static string lspd_2_m {
             get {
@@ -349,7 +349,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Sergeant&quot;.
+        ///   Busca una cadena traducida similar a Sergeant.
         /// </summary>
         public static string lspd_3_f {
             get {
@@ -358,7 +358,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Sergeant&quot;.
+        ///   Busca una cadena traducida similar a Sergeant.
         /// </summary>
         public static string lspd_3_m {
             get {
@@ -367,7 +367,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Lieutenant&quot;.
+        ///   Busca una cadena traducida similar a Lieutenant.
         /// </summary>
         public static string lspd_4_f {
             get {
@@ -376,7 +376,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Lieutenant&quot;.
+        ///   Busca una cadena traducida similar a Lieutenant.
         /// </summary>
         public static string lspd_4_m {
             get {
@@ -385,7 +385,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Captain&quot;.
+        ///   Busca una cadena traducida similar a Captain.
         /// </summary>
         public static string lspd_5_f {
             get {
@@ -394,7 +394,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Captain&quot;.
+        ///   Busca una cadena traducida similar a Captain.
         /// </summary>
         public static string lspd_5_m {
             get {
@@ -403,7 +403,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Commissar&quot;.
+        ///   Busca una cadena traducida similar a Commissar.
         /// </summary>
         public static string lspd_6_f {
             get {
@@ -412,7 +412,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Commissar&quot;.
+        ///   Busca una cadena traducida similar a Commissar.
         /// </summary>
         public static string lspd_6_m {
             get {
@@ -421,7 +421,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Internal Affairs&quot;.
+        ///   Busca una cadena traducida similar a Internal Affairs.
         /// </summary>
         public static string lspd_7_f {
             get {
@@ -430,7 +430,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Internal Affairs&quot;.
+        ///   Busca una cadena traducida similar a Internal Affairs.
         /// </summary>
         public static string lspd_7_m {
             get {
@@ -439,7 +439,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Driver&quot;.
+        ///   Busca una cadena traducida similar a Driver.
         /// </summary>
         public static string lstd_1_f {
             get {
@@ -448,7 +448,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Driver&quot;.
+        ///   Busca una cadena traducida similar a Driver.
         /// </summary>
         public static string lstd_1_m {
             get {
@@ -457,7 +457,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Veteran&quot;.
+        ///   Busca una cadena traducida similar a Veteran.
         /// </summary>
         public static string lstd_2_f {
             get {
@@ -466,7 +466,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Veteran&quot;.
+        ///   Busca una cadena traducida similar a Veteran.
         /// </summary>
         public static string lstd_2_m {
             get {
@@ -475,7 +475,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Manager&quot;.
+        ///   Busca una cadena traducida similar a Manager.
         /// </summary>
         public static string lstd_3_f {
             get {
@@ -484,7 +484,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Manager&quot;.
+        ///   Busca una cadena traducida similar a Manager.
         /// </summary>
         public static string lstd_3_m {
             get {
@@ -493,7 +493,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Vice president&quot;.
+        ///   Busca una cadena traducida similar a Vice president.
         /// </summary>
         public static string lstd_4_f {
             get {
@@ -502,7 +502,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Vice president&quot;.
+        ///   Busca una cadena traducida similar a Vice president.
         /// </summary>
         public static string lstd_4_m {
             get {
@@ -511,7 +511,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;President&quot;.
+        ///   Busca una cadena traducida similar a President.
         /// </summary>
         public static string lstd_5_f {
             get {
@@ -520,7 +520,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;President&quot;.
+        ///   Busca una cadena traducida similar a President.
         /// </summary>
         public static string lstd_5_m {
             get {
@@ -529,7 +529,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Mechanic&quot;.
+        ///   Busca una cadena traducida similar a Mechanic.
         /// </summary>
         public static string mechanic_f {
             get {
@@ -538,7 +538,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Mechanic&quot;.
+        ///   Busca una cadena traducida similar a Mechanic.
         /// </summary>
         public static string mechanic_m {
             get {
@@ -547,7 +547,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Scholar&quot;.
+        ///   Busca una cadena traducida similar a Scholar.
         /// </summary>
         public static string news_1_f {
             get {
@@ -556,7 +556,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Scholar&quot;.
+        ///   Busca una cadena traducida similar a Scholar.
         /// </summary>
         public static string news_1_m {
             get {
@@ -565,7 +565,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Journalist&quot;.
+        ///   Busca una cadena traducida similar a Journalist.
         /// </summary>
         public static string news_2_f {
             get {
@@ -574,7 +574,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Journalist&quot;.
+        ///   Busca una cadena traducida similar a Journalist.
         /// </summary>
         public static string news_2_m {
             get {
@@ -583,7 +583,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Broadcaster&quot;.
+        ///   Busca una cadena traducida similar a Broadcaster.
         /// </summary>
         public static string news_3_f {
             get {
@@ -592,7 +592,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Broadcaster&quot;.
+        ///   Busca una cadena traducida similar a Broadcaster.
         /// </summary>
         public static string news_3_m {
             get {
@@ -601,7 +601,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Vice principal&quot;.
+        ///   Busca una cadena traducida similar a Vice principal.
         /// </summary>
         public static string news_4_f {
             get {
@@ -610,7 +610,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Vice principal&quot;.
+        ///   Busca una cadena traducida similar a Vice principal.
         /// </summary>
         public static string news_4_m {
             get {
@@ -619,7 +619,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Principal&quot;.
+        ///   Busca una cadena traducida similar a Principal.
         /// </summary>
         public static string news_5_f {
             get {
@@ -628,7 +628,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Principal&quot;.
+        ///   Busca una cadena traducida similar a Principal.
         /// </summary>
         public static string news_5_m {
             get {
@@ -637,7 +637,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Civilian&quot;.
+        ///   Busca una cadena traducida similar a Civilian.
         /// </summary>
         public static string none_f {
             get {
@@ -646,7 +646,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Civilian&quot;.
+        ///   Busca una cadena traducida similar a Civilian.
         /// </summary>
         public static string none_m {
             get {
@@ -655,7 +655,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Thief&quot;.
+        ///   Busca una cadena traducida similar a Thief.
         /// </summary>
         public static string thief_f {
             get {
@@ -664,7 +664,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Thief&quot;.
+        ///   Busca una cadena traducida similar a Thief.
         /// </summary>
         public static string thief_m {
             get {
@@ -673,7 +673,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Scholar&quot;.
+        ///   Busca una cadena traducida similar a Scholar.
         /// </summary>
         public static string town_1_f {
             get {
@@ -682,7 +682,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Scholar&quot;.
+        ///   Busca una cadena traducida similar a Scholar.
         /// </summary>
         public static string town_1_m {
             get {
@@ -691,7 +691,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Official&quot;.
+        ///   Busca una cadena traducida similar a Official.
         /// </summary>
         public static string town_2_f {
             get {
@@ -700,7 +700,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Official&quot;.
+        ///   Busca una cadena traducida similar a Official.
         /// </summary>
         public static string town_2_m {
             get {
@@ -709,7 +709,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Head of department&quot;.
+        ///   Busca una cadena traducida similar a Head of department.
         /// </summary>
         public static string town_3_f {
             get {
@@ -718,7 +718,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Head of department&quot;.
+        ///   Busca una cadena traducida similar a Head of department.
         /// </summary>
         public static string town_3_m {
             get {
@@ -727,7 +727,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Mayor&quot;.
+        ///   Busca una cadena traducida similar a Mayor.
         /// </summary>
         public static string town_4_f {
             get {
@@ -736,7 +736,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Mayor&quot;.
+        ///   Busca una cadena traducida similar a Mayor.
         /// </summary>
         public static string town_4_m {
             get {
@@ -745,7 +745,25 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Unemployed&quot;.
+        ///   Busca una cadena traducida similar a Trucker.
+        /// </summary>
+        public static string trucker_f {
+            get {
+                return ResourceManager.GetString("trucker_f", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Trucker.
+        /// </summary>
+        public static string trucker_m {
+            get {
+                return ResourceManager.GetString("trucker_m", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Unemployed.
         /// </summary>
         public static string unemployed_f {
             get {
@@ -754,7 +772,7 @@ namespace WiredPlayers.messages.jobs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Unemployed&quot;.
+        ///   Busca una cadena traducida similar a Unemployed.
         /// </summary>
         public static string unemployed_m {
             get {

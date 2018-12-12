@@ -9,7 +9,6 @@ namespace WiredPlayers.jobs
 {
     public class Trucker : Script
     {
-
         public static void CheckTruckerOrders(Client player)
         {
             // Get the deliverable orders
@@ -30,6 +29,25 @@ namespace WiredPlayers.jobs
             }
 
             player.TriggerEvent("showTruckerOrders", NAPI.Util.ToJson(truckerOrders), NAPI.Util.ToJson(distancesList));
+        }
+
+        [Command(Commands.COM_DELIVER)]
+        public void DeliverCommand(Client player)
+        {
+            if(player.GetData(EntityData.PLAYER_JOB) != Constants.JOB_TRUCKER)
+            {
+                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_trucker);
+                return;
+            }
+
+            if(player.HasData(EntityData.PLAYER_JOB_CHECKPOINT))
+            {
+                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.already_in_route);
+                return;
+            }
+
+            // Create the delivery crates
+            player.TriggerEvent("createTruckerCrates");
         }
     }
 }

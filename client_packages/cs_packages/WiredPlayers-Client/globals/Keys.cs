@@ -1,7 +1,7 @@
 ﻿using RAGE;
 using RAGE.Elements;
-using System;
 using System.Collections.Generic;
+using System;
 
 namespace WiredPlayers_Client.globals
 {
@@ -36,7 +36,7 @@ namespace WiredPlayers_Client.globals
                     if (releasedKey >= 0) continue;
 
                     // Check if the key is already up
-                    if(Input.IsUp(key) && (currentTicks - downTicks) > KEY_PRESS_TIME)
+                    if(!Input.IsDown(key) && (currentTicks - downTicks) > KEY_PRESS_TIME)
                     {
                         releasedKey = key;
                         pressedKeys.Remove(releasedKey);

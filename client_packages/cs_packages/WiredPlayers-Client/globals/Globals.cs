@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using WiredPlayers_Client.account;
 using WiredPlayers_Client.vehicles;
+using WiredPlayers_Client.jobs;
 
 namespace WiredPlayers_Client.globals
 {
@@ -101,6 +102,13 @@ namespace WiredPlayers_Client.globals
 
             // Draw the money
             RAGE.NUI.UIResText.Draw(playerMoney + "$", 1900, 60, RAGE.Game.Font.Pricedown, 0.5f, Color.DarkOliveGreen, RAGE.NUI.UIResText.Alignment.Right, true, true, 0);
+
+            // Check if the player
+            if(RAGE.Game.Pad.IsControlJustPressed(0, (int)RAGE.Game.Control.VehicleSubPitchDownOnly) && Player.LocalPlayer.Vehicle != null)
+            {
+                // Check if the player is on a forklift
+                Trucker.CheckPlayerStoredCrate();
+            }
 
             // Detect if a key has been pressed
             int key = Keys.DetectPressedKey(dateTime.Ticks);

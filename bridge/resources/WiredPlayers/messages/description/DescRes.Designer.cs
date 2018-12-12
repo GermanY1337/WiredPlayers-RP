@@ -19,7 +19,7 @@ namespace WiredPlayers.messages.description {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class DescRes {
@@ -61,7 +61,7 @@ namespace WiredPlayers.messages.description {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Fastfood delieverer - We need fastfood deliverers. It&apos;s simple, deliver orders in time and you will get paid.&quot;.
+        ///   Busca una cadena traducida similar a Fastfood delieverer - We need fastfood deliverers. It&apos;s simple, deliver orders in time and you will get paid..
         /// </summary>
         public static string job_fastfoot {
             get {
@@ -70,7 +70,7 @@ namespace WiredPlayers.messages.description {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Garbage man - Los Santos needs people to clean up the city. Work in pairs with a friend, one will drive and the other will collect the garbage.&quot;.
+        ///   Busca una cadena traducida similar a Garbage man - Los Santos needs people to clean up the city. Work in pairs with a friend, one will drive and the other will collect the garbage..
         /// </summary>
         public static string job_garbage {
             get {
@@ -79,7 +79,7 @@ namespace WiredPlayers.messages.description {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Hooker - Win money selling your body, simple as that. You choose your clients and price.&quot;.
+        ///   Busca una cadena traducida similar a Hooker - Win money selling your body, simple as that. You choose your clients and price..
         /// </summary>
         public static string job_hooker {
             get {
@@ -88,7 +88,7 @@ namespace WiredPlayers.messages.description {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Mechanic - In Los Santos Custom we need employees that know how to treat a car.&quot;.
+        ///   Busca una cadena traducida similar a Mechanic - In Los Santos Custom we need employees that know how to treat a car..
         /// </summary>
         public static string job_mechanic {
             get {
@@ -97,11 +97,20 @@ namespace WiredPlayers.messages.description {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &quot;Thief - If having a job is the boring way of getting money for you, maybe you prefer to get some valuable items and sell them.&quot;.
+        ///   Busca una cadena traducida similar a Thief - If having a job is the boring way of getting money for you, maybe you prefer to get some valuable items and sell them..
         /// </summary>
         public static string job_thief {
             get {
                 return ResourceManager.GetString("job_thief", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Trucker - Trucker job text.
+        /// </summary>
+        public static string job_trucker {
+            get {
+                return ResourceManager.GetString("job_trucker", resourceCulture);
             }
         }
     }

@@ -62,7 +62,7 @@ namespace WiredPlayers.business
             {
                 if (vehicle.hash == vehicleHash)
                 {
-                    model = vehicle.model;
+                    model = vehicle.hash.ToString();
                     break;
                 }
             }
@@ -253,6 +253,7 @@ namespace WiredPlayers.business
                 // Getting the speed for each vehicle in the list
                 foreach (CarShopVehicleModel carShopVehicle in carList)
                 {
+                    carShopVehicle.model = carShopVehicle.hash.ToString();
                     VehicleHash vehicleHash = NAPI.Util.VehicleNameToModel(carShopVehicle.model);
                     carShopVehicle.speed = (int)Math.Round(NAPI.Vehicle.GetVehicleMaxSpeed(vehicleHash) * 3.6f);
                 }

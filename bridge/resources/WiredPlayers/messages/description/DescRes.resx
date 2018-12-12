@@ -132,4 +132,7 @@
   <data name="job_thief" xml:space="preserve">
     <value>Thief - If having a job is the boring way of getting money for you, maybe you prefer to get some valuable items and sell them.</value>
   </data>
+  <data name="job_trucker" xml:space="preserve">
+    <value>Trucker - Trucker job text</value>
+  </data>
 </root>

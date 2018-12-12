@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using RAGE;
 using WiredPlayers_Client.model;
+using System.Collections.Generic;
 
 namespace WiredPlayers_Client.globals
 {
@@ -54,6 +55,13 @@ namespace WiredPlayers_Client.globals
             new CarPiece(28, "Ornaments", 150), new CarPiece(33, "Steering-Wheel", 100), new CarPiece(34, "Shift-Lever", 100),
             new CarPiece(38, "Hydraulics", 1200), new CarPiece(69, "Window-Tint", 200), new CarPiece(11, "Motor", 200),
             new CarPiece(12, "Brakes", 200), new CarPiece(18, "Turbo", 200)
+        };
+
+        public static List<Vector3> TRUCKER_CRATES = new List<Vector3>()
+        {
+            new Vector3(1275.89f, -3282.81f, 5.90159f),
+            new Vector3(1275.54f, -3287.54f, 5.90159f),
+            new Vector3(1275.4f, -3293.04f, 5.90159f),
         };
     }
 }
