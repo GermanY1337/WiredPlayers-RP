@@ -608,5 +608,13 @@ namespace WiredPlayers.messages.items {
                 return ResourceManager.GetString("wrench", resourceCulture);
             }
         }
+
+        public static string weed
+        {
+            get
+            {
+                return ResourceManager.GetString("weed", resourceCulture);
+            }
+        }
     }
 }

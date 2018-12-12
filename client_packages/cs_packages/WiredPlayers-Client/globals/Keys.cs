@@ -81,6 +81,12 @@ namespace WiredPlayers_Client.globals
                         }
                     }
                     break;
+                case (int)ConsoleKey.J:
+                    if(Player.LocalPlayer.Vehicle == null)
+                    {
+                        Events.CallRemote("drugPickUp");
+                    }
+                    break;
             }
         }
 
@@ -92,6 +98,7 @@ namespace WiredPlayers_Client.globals
             consoleKeys.Add((int)ConsoleKey.E);
             consoleKeys.Add((int)ConsoleKey.F);
             consoleKeys.Add((int)ConsoleKey.K);
+            consoleKeys.Add((int)ConsoleKey.J);
         }
     }
 }

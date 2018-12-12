@@ -3273,5 +3273,59 @@ namespace WiredPlayers.globals
             // Get players basic data
             GetPlayerBasicData(player, player);
         }
+
+        private Vector3 weedFarm;
+
+        [RemoteEvent("drugPickUp")]
+        public void OnDrugPickUp(Client player)
+        {
+            weedFarm = new Vector3(2226.711f, 5576.737f, 53.86317f);
+
+            if (player.Position.DistanceTo(weedFarm) < 15.0f)
+            {
+                int playerId = player.GetData(EntityData.PLAYER_SQL_ID);
+                ItemModel item = GetPlayerItemModelFromHash(playerId, Constants.ITEM_HASH_WEED);
+                Random zufall = new Random();
+                int zufallamount = new Random().Next(0, 3);
+
+                if (zufallamount > 0)
+                {
+                    if (item == null)
+                    {
+                        item = new ItemModel();
+                        {
+                            item.amount = zufallamount;
+                            item.dimension = 0;
+                            item.position = new Vector3(0.0f, 0.0f, 0.0f);
+                            item.hash = Constants.ITEM_HASH_WEED;
+                            item.ownerEntity = Constants.ITEM_ENTITY_PLAYER;
+                            item.ownerIdentifier = playerId;
+                            item.objectHandle = null;
+                        }
+
+                        Task.Factory.StartNew(() =>
+                        {
+                            // Add the item into the database
+                            item.id = Database.AddNewItem(item);
+                            itemList.Add(item);
+                        });
+                    }
+                    else
+                    {
+                        item.amount += zufallamount;
+
+                        Task.Factory.StartNew(() =>
+                        {
+                            // Update the amount into the database
+                            Database.UpdateItem(item);
+                        });
+                    }
+                }
+                else
+                {
+                    player.SendNotification("Die Blüte ist zu staub zerfallen :(");
+                }
+            }
+        }
     }
 }

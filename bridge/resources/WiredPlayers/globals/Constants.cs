@@ -226,6 +226,11 @@ namespace WiredPlayers.globals
         public const string ITEM_HASH_BAIT = "Bait";
         public const string ITEM_HASH_FISH = "Fish";
 
+        // Drug Items
+        public const string ITEM_HASH_WEED = "Weed";
+        public const string ITEM_HASH_JOINT = "Joint";
+        public const string ITEM_HASH_KOKAIN = "Kokain";
+
         // Vehicle color types
         public const int VEHICLE_COLOR_TYPE_PREDEFINED = 0;
         public const int VEHICLE_COLOR_TYPE_CUSTOM = 1;
@@ -849,7 +854,10 @@ namespace WiredPlayers.globals
             new BusinessItemModel(ItemRes.smg_ammo, ITEM_HASH_MACHINEGUN_AMMO_CLIP, ITEM_TYPE_AMMUNITION, 0, 0.1f, 0, STACK_MACHINEGUN_CAPACITY, new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), BUSINESS_TYPE_NONE, 0.0f),
             new BusinessItemModel(ItemRes.shotgun_ammo, ITEM_HASH_SHOTGUN_AMMO_CLIP, ITEM_TYPE_AMMUNITION, 0, 0.1f, 0, STACK_SHOTGUN_CAPACITY, new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), BUSINESS_TYPE_NONE, 0.0f),
             new BusinessItemModel(ItemRes.rifle_ammo, ITEM_HASH_ASSAULTRIFLE_AMMO_CLIP, ITEM_TYPE_AMMUNITION, 0, 0.1f, 0, STACK_ASSAULTRIFLE_CAPACITY, new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), BUSINESS_TYPE_NONE, 0.0f),
-            new BusinessItemModel(ItemRes.sniper_ammo, ITEM_HASH_SNIPERRIFLE_AMMO_CLIP, ITEM_TYPE_AMMUNITION, 0, 0.1f, 0, STACK_SNIPERRIFLE_CAPACITY, new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), BUSINESS_TYPE_NONE, 0.0f)
+            new BusinessItemModel(ItemRes.sniper_ammo, ITEM_HASH_SNIPERRIFLE_AMMO_CLIP, ITEM_TYPE_AMMUNITION, 0, 0.1f, 0, STACK_SNIPERRIFLE_CAPACITY, new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), BUSINESS_TYPE_NONE, 0.0f),
+            
+            // Drugs
+            new BusinessItemModel(ItemRes.weed, ITEM_HASH_WEED, ITEM_TYPE_CONSUMABLE, 0, 0.1f, 0, 1, new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), BUSINESS_TYPE_NONE, 0.0f)
         };
 
         // Clothes list
