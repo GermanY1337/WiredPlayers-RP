@@ -34,7 +34,8 @@ namespace WiredPlayers_Client.vehicles
             Vector3 velocity = vehicle.GetVelocity();
             int health = vehicle.GetHealth();
             int maxHealth = vehicle.GetMaxHealth();
-            int healthPercent = (int)Math.Floor((double)(health / maxHealth) * 100);
+
+            int healthPercent = (int)Math.Round((decimal)(health  * 100) / maxHealth);
             int speed = (int)Math.Round(Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y + velocity.Z * velocity.Z) * 3.6f);
 
             // Get the distance and consume
