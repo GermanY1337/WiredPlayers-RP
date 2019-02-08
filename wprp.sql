@@ -464,7 +464,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `rank` int(11) NOT NULL DEFAULT '0',
   `phone` int(11) NOT NULL DEFAULT '0',
   `radio` int(11) NOT NULL DEFAULT '0',
-  `jailed` varchar(8) NOT NULL DEFAULT '0,0',
+  `jailed` varchar(8) NOT NULL DEFAULT '-1,-1',
   `carKeys` varchar(32) NOT NULL DEFAULT '0,0,0,0,0',
   `documentation` int(11) NOT NULL DEFAULT '0',
   `licenses` varchar(32) NOT NULL DEFAULT '-1,-1,-1',

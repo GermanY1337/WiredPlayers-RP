@@ -7,6 +7,7 @@ using WiredPlayers.messages.general;
 using WiredPlayers.messages.error;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace WiredPlayers.character
 {
@@ -16,57 +17,30 @@ namespace WiredPlayers.character
 
         private ContactModel GetContactFromId(int contactId)
         {
-            ContactModel contact = null;
-            foreach (ContactModel contactModel in contactList)
-            {
-                if (contactModel.id == contactId)
-                {
-                    contact = contactModel;
-                    break;
-                }
-            }
-            return contact;
+            // Get the contact matching the selected identifier
+            return contactList.Where(contact => contact.id == contactId).FirstOrDefault();
         }
 
         private int GetNumerFromContactName(string contactName, int playerPhone)
         {
-            int targetPhone = 0;
-            foreach (ContactModel contact in contactList)
-            {
-                if (contact.owner == playerPhone && contact.contactName == contactName)
-                {
-                    targetPhone = contact.contactNumber;
-                    break;
-                }
-            }
-            return targetPhone;
+            // Get the contact matching the name
+            ContactModel contactModel = contactList.Where(contact => contact.owner == playerPhone && contact.contactName == contactName).FirstOrDefault();
+
+            return contactModel == null ? 0 : contactModel.contactNumber;
         }
 
         private List<ContactModel> GetTelephoneContactList(int number)
         {
-            List<ContactModel> contacts = new List<ContactModel>();
-            foreach (ContactModel contact in contactList)
-            {
-                if (contact.owner == number)
-                {
-                    contacts.Add(contact);
-                }
-            }
-            return contacts;
+            // Get the contact list from a phone number
+            return contactList.Where(contact => contact.owner == number).ToList();
         }
 
         private string GetContactInTelephone(int phone, int number)
         {
-            string contactName = string.Empty;
-            foreach (ContactModel contact in contactList)
-            {
-                if (contact.owner == phone && contact.contactNumber == number)
-                {
-                    contactName = contact.contactName;
-                    break;
-                }
-            }
-            return contactName;
+            // Get the contact name from a number
+            ContactModel contactModel = contactList.Where(contact => contact.owner == phone && contact.contactNumber == number).FirstOrDefault();
+
+            return contactModel == null ? string.Empty : contactModel.contactName;
         }
 
         [RemoteEvent("addNewContact")]

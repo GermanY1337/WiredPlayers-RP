@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using WiredPlayers_Client.globals;
+using System.Linq;
 using System;
 
 namespace WiredPlayers_Client.character
@@ -50,7 +51,7 @@ namespace WiredPlayers_Client.character
                         optionsList.Add("general.open");
                     }
 
-                    if (!int.TryParse(itemHash, out int hash))
+                    if (itemHash.All(char.IsDigit))
                     {
                         // Equipable
                         optionsList.Add("general.equip");

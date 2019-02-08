@@ -736,7 +736,7 @@ function populateClothesShopHome() {
 			descContainer.classList.add('item-header');
 			itemDescription.classList.add('item-description');
 			
-			itemDescription.textContent = i18next.t(type.desc);
+			itemDescription.textContent = i18next.t(type.description);
 			
 			itemContainer.onclick = (function() {
 				selected = i;
@@ -1608,7 +1608,7 @@ function populateWardrobeHome() {
 			descContainer.classList.add('item-header');
 			itemDescription.classList.add('item-description');
 			
-			itemDescription.textContent = i18next.t(type.desc);
+			itemDescription.textContent = i18next.t(type.description);
 			
 			itemContainer.onclick = (function() {
 				selected = i;

@@ -71,18 +71,8 @@ namespace WiredPlayers.jobs
 
         private FastfoodOrderModel GetFastfoodOrderFromId(int orderId)
         {
-            FastfoodOrderModel order = null;
-
-            foreach (FastfoodOrderModel orderModel in Globals.fastFoodOrderList)
-            {
-                if (orderModel.id == orderId)
-                {
-                    order = orderModel;
-                    break;
-                }
-            }
-
-            return order;
+            // Get the fastfood order from the specified identifier
+            return Globals.fastFoodOrderList.Where(orderModel => orderModel.id == orderId).FirstOrDefault();
         }
 
         private void RespawnFastfoodVehicle(Vehicle vehicle)

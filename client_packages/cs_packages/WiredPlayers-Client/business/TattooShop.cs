@@ -31,7 +31,7 @@ namespace WiredPlayers_Client.business
             // Get the variables from the arguments
             string playerTattoosJson = args[1].ToString();
             string tattoosJson = args[2].ToString();
-            int business = Convert.ToInt32(args[3]);
+            string business = args[3].ToString();
             float price = (float)Convert.ToDouble(args[4]);
             playerSex = Convert.ToInt32(args[0]);
 
@@ -54,7 +54,7 @@ namespace WiredPlayers_Client.business
             zoneTattoos = tattooList.Where(tattoo => tattoo.slot == zone).ToList();
 
             // Show the tattoos for the selected zone
-            Browser.ExecuteFunctionEvent(new object[] { "populateZoneTattoos", JsonConvert.SerializeObject(zoneTattoos) });
+            Browser.ExecuteFunctionEvent(new object[] { "populateZoneTattoos", Globals.EscapeJsonCharacters(JsonConvert.SerializeObject(zoneTattoos)) });
         }
 
         private void AddPlayerTattooEvent(object[] args)
@@ -90,9 +90,11 @@ namespace WiredPlayers_Client.business
 
             // Add the new tattoo to the list
             Tattoo tattoo = new Tattoo();
-            tattoo.slot = slot;
-            tattoo.library = zoneTattoos[index].library;
-            tattoo.hash = playerSex == Constants.SEX_MALE ? zoneTattoos[index].maleHash : zoneTattoos[index].femaleHash;
+            {
+                tattoo.slot = slot;
+                tattoo.library = zoneTattoos[index].library;
+                tattoo.hash = playerSex == Constants.SEX_MALE ? zoneTattoos[index].maleHash : zoneTattoos[index].femaleHash;
+            }
             playerTattoos.Add(tattoo);
 
             // Purchase the tattoo

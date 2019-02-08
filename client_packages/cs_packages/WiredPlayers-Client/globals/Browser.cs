@@ -75,6 +75,5 @@ namespace WiredPlayers_Client.globals
                 }
             }
         }
-
     }
 }

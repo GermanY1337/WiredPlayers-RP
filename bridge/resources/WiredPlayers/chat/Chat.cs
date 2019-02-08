@@ -393,7 +393,8 @@ namespace WiredPlayers.chat
 
                     // Sending messages to both players
                     player.SendChatMessage(secondMessage.Length > 0 ? Constants.COLOR_ADMIN_MP + "((" + GenRes.pm_to + "[ID: " + target.Value + "] " + target.Name + ": " + message + "..." : Constants.COLOR_ADMIN_MP + "((" + GenRes.pm_to + "[ID: " + target.Value + "] " + target.Name + ": " + message + "))");
-                   target.SendChatMessage(secondMessage.Length > 0 ? Constants.COLOR_ADMIN_MP + "((" + GenRes.pm_from + "[ID: " + player.Value + "] " + player.Name + ": " + message + "..." : Constants.COLOR_ADMIN_MP + "((" + GenRes.pm_from + "[ID: " + player.Value + "] " + player.Name + ": " + message + "))");
+                    target.SendChatMessage(secondMessage.Length > 0 ? Constants.COLOR_ADMIN_MP + "((" + GenRes.pm_from + "[ID: " + player.Value + "] " + player.Name + ": " + message + "..." : Constants.COLOR_ADMIN_MP + "((" + GenRes.pm_from + "[ID: " + player.Value + "] " + player.Name + ": " + message + "))");
+
                     if (secondMessage.Length > 0)
                     {
                         player.SendChatMessage(Constants.COLOR_ADMIN_MP + secondMessage + "))");

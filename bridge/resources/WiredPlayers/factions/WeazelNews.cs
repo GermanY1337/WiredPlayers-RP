@@ -2,11 +2,13 @@
 using WiredPlayers.database;
 using WiredPlayers.globals;
 using WiredPlayers.model;
+using WiredPlayers.vehicles;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.general;
 using WiredPlayers.messages.information;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace WiredPlayers.factions
 {
@@ -17,6 +19,7 @@ namespace WiredPlayers.factions
         public static void SendNewsMessage(Client player, string message)
         {
             string secondMessage = string.Empty;
+            List<Client> connectedPlayers = NAPI.Pools.GetAllPlayers().Where(target => target.HasData(EntityData.PLAYER_PLAYING)).ToList();
 
             if (message.Length > Constants.CHAT_LENGTH)
             {
@@ -25,46 +28,24 @@ namespace WiredPlayers.factions
                 message = message.Remove(Constants.CHAT_LENGTH, secondMessage.Length);
             }
 
-            if (player.HasData(EntityData.PLAYER_ON_AIR) && player.GetData(EntityData.PLAYER_FACTION) == Constants.FACTION_NEWS)
+            foreach(Client target in connectedPlayers)
             {
-                foreach (Client target in NAPI.Pools.GetAllPlayers())
+                if (player.HasData(EntityData.PLAYER_ON_AIR) && player.GetData(EntityData.PLAYER_FACTION) == Constants.FACTION_NEWS)
                 {
-                    if (target.HasData(EntityData.PLAYER_PLAYING) == true)
-                    {
-                       target.SendChatMessage(secondMessage.Length > 0 ? Constants.COLOR_NEWS + GenRes.interviewer + player.Name + ": " + message + "..." : Constants.COLOR_NEWS + GenRes.interviewer + player.Name + ": " + message);
-                        if (secondMessage.Length > 0)
-                        {
-                           target.SendChatMessage(Constants.COLOR_NEWS + secondMessage);
-                        }
-                    }
+                    target.SendChatMessage(secondMessage.Length > 0 ? Constants.COLOR_NEWS + GenRes.interviewer + player.Name + ": " + message + "..." : Constants.COLOR_NEWS + GenRes.interviewer + player.Name + ": " + message);
                 }
-            }
-            else if (player.HasData(EntityData.PLAYER_ON_AIR))
-            {
-                foreach (Client target in NAPI.Pools.GetAllPlayers())
+                else if (player.HasData(EntityData.PLAYER_ON_AIR))
                 {
-                    if (target.HasData(EntityData.PLAYER_PLAYING) == true)
-                    {
-                       target.SendChatMessage(secondMessage.Length > 0 ? Constants.COLOR_NEWS + GenRes.guest + player.Name + ": " + message + "..." : Constants.COLOR_NEWS + GenRes.guest + player.Name + ": " + message);
-                        if (secondMessage.Length > 0)
-                        {
-                           target.SendChatMessage(Constants.COLOR_NEWS + secondMessage);
-                        }
-                    }
+                    target.SendChatMessage(secondMessage.Length > 0 ? Constants.COLOR_NEWS + GenRes.guest + player.Name + ": " + message + "..." : Constants.COLOR_NEWS + GenRes.guest + player.Name + ": " + message);
                 }
-            }
-            else
-            {
-                foreach (Client target in NAPI.Pools.GetAllPlayers())
+                else
                 {
-                    if (target.HasData(EntityData.PLAYER_PLAYING) == true)
-                    {
-                       target.SendChatMessage(secondMessage.Length > 0 ? Constants.COLOR_NEWS + GenRes.announcement + message + "..." : Constants.COLOR_NEWS + GenRes.announcement + message);
-                        if (secondMessage.Length > 0)
-                        {
-                           target.SendChatMessage(Constants.COLOR_NEWS + secondMessage);
-                        }
-                    }
+                    target.SendChatMessage(secondMessage.Length > 0 ? Constants.COLOR_NEWS + GenRes.announcement + message + "..." : Constants.COLOR_NEWS + GenRes.announcement + message);
+                }
+
+                if (secondMessage.Length > 0)
+                {
+                    target.SendChatMessage(Constants.COLOR_NEWS + secondMessage);
                 }
             }
         }
@@ -93,7 +74,7 @@ namespace WiredPlayers.factions
             }
             else
             {
-                Vehicle vehicle = Globals.GetClosestVehicle(player);
+                Vehicle vehicle = Vehicles.GetClosestVehicle(player);
                 if (vehicle.GetData(EntityData.VEHICLE_FACTION) != Constants.FACTION_NEWS && player.VehicleSeat != (int)VehicleSeat.LeftRear)
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_not_in_news_van);
@@ -273,7 +254,7 @@ namespace WiredPlayers.factions
             }
             else
             {
-                Vehicle vehicle = Globals.GetClosestVehicle(player);
+                Vehicle vehicle = Vehicles.GetClosestVehicle(player);
                 if (vehicle.GetData(EntityData.VEHICLE_FACTION) != Constants.FACTION_NEWS && player.VehicleSeat != (int)VehicleSeat.LeftRear)
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_not_in_news_van);

@@ -22,9 +22,10 @@ WiredPlayers is a RolePlay project made for RAGE Multiplayer, it uses C# as main
 2. Execute the **updater.exe** located on the root folder where you installed RAGE Multiplayer
 3. Unzip the Bridge plugin into the folder called **server-files** replacing the files if needed
 4. Execute again the **updater.exe** located on the root folder where you installed RAGE Multiplayer in order for it to update to the bridge plugin
-5. Make sure your router has opened 22005 UDP port and 22006 TCP/IP, if you dont know how to do that just google for router port forwarding
+5. Create a file called **enable-clientside-cs.txt** on the root folder where you installed RAGE Multiplayer
+6. Make sure your router has opened 22005 UDP port and 22006 TCP/IP, if you dont know how to do that just google for router port forwarding
 
-**Note:** Fore more informations check also the RAGE Wiki: [ClickHere](https://wiki.rage.mp/index.php?title=Getting_Started_with_Server)
+**Note:** Fore more informations check also the RAGE Wiki: [Click Here](https://wiki.rage.mp/index.php?title=Getting_Started_with_Server)
 
 ### 3.Installing the GameMode
 1. Get all the files from this GitHub and place them into the same folder as before, replacing the files you're asked for
@@ -32,11 +33,9 @@ WiredPlayers is a RolePlay project made for RAGE Multiplayer, it uses C# as main
 3. Import to Visual Studio the **WiredPlayers.csproj** file, located on the following path: **%RAGEMP Installed folder%/server-files/bridge/resources/WiredPlayers/**
 #### Database Connection:
 4. Change the database connection settings under **meta.xml** located on the following path: **%RAGEMP Installed folder%/server-files/bridge/resources/WiredPlayers/** or in your Visual Studio Project! You may get an error regarding to Database SSL Connection, check the **F.A.Q.** page bellow.
-5. Make sure your solution has linked the **gtanetwork.api** and **MySql.Data** Nugets, if not, add them
+5. Make sure your solution has linked the **MySql.Data** Nuget, if not, add it to the project
 6. On Visual Studio, clean and build the solution in order to generate the required **WiredPlayers.dll** library
 7. Execute the **server.exe** located under the **server-files** folder
 8. Log into your server and enjoy it
 
 If you followed all this steps, you should be able to login with your newly registered account, if not please check the **[F.A.Q.](https://github.com/xabier1989/WiredPlayers-RP/wiki/FAQ)** in order to try solve the errors, some of them are solved there!
-
-#### Sometimes it may send you the error, just when you join the server, this error will be solved in RAGE 0.4!

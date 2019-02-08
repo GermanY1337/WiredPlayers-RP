@@ -121,16 +121,10 @@ namespace WiredPlayers.jobs
 
         private Vector3 GetGarbageCheckPointPosition(int route, int checkPoint)
         {
-            Vector3 position = new Vector3();
-            foreach (GarbageModel garbage in Constants.GARBAGE_LIST)
-            {
-                if (garbage.route == route && garbage.checkPoint == checkPoint)
-                {
-                    position = garbage.position;
-                    break;
-                }
-            }
-            return position;
+            // Get the garbage
+            GarbageModel garbage = Constants.GARBAGE_LIST.Where(garbageModel => garbageModel.route == route && garbageModel.checkPoint == checkPoint).FirstOrDefault();
+
+            return garbage?.position;
         }
 
         private void FinishGarbageRoute(Client driver, bool canceled = false)

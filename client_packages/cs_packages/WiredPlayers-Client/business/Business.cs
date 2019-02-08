@@ -26,7 +26,7 @@ namespace WiredPlayers_Client.business
             businessPriceMultiplier = (float)Convert.ToDouble(args[2]);
 
             // Bank menu creation
-            Browser.ExecuteFunctionEvent(new object[] { "package://statics/html/sideMenu.html", "populateBusinessItems", businessItems, business, businessPriceMultiplier });
+            Browser.CreateBrowserEvent(new object[] { "package://statics/html/sideMenu.html", "populateBusinessItems", businessItems, business, businessPriceMultiplier });
         }
 
         private void PurchaseItemEvent(object[] args)

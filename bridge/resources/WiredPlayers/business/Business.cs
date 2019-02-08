@@ -41,16 +41,8 @@ namespace WiredPlayers.business
 
         public static BusinessModel GetBusinessById(int businessId)
         {
-            BusinessModel business = null;
-            foreach (BusinessModel businessModel in businessList)
-            {
-                if (businessModel.id == businessId)
-                {
-                    business = businessModel;
-                    break;
-                }
-            }
-            return business;
+            // Get the business given an specific identifier
+            return businessList.Where(business => business.id == businessId).FirstOrDefault();
         }
 
         public static BusinessModel GetClosestBusiness(Client player, float distance = 2.0f)
@@ -69,99 +61,48 @@ namespace WiredPlayers.business
 
         public static List<BusinessItemModel> GetBusinessSoldItems(int business)
         {
-            List<BusinessItemModel> businessItems = new List<BusinessItemModel>();
-            foreach (BusinessItemModel businessItem in Constants.BUSINESS_ITEM_LIST)
-            {
-                if (businessItem.business == business)
-                {
-                    businessItems.Add(businessItem);
-                }
-            }
-            return businessItems;
+            // Get the items sold in a business
+            return Constants.BUSINESS_ITEM_LIST.Where(businessItem => businessItem.business == business).ToList();
         }
 
         public static BusinessItemModel GetBusinessItemFromName(string itemName)
         {
-            BusinessItemModel item = null;
-            foreach (BusinessItemModel businessItem in Constants.BUSINESS_ITEM_LIST)
-            {
-                if (businessItem.description == itemName)
-                {
-                    item = businessItem;
-                    break;
-                }
-            }
-            return item;
+            // Get the item from its name
+            return Constants.BUSINESS_ITEM_LIST.Where(businessItem => businessItem.description == itemName).FirstOrDefault();
         }
 
         public static BusinessItemModel GetBusinessItemFromHash(string itemHash)
         {
-            BusinessItemModel item = null;
-            foreach (BusinessItemModel businessItem in Constants.BUSINESS_ITEM_LIST)
-            {
-                if (businessItem.hash == itemHash)
-                {
-                    item = businessItem;
-                    break;
-                }
-            }
-            return item;
+            // Get the item from its hash
+            return Constants.BUSINESS_ITEM_LIST.Where(businessItem => businessItem.hash == itemHash).FirstOrDefault();
         }
 
         public static List<BusinessClothesModel> GetBusinessClothesFromSlotType(int sex, int type, int slot)
         {
-            List<BusinessClothesModel> businessClothesList = new List<BusinessClothesModel>();
-            foreach (BusinessClothesModel clothes in Constants.BUSINESS_CLOTHES_LIST)
-            {
-                if (clothes.type == type && (clothes.sex == sex || Constants.SEX_NONE == clothes.sex) && clothes.bodyPart == slot)
-                {
-                    businessClothesList.Add(clothes);
-                }
-            }
-            return businessClothesList;
+            // Get the clothes for a sex from their slot and type
+            return Constants.BUSINESS_CLOTHES_LIST.Where(clothes => clothes.type == type && (clothes.sex == sex || Constants.SEX_NONE == clothes.sex) && clothes.bodyPart == slot).ToList();
         }
 
         public static int GetClothesProductsPrice(int id, int sex, int type, int slot)
         {
-            int productsPrice = 0;
-            foreach (BusinessClothesModel clothesModel in Constants.BUSINESS_CLOTHES_LIST)
-            {
-                if (clothesModel.type == type && (clothesModel.sex == sex || Constants.SEX_NONE == clothesModel.sex) && clothesModel.bodyPart == slot && clothesModel.clothesId == id)
-                {
-                    productsPrice = clothesModel.products;
-                    break;
-                }
-            }
-            return productsPrice;
+            // Get the products needed for the given clothes
+            BusinessClothesModel clothesModel = Constants.BUSINESS_CLOTHES_LIST.Where(c => c.type == type && (c.sex == sex || Constants.SEX_NONE == c.sex) && c.bodyPart == slot && c.clothesId == id).FirstOrDefault();
+
+            return clothesModel == null ? 0 : clothesModel.products;
         }
 
         public static string GetBusinessTypeIpl(int type)
         {
-            string businessIpl = string.Empty;
-            foreach (BusinessIplModel iplModel in Constants.BUSINESS_IPL_LIST)
-            {
-                if (iplModel.type == type)
-                {
-                    businessIpl = iplModel.ipl;
-                    break;
+            // Get the IPL given the business type
+            BusinessIplModel businessIpl = Constants.BUSINESS_IPL_LIST.Where(ipl => ipl.type == type).FirstOrDefault();
 
-                }
-            }
-            return businessIpl;
+            return businessIpl == null ? string.Empty : businessIpl.ipl;
         }
 
         public static Vector3 GetBusinessExitPoint(string ipl)
         {
-            Vector3 exit = null;
-            foreach (BusinessIplModel businessIpl in Constants.BUSINESS_IPL_LIST)
-            {
-                if (businessIpl.ipl == ipl)
-                {
-                    exit = businessIpl.position;
-                    break;
-                }
-            }
-            return exit;
+            // Get the exit point from the given IPL
+            return Constants.BUSINESS_IPL_LIST.Where(iplModel => iplModel.ipl == ipl).FirstOrDefault()?.position;
         }
 
         public static bool HasPlayerBusinessKeys(Client player, BusinessModel business)
@@ -171,22 +112,8 @@ namespace WiredPlayers.business
 
         private List<BusinessTattooModel> GetBusinessZoneTattoos(int sex, int zone)
         {
-            List<BusinessTattooModel> tattooList = new List<BusinessTattooModel>();
-
-            // Loading tattoo list
-            foreach (BusinessTattooModel tattoo in Constants.TATTOO_LIST)
-            {
-                if (tattoo.slot == zone && tattoo.maleHash.Length > 0 && sex == Constants.SEX_MALE)
-                {
-                    tattooList.Add(tattoo);
-                }
-                else if (tattoo.slot == zone && tattoo.femaleHash.Length > 0 && sex == Constants.SEX_FEMALE)
-                {
-                    tattooList.Add(tattoo);
-                }
-            }
-
-            return tattooList;
+            // Get the tattoos matching a body part
+            return Constants.TATTOO_LIST.Where(tattoo => tattoo.slot == zone && ((tattoo.maleHash.Length > 0 && sex == Constants.SEX_MALE) || (tattoo.femaleHash.Length > 0 && sex == Constants.SEX_FEMALE))).ToList();
         }
 
         [RemoteEvent("businessPurchaseMade")]
@@ -246,11 +173,12 @@ namespace WiredPlayers.business
                     }
                     else
                     {
+                        itemModel.amount += businessItem.uses * amount;
+
                         if (int.TryParse(itemModel.hash, out hash) == true)
                         {
                             itemModel.ownerEntity = Constants.ITEM_ENTITY_RIGHT_HAND;
                         }
-                        itemModel.amount += businessItem.uses * amount;
 
                         Task.Factory.StartNew(() => {
                             // Update the item's amount
@@ -337,27 +265,13 @@ namespace WiredPlayers.business
             int playerId = player.GetData(EntityData.PLAYER_SQL_ID);
             ClothesModel clothes = Globals.GetDressedClothesInSlot(playerId, type, slot);
             
-            if (clothes != null)
+            if (type == 0)
             {
-                if (type == 0)
-                {
-                    player.SetClothes(slot, clothes.drawable, clothes.texture);
-                }
-                else
-                {
-                    player.SetAccessories(slot, clothes.drawable, clothes.texture);
-                }
+                player.SetClothes(slot, clothes == null ? 0 : clothes.drawable, clothes == null ? 0 : clothes.texture);
             }
             else
             {
-                if (type == 0)
-                {
-                    player.SetClothes(slot, 0, 0);
-                }
-                else
-                {
-                    player.SetAccessories(slot, 255, 255);
-                }
+                player.SetAccessories(slot, clothes == null ? 255 : clothes.drawable, clothes == null ? 255 : clothes.texture);
             }
         }
 

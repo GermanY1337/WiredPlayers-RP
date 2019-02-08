@@ -27,16 +27,8 @@ namespace WiredPlayers.house
 
         public static HouseModel GetHouseById(int id)
         {
-            HouseModel house = null;
-            foreach (HouseModel houseModel in houseList)
-            {
-                if (houseModel.id == id)
-                {
-                    house = houseModel;
-                    break;
-                }
-            }
-            return house;
+            // Get the house with the specified identifier
+            return houseList.Where(houseModel => houseModel.id == id).FirstOrDefault();
         }
 
         public static HouseModel GetClosestHouse(Client player, float distance = 1.5f)
@@ -55,16 +47,10 @@ namespace WiredPlayers.house
 
         public static Vector3 GetHouseExitPoint(string ipl)
         {
-            Vector3 exit = null;
-            foreach (HouseIplModel houseIpl in Constants.HOUSE_IPL_LIST)
-            {
-                if (houseIpl.ipl == ipl)
-                {
-                    exit = houseIpl.position;
-                    break;
-                }
-            }
-            return exit;
+            // Get the house with the specified IPL
+            HouseIplModel houseIpl = Constants.HOUSE_IPL_LIST.Where(houseIplModel => houseIplModel.ipl == ipl).FirstOrDefault();
+
+            return houseIpl?.position;
         }
 
         public static bool HasPlayerHouseKeys(Client player, HouseModel house)
@@ -93,35 +79,33 @@ namespace WiredPlayers.house
 
         public static void BuyHouse(Client player, HouseModel house)
         {
-            if (house.status == Constants.HOUSE_STATE_BUYABLE)
-            {
-                if (player.GetSharedData(EntityData.PLAYER_BANK) >= house.price)
-                {
-                    int bank = player.GetSharedData(EntityData.PLAYER_BANK) - house.price;
-                    string message = string.Format(InfoRes.house_buy, house.name, house.price);
-                    string labelText = GetHouseLabelText(house);
-                    player.SendChatMessage(Constants.COLOR_INFO + message);
-                    player.SetSharedData(EntityData.PLAYER_BANK, bank);
-                    house.status = Constants.HOUSE_STATE_NONE;
-                    house.houseLabel.Text = GetHouseLabelText(house);
-                    house.owner = player.Name;
-                    house.locked = true;
-
-                    Task.Factory.StartNew(() =>
-                    {
-                        // Update the house
-                        Database.UpdateHouse(house);
-                    });
-                }
-                else
-                {
-                    player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.house_not_money);
-                }
-            }
-            else
+            if (house.status != Constants.HOUSE_STATE_BUYABLE)
             {
                 player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.house_not_buyable);
+                return;
             }
+
+            if (player.GetSharedData(EntityData.PLAYER_BANK) < house.price)
+            {
+                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.house_not_money);
+                return;
+            }
+            
+            int bank = player.GetSharedData(EntityData.PLAYER_BANK) - house.price;
+            string message = string.Format(InfoRes.house_buy, house.name, house.price);
+            string labelText = GetHouseLabelText(house);
+            player.SendChatMessage(Constants.COLOR_INFO + message);
+            player.SetSharedData(EntityData.PLAYER_BANK, bank);
+            house.status = Constants.HOUSE_STATE_NONE;
+            house.houseLabel.Text = GetHouseLabelText(house);
+            house.owner = player.Name;
+            house.locked = true;
+
+            Task.Factory.StartNew(() =>
+            {
+                // Update the house
+                Database.UpdateHouse(house);
+            });
         }
 
         [RemoteEvent("getPlayerPurchasedClothes")]

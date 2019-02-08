@@ -4,6 +4,7 @@ using WiredPlayers.globals;
 using WiredPlayers.model;
 using WiredPlayers.messages.error;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 
 namespace WiredPlayers.house
@@ -23,29 +24,14 @@ namespace WiredPlayers.house
 
         public List<FurnitureModel> GetFurnitureInHouse(int houseId)
         {
-            List<FurnitureModel> list = new List<FurnitureModel>();
-            foreach (FurnitureModel furniture in furnitureList)
-            {
-                if (furniture.house == houseId)
-                {
-                    list.Add(furniture);
-                }
-            }
-            return list;
+            // Get all the furniture in the specified house
+            return furnitureList.Where(furniture => furniture.house == houseId).ToList();
         }
 
         public FurnitureModel GetFurnitureById(int id)
         {
-            FurnitureModel furniture = null;
-            foreach (FurnitureModel furnitureModel in furnitureList)
-            {
-                if (furnitureModel.id == id)
-                {
-                    furniture = furnitureModel;
-                    break;
-                }
-            }
-            return furniture;
+            // Get the furniture given the specific identifier
+            return furnitureList.Where(furniture => furniture.id == id).FirstOrDefault();
         }
         
         [Command(Commands.COM_FURNITURE, Commands.HLP_FURNITURE_COMMAND)]

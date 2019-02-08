@@ -4,6 +4,7 @@ using WiredPlayers.database;
 using WiredPlayers.model;
 using WiredPlayers.drivingschool;
 using WiredPlayers.weapons;
+using WiredPlayers.vehicles;
 using WiredPlayers.messages.error;
 using WiredPlayers.messages.information;
 using WiredPlayers.messages.general;
@@ -17,7 +18,16 @@ namespace WiredPlayers.factions
 {
     public class Police : Script
     {
+        private TextLabel equipmentLabel;
         public static List<PoliceControlModel> policeControlList;
+
+        public Police()
+        {
+            // Initialize reinforces updater
+            Timer reinforcesTimer = new Timer(UpdateReinforcesRequests, null, 250, 250);
+            equipmentLabel = NAPI.TextLabel.CreateTextLabel("/" + Commands.COM_EQUIPMENT, new Vector3(450.8223, -992.0941, 30.78958), 10.0f, 0.5f, 4, new Color(255, 255, 153), false, 0);
+            NAPI.TextLabel.CreateTextLabel(GenRes.equipment_help, new Vector3(450.8223, -992.0941, 30.68958), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
+        }
 
         public static void OnPlayerDisconnected(Client player, DisconnectionType type, string reason)
         {
@@ -33,6 +43,7 @@ namespace WiredPlayers.factions
         private List<string> GetDifferentPoliceControls()
         {
             List<string> policeControls = new List<string>();
+
             foreach (PoliceControlModel policeControl in policeControlList)
             {
                 if (policeControls.Contains(policeControl.name) == false && policeControl.name != string.Empty)
@@ -40,19 +51,19 @@ namespace WiredPlayers.factions
                     policeControls.Add(policeControl.name);
                 }
             }
+
             return policeControls;
         }
 
         private void RemoveClosestPoliceControlItem(Client player, int hash)
         {
-            foreach (PoliceControlModel policeControl in policeControlList)
+            // Get the closest police control item
+            PoliceControlModel policeControl = policeControlList.Where(control => control.controlObject != null && control.controlObject.Position.DistanceTo(player.Position) < 2.0f && control.item == hash).FirstOrDefault();
+
+            if(policeControl != null)
             {
-                if (policeControl.controlObject.Exists && policeControl.controlObject.Position.DistanceTo(player.Position) < 2.0f && policeControl.item == hash)
-                {
-                    policeControl.controlObject.Delete();
-                    policeControl.controlObject = null;
-                    break;
-                }
+                policeControl.controlObject.Delete();
+                policeControl.controlObject = null;
             }
         }
 
@@ -80,17 +91,6 @@ namespace WiredPlayers.factions
                     police.TriggerEvent("updatePoliceReinforces", reinforcesJsonList);
                 }
             }
-        }
-
-        private TextLabel PDEquipmentLabel;
-
-        [ServerEvent(Event.ResourceStart)]
-        public void OnResourceStart()
-        {
-            // Initialize reinforces updater
-            Timer reinforcesTimer = new Timer(UpdateReinforcesRequests, null, 250, 250);
-            PDEquipmentLabel = NAPI.TextLabel.CreateTextLabel("/" + Commands.COM_EQUIPMENT, new Vector3(450.8223, -992.0941, 30.78958), 10.0f, 0.5f, 4, new Color(255, 255, 153), false, 0);
-            NAPI.TextLabel.CreateTextLabel(GenRes.equipment_help, new Vector3(450.8223, -992.0941, 30.68958), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
         }
 
         [RemoteEvent("applyCrimesToPlayer")]
@@ -125,7 +125,7 @@ namespace WiredPlayers.factions
             {
                 foreach (PoliceControlModel policeControlModel in policeControlList)
                 {
-                    if (!policeControlModel.controlObject.Exists && policeControlModel.name == policeControl)
+                    if (policeControlModel.controlObject == null && policeControlModel.name == policeControl)
                     {
                         policeControlModel.controlObject = NAPI.Object.CreateObject(policeControlModel.item, policeControlModel.position, policeControlModel.rotation);
                     }
@@ -137,7 +137,7 @@ namespace WiredPlayers.factions
                 List<PoliceControlModel> deletedPoliceControlModels = new List<PoliceControlModel>();
                 foreach (PoliceControlModel policeControlModel in policeControlList)
                 {
-                    if (policeControlModel.controlObject.Exists && policeControlModel.name != policeControl)
+                    if (policeControlModel.controlObject != null && policeControlModel.name != policeControl)
                     {
                         if (policeControlModel.name != string.Empty)
                         {
@@ -161,7 +161,7 @@ namespace WiredPlayers.factions
                             });
                         }
                     }
-                    else if (!policeControlModel.controlObject.Exists && policeControlModel.name == policeControl)
+                    else if (policeControlModel.controlObject == null && policeControlModel.name == policeControl)
                     {
                         Task.Factory.StartNew(() =>
                         {
@@ -177,7 +177,7 @@ namespace WiredPlayers.factions
             {
                 foreach (PoliceControlModel policeControlModel in policeControlList)
                 {
-                    if (policeControlModel.controlObject.Exists && policeControlModel.name == policeControl)
+                    if (policeControlModel.controlObject != null && policeControlModel.name == policeControl)
                     {
                         policeControlModel.controlObject.Delete();
                     }
@@ -201,7 +201,7 @@ namespace WiredPlayers.factions
                 List<PoliceControlModel> deletedPoliceControlModels = new List<PoliceControlModel>();
                 foreach (PoliceControlModel policeControlModel in policeControlList)
                 {
-                    if (policeControlModel.controlObject.Exists && policeControlModel.name != policeControlTarget)
+                    if (policeControlModel.controlObject != null && policeControlModel.name != policeControlTarget)
                     {
                         if (policeControlModel.name != string.Empty)
                         {
@@ -258,7 +258,7 @@ namespace WiredPlayers.factions
             }
             else
             {
-                Vehicle vehicle = Globals.GetClosestVehicle(player, 3.5f);
+                Vehicle vehicle = Vehicles.GetClosestVehicle(player, 3.5f);
                 if (vehicle == null)
                 {
                     int vehicleId = vehicle.GetData(EntityData.VEHICLE_ID);
@@ -531,7 +531,7 @@ namespace WiredPlayers.factions
             {
                 player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_is_dead);
             }
-            else if (player.Position.DistanceTo(PDEquipmentLabel.Position) > 2.0f)
+            else if (player.Position.DistanceTo(equipmentLabel.Position) > 2.0f)
             {
                 player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_not_in_room_lockers);
             }
@@ -724,7 +724,7 @@ namespace WiredPlayers.factions
                     case Commands.ARG_CLEAR:
                         foreach (PoliceControlModel policeControl in policeControlList)
                         {
-                            if (policeControl.controlObject.Exists)
+                            if (policeControl.controlObject != null)
                             {
                                 policeControl.controlObject.Delete();
                             }

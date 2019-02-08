@@ -45,15 +45,16 @@ namespace WiredPlayers.parking
 
         public static int GetParkedCarAmount(ParkingModel parking)
         {
-            int totalVehicles = 0;
-            foreach (ParkedCarModel parkedCar in parkedCars)
-            {
-                if (parkedCar.parkingId == parking.id)
-                {
-                    totalVehicles++;
-                }
-            }
-            return totalVehicles;
+            // Get all the vehicles in a parking
+            return parkedCars.Count(parkedCar => parkedCar.parkingId == parking.id);
+        }
+
+        public static VehicleModel GetParkedVehicleById(int vehicleId)
+        {
+            // Get the vehicle parked with the given identifier
+            ParkedCarModel parkedCar = parkedCars.Where(parkedVehicle => parkedVehicle.vehicle.id == vehicleId).FirstOrDefault();
+
+            return parkedCar?.vehicle;
         }
 
         public static string GetParkingLabelText(int type)
@@ -79,30 +80,14 @@ namespace WiredPlayers.parking
 
         public static ParkingModel GetParkingById(int parkingId)
         {
-            ParkingModel parking = null;
-            foreach (ParkingModel parkingModel in parkingList)
-            {
-                if (parkingModel.id == parkingId)
-                {
-                    parking = parkingModel;
-                    break;
-                }
-            }
-            return parking;
+            // Get the parking given an specific identifier
+            return parkingList.Where(parkingModel => parkingModel.id == parkingId).FirstOrDefault();
         }
 
         private static ParkedCarModel GetParkedVehicle(int vehicleId)
         {
-            ParkedCarModel vehicle = null;
-            foreach (ParkedCarModel parkedCar in parkedCars)
-            {
-                if (parkedCar.vehicle.id == vehicleId)
-                {
-                    vehicle = parkedCar;
-                    break;
-                }
-            }
-            return vehicle;
+            // Get the parked vehicle given an specific identifier
+            return parkedCars.Where(parkedCar => parkedCar.vehicle.id == vehicleId).FirstOrDefault();
         }
 
         private void PlayerParkVehicle(Client player, ParkingModel parking)
@@ -224,7 +209,7 @@ namespace WiredPlayers.parking
         [Command(Commands.COM_UNPARK, Commands.HLP_UNPARK_COMMAND)]
         public void UnparkCommand(Client player, int vehicleId)
         {
-            VehicleModel vehicle = Vehicles.GetParkedVehicleById(vehicleId);
+            VehicleModel vehicle = Parking.GetParkedVehicleById(vehicleId);
 
             if (vehicle == null)
             {

@@ -50,8 +50,9 @@ function populateInventory(inventoryJson, title) {
 				// Check if a new item has been selected
 				if(selected !== i) {
 					// Get the previous selection
-					if(selected != undefined) {
-						let previousSelected = document.getElementsByClassName('inventory-item')[selected];
+					if(selected !== undefined) {
+						let index = getItemIndexInArray(inventory, selected);
+						let previousSelected = document.getElementsByClassName('inventory-item')[index];
 						previousSelected.classList.remove('active-item');
 					}
 					
@@ -134,3 +135,14 @@ function showInventoryOptions(optionsArrayJson, dropable) {
 		timeout = setTimeout(function() { showInventoryOptions(optionsArrayJson, dropable); }, 100);
 	}
 }
+
+function getItemIndexInArray(inventory, itemId) {
+	for(let i = 0; i < inventory.length; i++) {
+		if(inventory[i].id === itemId) {
+			return i;
+		}
+	}
+	
+	return -1;
+}
+	

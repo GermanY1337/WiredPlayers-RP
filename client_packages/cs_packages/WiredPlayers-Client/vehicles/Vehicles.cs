@@ -1,9 +1,8 @@
 ﻿using RAGE;
-using RAGE.NUI;
 using RAGE.Elements;
 using WiredPlayers_Client.globals;
-using System;
 using System.Drawing;
+using System;
 
 namespace WiredPlayers_Client.vehicles
 {

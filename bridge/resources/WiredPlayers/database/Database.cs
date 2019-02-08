@@ -2609,7 +2609,7 @@ namespace WiredPlayers.database
                     connection.Open();
                     MySqlCommand command = connection.CreateCommand();
 
-                    command.CommandText = "INSERT INTO admin (source, target, action, time, reason, date) VALUES (@source, @target, @action, @time, @reason, NOW())";
+                    command.CommandText = "INSERT INTO `admin` (`source`, `target`, `action`, `time`, `reason`, `date`) VALUES (@source, @target, @action, @time, @reason, CURRENT_TIMESTAMP)";
                     command.Parameters.AddWithValue("@source", admin);
                     command.Parameters.AddWithValue("@target", player);
                     command.Parameters.AddWithValue("@action", action);

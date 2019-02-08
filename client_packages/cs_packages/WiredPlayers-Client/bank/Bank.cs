@@ -34,7 +34,7 @@ namespace WiredPlayers_Client.bank
             int money = (int)Player.LocalPlayer.GetSharedData("PLAYER_BANK");
 
             // Update the balance on the screen
-            Browser.CreateBrowserEvent(new object[] { "updateAccountMoney", money });
+            Browser.ExecuteFunctionEvent(new object[] { "updateAccountMoney", money });
         }
 
         private void ExecuteBankOperationEvent(object[] args)

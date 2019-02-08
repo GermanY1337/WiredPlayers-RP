@@ -23,6 +23,12 @@ namespace WiredPlayers.jobs
 
         public Thief()
         {
+            foreach (Vector3 pawnShop in Constants.PAWN_SHOP)
+            {
+                // Create pawn shops
+                NAPI.TextLabel.CreateTextLabel(GenRes.pawn_shop, pawnShop, 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
+            }
+
             // Initialize the variables
             robberyTimerList = new Dictionary<int, Timer>();
         }
@@ -197,16 +203,6 @@ namespace WiredPlayers.jobs
             }
         }
 
-        [ServerEvent(Event.ResourceStart)]
-        public void OnResourceStart()
-        {
-            foreach (Vector3 pawnShop in Constants.PAWN_SHOP)
-            {
-                // Create pawn shops
-                NAPI.TextLabel.CreateTextLabel(GenRes.pawn_shop, pawnShop, 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
-            }
-        }
-
         [ServerEvent(Event.PlayerExitVehicle)]
         public void OnPlayerExitVehicle(Client player, Vehicle vehicle)
         {
@@ -252,7 +248,7 @@ namespace WiredPlayers.jobs
                 }
                 else
                 {
-                    Vehicle vehicle = Globals.GetClosestVehicle(player);
+                    Vehicle vehicle = Vehicles.GetClosestVehicle(player);
                     if (vehicle == null)
                     {
                         player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.no_vehicles_near);

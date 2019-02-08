@@ -10,7 +10,7 @@ namespace WiredPlayers_Client.house
 {
     class House : Events.Script
     {
-        private List<Clothes> clothes = null;
+        private List<ClothesModel> clothes = null;
 
         public House()
         {
@@ -40,12 +40,12 @@ namespace WiredPlayers_Client.house
         {
             // Get the variables from the array
             List<string> clothesNames = JsonConvert.DeserializeObject<List<string>>(args[1].ToString());
-            clothes = JsonConvert.DeserializeObject<List<Clothes>>(args[0].ToString());
+            clothes = JsonConvert.DeserializeObject<List<ClothesModel>>(args[0].ToString());
 
             for(int i = 0; i < clothesNames.Count; i++)
             {
                 // Add the name for each clothes
-                clothes[i].name = clothesNames[i];
+                clothes[i].description = clothesNames[i];
             }
 
             // Show clothes of the selected type

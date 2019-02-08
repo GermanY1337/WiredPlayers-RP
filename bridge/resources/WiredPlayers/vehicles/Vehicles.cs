@@ -170,29 +170,22 @@ namespace WiredPlayers.vehicles
 
         public static Vehicle GetVehicleById(int vehicleId)
         {
-            Vehicle vehicle = null;
-
-            foreach (Vehicle veh in NAPI.Pools.GetAllVehicles())
-            {
-                if (veh.GetData(EntityData.VEHICLE_ID) == vehicleId)
-                {
-                    vehicle = veh;
-                    break;
-                }
-            }
-
-            return vehicle;
+            // Get the vehicle given the identifier
+            return NAPI.Pools.GetAllVehicles().Where(veh => veh.GetData(EntityData.VEHICLE_ID) == vehicleId).FirstOrDefault();
         }
 
-        public static VehicleModel GetParkedVehicleById(int vehicleId)
+        public static Vehicle GetClosestVehicle(Client player, float distance = 2.5f)
         {
-            VehicleModel vehicle = null;
-            foreach (ParkedCarModel parkedVehicle in Parking.parkedCars)
+            Vehicle vehicle = null;
+            foreach (Vehicle veh in NAPI.Pools.GetAllVehicles())
             {
-                if (parkedVehicle.vehicle.id == vehicleId)
+                Vector3 vehPos = veh.Position;
+                float distanceVehicleToPlayer = player.Position.DistanceTo(vehPos);
+
+                if (distanceVehicleToPlayer < distance && player.Dimension == veh.Dimension)
                 {
-                    vehicle = parkedVehicle.vehicle;
-                    break;
+                    distance = distanceVehicleToPlayer;
+                    vehicle = veh;
                 }
             }
             return vehicle;
@@ -534,7 +527,7 @@ namespace WiredPlayers.vehicles
             }
             else
             {
-                Vehicle vehicle = Globals.GetClosestVehicle(player);
+                Vehicle vehicle = GetClosestVehicle(player);
                 if (vehicle == null)
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.no_vehicles_near);
@@ -569,7 +562,7 @@ namespace WiredPlayers.vehicles
             }
             else
             {
-                Vehicle vehicle = Globals.GetClosestVehicle(player, 3.75f);
+                Vehicle vehicle = GetClosestVehicle(player, 3.75f);
                 if (vehicle != null)
                 {
                     if (IsPlayerVehicleOwner(player, vehicle) == false && player.GetData(EntityData.PLAYER_JOB) != Constants.JOB_MECHANIC)
@@ -604,7 +597,7 @@ namespace WiredPlayers.vehicles
             else
             {
                 // Get closest vehicle
-                Vehicle vehicle = Globals.GetClosestVehicle(player, 3.75f);
+                Vehicle vehicle = GetClosestVehicle(player, 3.75f);
 
                 if (vehicle != null)
                 {
@@ -805,7 +798,7 @@ namespace WiredPlayers.vehicles
                             else
                             {
                                 // Check if the vehicle is parked
-                                VehicleModel vehicleModel = GetParkedVehicleById(vehicleId);
+                                VehicleModel vehicleModel = Parking.GetParkedVehicleById(vehicleId);
 
                                 if (vehicleModel != null)
                                 {
@@ -830,7 +823,7 @@ namespace WiredPlayers.vehicles
                     if (vehicle == null)
                     {
                         // Check if the vehicle is parked
-                        VehicleModel vehicleModel = GetParkedVehicleById(vehicleId);
+                        VehicleModel vehicleModel = Parking.GetParkedVehicleById(vehicleId);
 
                         if (vehicle == null)
                         {
@@ -910,7 +903,7 @@ namespace WiredPlayers.vehicles
             if (vehicle == null)
             {
                 // Check if the vehicle is parked
-                VehicleModel vehModel = GetParkedVehicleById(vehicleId);
+                VehicleModel vehModel = Parking.GetParkedVehicleById(vehicleId);
 
                 if (vehModel != null)
                 {
@@ -968,7 +961,7 @@ namespace WiredPlayers.vehicles
             {
                 if (business.type == Constants.BUSINESS_TYPE_GAS_STATION && player.Position.DistanceTo(business.position) < 20.5f)
                 {
-                    Vehicle vehicle = Globals.GetClosestVehicle(player);
+                    Vehicle vehicle = GetClosestVehicle(player);
                     
                     int faction = player.GetData(EntityData.PLAYER_FACTION);
                     int job = player.GetData(EntityData.PLAYER_JOB);
@@ -1052,7 +1045,7 @@ namespace WiredPlayers.vehicles
 
                 if (item.hash == Constants.ITEM_HASH_JERRYCAN)
                 {
-                    Vehicle vehicle = Globals.GetClosestVehicle(player);
+                    Vehicle vehicle = GetClosestVehicle(player);
                     if (vehicle != null)
                     {
                         if (IsPlayerVehicleOwner(player, vehicle) == true || player.GetData(EntityData.PLAYER_JOB) == Constants.JOB_MECHANIC)

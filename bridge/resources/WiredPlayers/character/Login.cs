@@ -149,6 +149,9 @@ namespace WiredPlayers.character
             player.SetClothes(3, 15, 0);
             player.SetClothes(8, 15, 0);
 
+            // Remove all the tattoos
+            Customization.RemovePlayerTattoos(player);
+
             // Set player's position
             player.Transparency = 255;
             player.Rotation = new Vector3(0.0f, 0.0f, 180.0f);

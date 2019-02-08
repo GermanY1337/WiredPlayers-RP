@@ -212,7 +212,7 @@ namespace WiredPlayers.admin
                         case Commands.ARG_INFO:
                             if (player.GetData(EntityData.PLAYER_ADMIN_RANK) > Constants.STAFF_SUPPORT)
                             {
-                                veh = Globals.GetClosestVehicle(player);
+                                veh = Vehicles.GetClosestVehicle(player);
                                 if (veh == null)
                                 {
                                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.no_vehicles_near);
@@ -282,7 +282,7 @@ namespace WiredPlayers.admin
                                         {
                                             if (arguments.Length == 4)
                                             {
-                                                veh = Globals.GetClosestVehicle(player);
+                                                veh = Vehicles.GetClosestVehicle(player);
                                                 if (veh == null)
                                                 {
                                                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.no_vehicles_near);
@@ -371,7 +371,7 @@ namespace WiredPlayers.admin
 
                                             if (arguments.Length == 3)
                                             {
-                                                veh = Globals.GetClosestVehicle(player);
+                                                veh = Vehicles.GetClosestVehicle(player);
                                                 if (veh == null)
                                                 {
                                                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.no_vehicles_near);
@@ -433,7 +433,7 @@ namespace WiredPlayers.admin
                                         {
                                             if (arguments.Length == 4)
                                             {
-                                                veh = Globals.GetClosestVehicle(player);
+                                                veh = Vehicles.GetClosestVehicle(player);
                                                 if (veh == null)
                                                 {
                                                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.no_vehicles_near);
@@ -504,7 +504,7 @@ namespace WiredPlayers.admin
                         case Commands.ARG_LOCK:
                             if (player.GetData(EntityData.PLAYER_ADMIN_RANK) > Constants.STAFF_SUPPORT)
                             {
-                                veh = Globals.GetClosestVehicle(player);
+                                veh = Vehicles.GetClosestVehicle(player);
                                 if (veh == null)
                                 {
                                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.no_vehicles_near);
@@ -564,7 +564,7 @@ namespace WiredPlayers.admin
                                     veh = Vehicles.GetVehicleById(vehicleId);
                                     if (veh == null)
                                     {
-                                        VehicleModel vehModel = Vehicles.GetParkedVehicleById(vehicleId);
+                                        VehicleModel vehModel = Parking.GetParkedVehicleById(vehicleId);
 
                                         if (vehModel == null)
                                         {

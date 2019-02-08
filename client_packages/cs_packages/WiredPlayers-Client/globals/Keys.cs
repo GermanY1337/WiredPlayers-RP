@@ -99,6 +99,7 @@ namespace WiredPlayers_Client.globals
         private void BindConsoleKeys()
         {
             // Initialize the list
+<<<<<<< HEAD
             consoleKeys = new List<int>
             {
                 (int)ConsoleKey.E,
@@ -107,6 +108,15 @@ namespace WiredPlayers_Client.globals
                 (int)ConsoleKey.J,
                 (int)ConsoleKey.NumPad5
             };
+=======
+            consoleKeys = new List<int>()
+            {
+                (int)ConsoleKey.E,
+                (int)ConsoleKey.F,
+                (int)ConsoleKey.K
+            };
+
+>>>>>>> upstream/master
         }
     }
 }

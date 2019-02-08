@@ -10,23 +10,7 @@ namespace WiredPlayers.jobs
 {
     public class Job : Script
     {
-        public static int GetJobPoints(Client player, int job)
-        {
-            string jobPointsString = player.GetData(EntityData.PLAYER_JOB_POINTS);
-            return int.Parse(jobPointsString.Split(',')[job]);
-        }
-
-        public static void SetJobPoints(Client player, int job, int points)
-        {
-            string jobPointsString = player.GetData(EntityData.PLAYER_JOB_POINTS);
-            string[] jobPointsArray = jobPointsString.Split(',');
-            jobPointsArray[job] = points.ToString();
-            jobPointsString = string.Join(",", jobPointsArray);
-            player.SetData(EntityData.PLAYER_JOB_POINTS, jobPointsString);
-        }
-
-        [ServerEvent(Event.ResourceStart)]
-        public void OnResourceStart()
+        public Job()
         {
             Blip trashBlip = NAPI.Blip.CreateBlip(new Vector3(-322.088f, -1546.014f, 31.01991f));
             trashBlip.Name = GenRes.garbage_job;
@@ -48,6 +32,21 @@ namespace WiredPlayers.jobs
                 NAPI.TextLabel.CreateTextLabel("/" + Commands.COM_JOB, job.position, 10.0f, 0.5f, 4, new Color(255, 255, 153), false, 0);
                 NAPI.TextLabel.CreateTextLabel(GenRes.job_help, new Vector3(job.position.X, job.position.Y, job.position.Z - 0.1f), 10.0f, 0.5f, 4, new Color(0, 0, 0), false, 0);
             }
+        }
+
+        public static int GetJobPoints(Client player, int job)
+        {
+            string jobPointsString = player.GetData(EntityData.PLAYER_JOB_POINTS);
+            return int.Parse(jobPointsString.Split(',')[job]);
+        }
+
+        public static void SetJobPoints(Client player, int job, int points)
+        {
+            string jobPointsString = player.GetData(EntityData.PLAYER_JOB_POINTS);
+            string[] jobPointsArray = jobPointsString.Split(',');
+            jobPointsArray[job] = points.ToString();
+            jobPointsString = string.Join(",", jobPointsArray);
+            player.SetData(EntityData.PLAYER_JOB_POINTS, jobPointsString);
         }
 
         [Command(Commands.COM_JOB, Commands.HLP_JOB_COMMAND)]

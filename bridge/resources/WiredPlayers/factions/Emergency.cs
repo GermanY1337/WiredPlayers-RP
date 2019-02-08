@@ -137,37 +137,44 @@ namespace WiredPlayers.factions
         {
             Client target = int.TryParse(targetString, out int targetId) ? Globals.GetPlayerById(targetId) : NAPI.Player.GetPlayerFromName(targetString);
 
-            if (target != null && player.GetData(EntityData.PLAYER_FACTION) == Constants.FACTION_EMERGENCY)
+            if(target == null)
             {
-                if (target.Health < 100)
-                {
-                    string playerMessage = string.Format(InfoRes.medic_healed_player, target.Name);
-                    string targetMessage = string.Format(InfoRes.player_healed_medic, player.Name);
-
-                    // We heal the character
-                    target.Health = 100;
-
-                    foreach (Client targetPlayer in NAPI.Pools.GetAllPlayers())
-                    {
-                        if (targetPlayer.Position.DistanceTo(player.Position) < 20.0f)
-                        {
-                            string message = string.Format(InfoRes.medic_reanimated, player.Name, target.Name);
-                            targetPlayer.SendChatMessage(Constants.COLOR_CHAT_ME + message);
-                        }
-                    }
-                    
-                    player.SendChatMessage(Constants.COLOR_INFO + playerMessage);
-                   target.SendChatMessage(Constants.COLOR_INFO + targetMessage);
-                }
-                else
-                {
-                    player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_not_hurt);
-                }
-            }
-            else
-            {
+                // The player is not connected
                 player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_not_found);
+                return;
             }
+
+            if(player.GetData(EntityData.PLAYER_FACTION) != Constants.FACTION_EMERGENCY)
+            {
+                // The player is not a medic
+                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_not_emergency_faction);
+                return;
+            }
+
+            if(target.Health >= 100)
+            {
+                // The target player is not injured
+                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_not_hurt);
+                return;
+            }
+
+            // We heal the character
+            target.Health = 100;
+
+            foreach (Client targetPlayer in NAPI.Pools.GetAllPlayers())
+            {
+                if (targetPlayer.Position.DistanceTo(player.Position) < 20.0f)
+                {
+                    string message = string.Format(InfoRes.medic_reanimated, player.Name, target.Name);
+                    targetPlayer.SendChatMessage(Constants.COLOR_CHAT_ME + message);
+                }
+            }
+
+
+            string playerMessage = string.Format(InfoRes.medic_healed_player, target.Name);
+            string targetMessage = string.Format(InfoRes.player_healed_medic, player.Name);
+            player.SendChatMessage(Constants.COLOR_INFO + playerMessage);
+            target.SendChatMessage(Constants.COLOR_INFO + targetMessage);
         }
 
         [Command(Commands.COM_REANIMATE, Commands.HLP_REANIMATE_COMMAND)]

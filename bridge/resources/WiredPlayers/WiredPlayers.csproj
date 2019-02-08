@@ -12,8 +12,12 @@
     <None Remove="internationalization\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="gtanetwork.api" Version="0.3.6" />
     <PackageReference Include="MySql.Data" Version="8.0.13" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Bootstrapper">
+      <HintPath>..\..\runtime\Bootstrapper.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="messages\error\ErrRes.Designer.cs">

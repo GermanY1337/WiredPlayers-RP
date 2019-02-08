@@ -20,48 +20,34 @@ namespace WiredPlayers.factions
         public static List<ChannelModel> channelList;
         public static List<FactionWarningModel> factionWarningList;
 
+        public Faction()
+        {
+            // Initialize the required fields
+            factionWarningList = new List<FactionWarningModel>();
+        }
+
         public static string GetPlayerFactionRank(Client player)
         {
             string rankString = string.Empty;
             int faction = player.GetData(EntityData.PLAYER_FACTION);
             int rank = player.GetData(EntityData.PLAYER_RANK);
-            foreach (FactionModel factionModel in Constants.FACTION_RANK_LIST)
-            {
-                if (factionModel.faction == faction && factionModel.rank == rank)
-                {
-                    rankString = player.GetData(EntityData.PLAYER_SEX) == Constants.SEX_MALE ? factionModel.descriptionMale : factionModel.descriptionFemale;
-                    break;
-                }
-            }
-            return rankString;
+
+            // Get the player faction
+            FactionModel factionModel = Constants.FACTION_RANK_LIST.Where(fact => fact.faction == faction && fact.rank == rank).FirstOrDefault();
+
+            return factionModel == null ? string.Empty : (player.GetData(EntityData.PLAYER_SEX) == Constants.SEX_MALE ? factionModel.descriptionMale : factionModel.descriptionFemale);
         }
 
         public static FactionWarningModel GetFactionWarnByTarget(int playerId, int faction)
         {
-            FactionWarningModel warn = null;
-            foreach (FactionWarningModel factionWarn in factionWarningList)
-            {
-                if (factionWarn.playerId == playerId && factionWarn.faction == faction)
-                {
-                    warn = factionWarn;
-                    break;
-                }
-            }
-            return warn;
+            // Get the faction warn for the given faction
+            return factionWarningList.Where(factionWarn => factionWarn.playerId == playerId && factionWarn.faction == faction).FirstOrDefault();
         }
 
         private ChannelModel GetPlayerOwnedChannel(int playerId)
         {
-            ChannelModel channel = null;
-            foreach (ChannelModel channelModel in channelList)
-            {
-                if (channelModel.owner == playerId)
-                {
-                    channel = channelModel;
-                    break;
-                }
-            }
-            return channel;
+            // Get the channel owned by a player
+            return channelList.Where(channelModel => channelModel.owner == playerId).FirstOrDefault();
         }
 
         private string GetMd5Hash(MD5 md5Hash, string input)
@@ -78,20 +64,8 @@ namespace WiredPlayers.factions
 
         private bool CheckInternalAffairs(int faction, Client target)
         {
-            bool isInternalAffairs = false;
-
-            if (faction == Constants.FACTION_TOWNHALL && (target.GetData(EntityData.PLAYER_FACTION) == Constants.FACTION_POLICE && target.GetData(EntityData.PLAYER_RANK) == 7))
-            {
-                isInternalAffairs = true;
-            }
-
-            return isInternalAffairs;
-        }
-
-        [ServerEvent(Event.ResourceStart)]
-        public void OnResourceStart()
-        {
-            factionWarningList = new List<FactionWarningModel>();
+            // Check if the player is from Internal Affairs
+            return faction == Constants.FACTION_TOWNHALL && (target.GetData(EntityData.PLAYER_FACTION) == Constants.FACTION_POLICE && target.GetData(EntityData.PLAYER_RANK) == 7);
         }
 
         [ServerEvent(Event.PlayerEnterCheckpoint)]

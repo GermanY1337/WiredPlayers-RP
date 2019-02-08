@@ -99,6 +99,25 @@ namespace WiredPlayers.character
             }
         }
 
+        public static void RemovePlayerTattoos(Client player)
+        {
+            // Get the tattoos from the player
+            int playerId = player.GetData(EntityData.PLAYER_SQL_ID);
+            List<TattooModel> playerTattoos = Globals.tattooList.Where(t => t.player == playerId).ToList();
+
+            foreach (TattooModel tattoo in playerTattoos)
+            {
+                // Add each tattoo to the player
+                Decoration decoration = new Decoration();
+                {
+                    decoration.Collection = NAPI.Util.GetHashKey(tattoo.library);
+                    decoration.Overlay = NAPI.Util.GetHashKey(tattoo.hash);
+                }
+
+                player.RemoveDecoration(decoration);
+            }
+        }
+
         private static int[] GetOverlayData(SkinModel skinModel, int index)
         {
             int[] overlayData = new int[2];

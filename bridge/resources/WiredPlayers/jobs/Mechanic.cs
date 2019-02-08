@@ -53,17 +53,10 @@ namespace WiredPlayers.jobs
 
         private int GetVehicleTunningComponent(int vehicleId, int slot)
         {
-            int component = 255;
+            // Get the component on the specified slot
+            TunningModel tunning = tunningList.Where(tunningModel => tunningModel.vehicle == vehicleId && tunningModel.slot == slot).FirstOrDefault();
 
-            foreach (TunningModel tunningModel in tunningList)
-            {
-                if (tunningModel.vehicle == vehicleId && tunningModel.slot == slot)
-                {
-                    component = tunningModel.component;
-                    break;
-                }
-            }
-            return component;
+            return tunning == null ? 255 : tunning.component;
         }
 
         [RemoteEvent("repaintVehicle")]

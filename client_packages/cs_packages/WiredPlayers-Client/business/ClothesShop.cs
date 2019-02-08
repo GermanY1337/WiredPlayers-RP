@@ -11,7 +11,7 @@ namespace WiredPlayers_Client.business
     class ClothesShop : Events.Script
     {
         private int selectedIndex = -1;
-        private List<Clothes> clothesTypes;
+        private List<ClothesModel> clothesTypes;
 
         public ClothesShop()
         {
@@ -26,10 +26,10 @@ namespace WiredPlayers_Client.business
         private void ShowClothesBusinessPurchaseMenuEvent(object[] args)
         {
             // Initialize the clothes types
-            clothesTypes = new List<Clothes>();
+            clothesTypes = new List<ClothesModel>();
 
             // Get the variables from the arguments
-            int business = Convert.ToInt32(args[0]);
+            string business = args[0].ToString();
             float price = (float)Convert.ToDouble(args[1]);
 
             // Show clothes menu
@@ -53,16 +53,16 @@ namespace WiredPlayers_Client.business
             int slot = Constants.CLOTHES_TYPES[selectedIndex].slot;
 
             // Get clothes list for the type
-            clothesTypes = JsonConvert.DeserializeObject<List<Clothes>>(clothesJson);
+            clothesTypes = JsonConvert.DeserializeObject<List<ClothesModel>>(clothesJson);
 
-            foreach (Clothes clothes in clothesTypes)
+            foreach (ClothesModel clothes in clothesTypes)
             {
                 // Get the number of available textures
                 clothes.textures = type == 0 ? Player.LocalPlayer.GetNumberOfTextureVariations(slot, clothes.clothesId) : Player.LocalPlayer.GetNumberOfPropTextureVariations(slot, clothes.clothesId);
             }
 
             // Show all the clothes from the selected type
-            Browser.ExecuteFunctionEvent(new object[] { "populateTypeClothes", JsonConvert.SerializeObject(clothesTypes) });
+            Browser.ExecuteFunctionEvent(new object[] { "populateTypeClothes", Globals.EscapeJsonCharacters(JsonConvert.SerializeObject(clothesTypes)) });
         }
 
         private void ReplacePlayerClothesEvent(object[] args)
@@ -89,11 +89,13 @@ namespace WiredPlayers_Client.business
             int index = Convert.ToInt32(args[0]);
 
             // Create the clothes model
-            Clothes clothesModel = new Clothes();
-            clothesModel.type = clothesTypes[index].type;
-            clothesModel.slot = clothesTypes[index].bodyPart;
-            clothesModel.drawable = clothesTypes[index].clothesId;
-            clothesModel.texture = Convert.ToInt32(args[1]);
+            ClothesModel clothesModel = new ClothesModel();
+            {
+                clothesModel.type = clothesTypes[index].type;
+                clothesModel.slot = clothesTypes[index].bodyPart;
+                clothesModel.drawable = clothesTypes[index].clothesId;
+                clothesModel.texture = Convert.ToInt32(args[1]);
+            }
 
             // Purchase the clothes
             Events.CallRemote("clothesItemSelected", JsonConvert.SerializeObject(clothesModel));

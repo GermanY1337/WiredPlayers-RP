@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Linq;
 
 namespace WiredPlayers.weapons
 {
@@ -67,72 +68,36 @@ namespace WiredPlayers.weapons
 
         public static string GetGunAmmunitionType(WeaponHash weapon)
         {
-            string type = string.Empty;
-            foreach (GunModel gun in Constants.GUN_LIST)
-            {
-                if (weapon == gun.weapon)
-                {
-                    type = gun.ammunition;
-                    break;
-                }
-            }
-            return type;
+            // Get the ammunition type given a weapon
+            GunModel gunModel = Constants.GUN_LIST.Where(gun => weapon == gun.weapon).FirstOrDefault();
+
+            return gunModel == null ? string.Empty : gunModel.ammunition;
         }
 
         public static int GetGunAmmunitionCapacity(WeaponHash weapon)
         {
-            int amount = 0;
-            foreach (GunModel gun in Constants.GUN_LIST)
-            {
-                if (weapon == gun.weapon)
-                {
-                    amount = gun.capacity;
-                    break;
-                }
-            }
-            return amount;
+            // Get the capacity from a weapons's clip magazine
+            GunModel gunModel = Constants.GUN_LIST.Where(gun => weapon == gun.weapon).FirstOrDefault();
+
+            return gunModel == null ? 0 : gunModel.capacity;
         }
 
         public static ItemModel GetEquippedWeaponItemModelByHash(int playerId, WeaponHash weapon)
         {
-            ItemModel item = null;
-            foreach (ItemModel itemModel in Globals.itemList)
-            {
-                if (itemModel.ownerIdentifier == playerId && (itemModel.ownerEntity == Constants.ITEM_ENTITY_WHEEL || itemModel.ownerEntity == Constants.ITEM_ENTITY_RIGHT_HAND) && weapon.ToString() == itemModel.hash)
-                {
-                    item = itemModel;
-                    break;
-                }
-            }
-            return item;
+            // Get the equipped weapon's item model
+            return Globals.itemList.Where(itemModel => itemModel.ownerIdentifier == playerId && (itemModel.ownerEntity == Constants.ITEM_ENTITY_WHEEL || itemModel.ownerEntity == Constants.ITEM_ENTITY_RIGHT_HAND) && weapon.ToString() == itemModel.hash).FirstOrDefault();
         }
 
         public static WeaponCrateModel GetClosestWeaponCrate(Client player, float distance = 1.5f)
         {
-            WeaponCrateModel weaponCrate = null;
-            foreach (WeaponCrateModel weaponCrateModel in weaponCrateList)
-            {
-                if (player.Position.DistanceTo(weaponCrateModel.position) < distance && weaponCrateModel.carriedEntity == string.Empty)
-                {
-                    weaponCrate = weaponCrateModel;
-                    break;
-                }
-            }
-            return weaponCrate;
+            // Get the closest weapon crate
+            return weaponCrateList.Where(weaponCrateModel => player.Position.DistanceTo(weaponCrateModel.position) < distance && weaponCrateModel.carriedEntity == string.Empty).FirstOrDefault();
         }
 
         public static WeaponCrateModel GetPlayerCarriedWeaponCrate(int playerId)
         {
-            WeaponCrateModel weaponCrate = null;
-            foreach (WeaponCrateModel weaponCrateModel in weaponCrateList)
-            {
-                if (weaponCrateModel.carriedEntity == Constants.ITEM_ENTITY_PLAYER && weaponCrateModel.carriedIdentifier == playerId)
-                {
-                    weaponCrate = weaponCrateModel;
-                    break;
-                }
-            }
-            return weaponCrate;
+            // Get the weapon crate carried by the player
+            return weaponCrateList.Where(weaponCrateModel => weaponCrateModel.carriedEntity == Constants.ITEM_ENTITY_PLAYER && weaponCrateModel.carriedIdentifier == playerId).FirstOrDefault();
         }
 
         public static void WeaponsPrewarn()
@@ -327,7 +292,7 @@ namespace WiredPlayers.weapons
 
             foreach (WeaponCrateModel crate in weaponCrateList)
             {
-                if (crate.crateObject.Exists)
+                if (crate.crateObject != null)
                 {
                     crate.crateObject.Delete();
                 }
