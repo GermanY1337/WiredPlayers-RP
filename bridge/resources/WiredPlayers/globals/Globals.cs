@@ -3275,11 +3275,13 @@ namespace WiredPlayers.globals
         }
 
         private Vector3 weedFarm;
+        private Vector3 lsdFarm;
 
         [RemoteEvent("drugPickUp")]
         public void OnDrugPickUp(Client player)
         {
             weedFarm = new Vector3(2226.711f, 5576.737f, 53.86317f);
+            lsdFarm = new Vector3(-2446.695f, 2512.324f, 2.414596f);
 
             if (player.Position.DistanceTo(weedFarm) < 15.0f)
             {
@@ -3323,9 +3325,10 @@ namespace WiredPlayers.globals
                 }
                 else
                 {
-                    player.SendNotification("Die Blüte ist zu staub zerfallen :(");
+                    player.SendNotification("Die Blüte ist zu staub zerfallen");
                 }
             }
+            
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <RuntimeFrameworkVersion>2.0.7</RuntimeFrameworkVersion>
     <FileUpgradeFlags>40</FileUpgradeFlags>
     <UpgradeBackupLocation>C:\RAGEMP\server-files\bridge\resources\WiredPlayers\Backup1\</UpgradeBackupLocation>

@@ -30,6 +30,7 @@
         public const string COM_A = "a";
         public const string COM_RECON = "recon";
         public const string COM_RECOFF = "recoff";
+        public const string COM_OWNER = "owner";
         public const string COM_INFO = "info";
         public const string COM_POINTS = "points";
         public const string COM_GRAB = "grab";
@@ -188,7 +189,6 @@
         public const string COM_DOOR = "door";
         public const string COM_COMPLEMENT = "complement";
         public const string COM_PLAYER = "player";
-        public const string COM_DELIVER = "deliver";
 
         // Command arguments
         public const string ARG_INFO = "info";

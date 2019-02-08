@@ -106,7 +106,7 @@ namespace WiredPlayers.jobs
                     // Search for a player with vehicle keys
                     foreach (Client target in NAPI.Pools.GetAllPlayers())
                     {
-                        if (Vehicles.HasPlayerVehicleKeys(target, vehicle) || (vehicleFaction > 0 && target.GetData(EntityData.PLAYER_FACTION) == vehicleFaction))
+                        if (Vehicles.IsPlayerVehicleOwner(target, vehicle) || (vehicleFaction > 0 && target.GetData(EntityData.PLAYER_FACTION) == vehicleFaction))
                         {
                             if (target.Position.DistanceTo(player.Position) < 4.0f)
                             {
@@ -205,12 +205,12 @@ namespace WiredPlayers.jobs
 
             // Get player's product amount
             int playerId = player.GetData(EntityData.PLAYER_SQL_ID);
-            ItemModel item = Globals.GetPlayerItemModelFromHash(playerId, Constants.ITEM_HASH_BUSINESS_PRODUCTS);
+            int playerMoney = player.GetSharedData(EntityData.PLAYER_MONEY);
 
             // Calculate the cost for the tunning
             int totalProducts = Constants.TUNNING_PRICE_LIST.Where(x => x.slot == slot).First().products;
 
-            if (item != null && item.amount >= totalProducts)
+            if (playerMoney >= totalProducts)
             {
                 // Add component to database
                 TunningModel tunningModel = new TunningModel();
@@ -225,20 +225,14 @@ namespace WiredPlayers.jobs
                     tunningModel.id = Database.AddTunning(tunningModel);
                     tunningList.Add(tunningModel);
 
-                    // Remove consumed products
-                    item.amount -= totalProducts;
-
-                    // Update the amount into the database
-                    Database.UpdateItem(item);
-
                     // Confirmation message
                     player.SendChatMessage(Constants.COLOR_INFO + InfoRes.vehicle_tunning);
-                });                
+                });
+                player.SetSharedData(EntityData.PLAYER_MONEY, playerMoney - totalProducts);
             }
             else
             {
-                string message = string.Format(ErrRes.not_required_products, totalProducts);
-                player.SendChatMessage(Constants.COLOR_ERROR + message);
+                player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_not_enough_money);
             }
         }
 
@@ -326,7 +320,7 @@ namespace WiredPlayers.jobs
                             // Check a player with vehicle keys
                             foreach (Client target in NAPI.Pools.GetAllPlayers())
                             {
-                                if (Vehicles.HasPlayerVehicleKeys(target, vehicle) || (vehicleFaction > 0 && target.GetData(EntityData.PLAYER_FACTION) == vehicleFaction))
+                                if (Vehicles.IsPlayerVehicleOwner(target, vehicle) || (vehicleFaction > 0 && target.GetData(EntityData.PLAYER_FACTION) == vehicleFaction))
                                 {
                                     if (target.Position.DistanceTo(player.Position) < 4.0f)
                                     {

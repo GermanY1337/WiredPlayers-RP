@@ -3,13 +3,13 @@
   <info name="WiredPlayers" author="Xabi" type="gamemode"/>
   
   <!-- Gamemode library -->
-  <script src="bin/Debug/netcoreapp2.1/WiredPlayers.dll" />
+  <script src="bin/Debug/netcoreapp2.2/WiredPlayers.dll" />
 
   <settings>
     <!-- Database connection settings -->
     <setting name="host" value="127.0.0.1"/>
     <setting name="username" value="gta"/>
-    <setting name="password" value="gta5server-WP"/>
+    <setting name="password" value="Dnvp3gOmEOgmt13O"/>
     <setting name="database" value="gtav"/>
 
     <!-- Gamemode language settings -->

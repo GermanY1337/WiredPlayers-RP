@@ -1,6 +1,6 @@
-﻿using RAGE;
+﻿using System.Collections.Generic;
+using RAGE;
 using WiredPlayers_Client.model;
-using System.Collections.Generic;
 
 namespace WiredPlayers_Client.globals
 {
@@ -57,11 +57,6 @@ namespace WiredPlayers_Client.globals
             new CarPiece(12, "Brakes", 200), new CarPiece(18, "Turbo", 200)
         };
 
-        public static List<Vector3> TRUCKER_CRATES = new List<Vector3>()
-        {
-            new Vector3(1275.89f, -3282.81f, 5.90159f),
-            new Vector3(1275.54f, -3287.54f, 5.90159f),
-            new Vector3(1275.4f, -3293.04f, 5.90159f),
-        };
+        public static IEnumerable<Vector3> TRUCKER_CRATES { get; internal set; }
     }
 }

@@ -257,7 +257,7 @@ namespace WiredPlayers.jobs
                     {
                         player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.no_vehicles_near);
                     }
-                    else if (Vehicles.HasPlayerVehicleKeys(player, vehicle) == true)
+                    else if (Vehicles.IsPlayerVehicleOwner(player, vehicle) == true)
                     {
                         player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_cant_lockpick_own_vehicle);
                     }
@@ -338,7 +338,7 @@ namespace WiredPlayers.jobs
                 else if (player.VehicleSeat == (int)VehicleSeat.Driver)
                 {
                     Vehicle vehicle = player.Vehicle;
-                    if (Vehicles.HasPlayerVehicleKeys(player, vehicle) == true)
+                    if (Vehicles.IsPlayerVehicleOwner(player, vehicle) == true)
                     {
                         player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_cant_rob_own_vehicle);
                     }
@@ -395,7 +395,7 @@ namespace WiredPlayers.jobs
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_vehicle_driving);
                 }
-                else if (Vehicles.HasPlayerVehicleKeys(player, vehicle) == true)
+                else if (Vehicles.IsPlayerVehicleOwner(player, vehicle) == true)
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.player_cant_hotwire_own_vehicle);
                 }

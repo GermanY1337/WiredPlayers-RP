@@ -1,7 +1,7 @@
 ﻿using RAGE;
 using RAGE.Elements;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace WiredPlayers_Client.globals
 {
@@ -36,7 +36,7 @@ namespace WiredPlayers_Client.globals
                     if (releasedKey >= 0) continue;
 
                     // Check if the key is already up
-                    if(!Input.IsDown(key) && (currentTicks - downTicks) > KEY_PRESS_TIME)
+                    if(Input.IsUp(key) && (currentTicks - downTicks) > KEY_PRESS_TIME)
                     {
                         releasedKey = key;
                         pressedKeys.Remove(releasedKey);
@@ -87,18 +87,26 @@ namespace WiredPlayers_Client.globals
                         Events.CallRemote("drugPickUp");
                     }
                     break;
+                case (int)ConsoleKey.NumPad5:
+                    if(Player.LocalPlayer.Vehicle == null)
+                    {
+                        Browser.DestroyBrowserEvent(null);
+                    }
+                    break;
             }
         }
 
         private void BindConsoleKeys()
         {
             // Initialize the list
-            consoleKeys = new List<int>();
-
-            consoleKeys.Add((int)ConsoleKey.E);
-            consoleKeys.Add((int)ConsoleKey.F);
-            consoleKeys.Add((int)ConsoleKey.K);
-            consoleKeys.Add((int)ConsoleKey.J);
+            consoleKeys = new List<int>
+            {
+                (int)ConsoleKey.E,
+                (int)ConsoleKey.F,
+                (int)ConsoleKey.K,
+                (int)ConsoleKey.J,
+                (int)ConsoleKey.NumPad5
+            };
         }
     }
 }

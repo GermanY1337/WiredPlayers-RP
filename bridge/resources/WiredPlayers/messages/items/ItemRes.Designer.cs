@@ -616,5 +616,13 @@ namespace WiredPlayers.messages.items {
                 return ResourceManager.GetString("weed", resourceCulture);
             }
         }
+
+        public static string frog
+        {
+            get
+            {
+                return ResourceManager.GetString("frog", resourceCulture);
+            }
+        }
     }
 }

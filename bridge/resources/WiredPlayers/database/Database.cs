@@ -1638,6 +1638,35 @@ namespace WiredPlayers.database
             return parkingList;
         }
 
+        public static List<GarageModel> LoadAllGarages()
+        {
+            List<GarageModel> garagesList = new List<GarageModel>();
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                MySqlCommand command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM garages";
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        GarageModel garages = new GarageModel();
+                        float posX = reader.GetFloat("PosX");
+                        float posY = reader.GetFloat("PosY");
+                        float posZ = reader.GetFloat("PosZ");
+                        float pedRot = reader.GetFloat("PedRotation");
+
+                        garages.id = reader.GetInt32("id");
+                        garages.position = new Vector3(posX, posY, posZ);
+                    }
+                }
+            }
+
+            return garagesList;
+        }
+
         public static int AddParking(ParkingModel parking)
         {
             int parkingId = 0;

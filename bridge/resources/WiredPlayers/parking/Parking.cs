@@ -163,7 +163,7 @@ namespace WiredPlayers.parking
             }
             else
             {
-                if (Vehicles.HasPlayerVehicleKeys(player, player.Vehicle) && player.GetData(EntityData.PLAYER_FACTION) != Constants.FACTION_POLICE)
+                if (Vehicles.IsPlayerVehicleOwner(player, player.Vehicle) == false)
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_car_keys);
                 }
@@ -231,7 +231,7 @@ namespace WiredPlayers.parking
                 // There's no vehicle with that identifier
                 player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.vehicle_not_exists);
             }
-            else if (Vehicles.HasPlayerVehicleKeys(player, vehicle) == false)
+            else if (Vehicles.IsPlayerVehicleOwner(player, vehicle) == false)
             {
                 player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_car_keys);
             }

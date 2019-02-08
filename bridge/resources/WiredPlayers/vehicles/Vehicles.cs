@@ -131,7 +131,7 @@ namespace WiredPlayers.vehicles
             }
         }
 
-        public static bool HasPlayerVehicleKeys(Client player, object vehicle)
+      /*  public static bool HasPlayerVehicleKeys(Client player, object vehicle)
         {
             bool hasKeys = false;
             int vehicleId = vehicle is Vehicle ? ((Vehicle)vehicle).GetData(EntityData.VEHICLE_ID) : ((VehicleModel)vehicle).id;
@@ -148,6 +148,24 @@ namespace WiredPlayers.vehicles
             }
 
             return hasKeys;
+        } */
+
+        public static bool IsPlayerVehicleOwner(Client player, object vehicle)
+        {
+            bool isOwner = false;
+            int vehicleId = vehicle is Vehicle ? ((Vehicle)vehicle).GetData(EntityData.VEHICLE_ID) : ((VehicleModel)vehicle).id;
+            string vehicleOwner = vehicle is Vehicle ? ((Vehicle)vehicle).GetData(EntityData.VEHICLE_OWNER) : ((VehicleModel)vehicle).owner;
+
+            if (vehicleOwner == player.Name)
+            {
+                isOwner = true;
+            }
+            else
+            {
+                isOwner = false;
+            }
+
+            return isOwner;
         }
 
         public static Vehicle GetVehicleById(int vehicleId)
@@ -461,7 +479,7 @@ namespace WiredPlayers.vehicles
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.vehicle_start_weapon_unpacking);
                 }
-                else if (!HasPlayerVehicleKeys(player, vehicle) && vehicleFaction == Constants.FACTION_NONE)
+                else if (!IsPlayerVehicleOwner(player, vehicle) && vehicleFaction == Constants.FACTION_NONE)
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_car_keys);
                 }
@@ -521,7 +539,7 @@ namespace WiredPlayers.vehicles
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.no_vehicles_near);
                 }
-                else if (HasPlayerVehicleKeys(player, vehicle) == false)
+                else if (IsPlayerVehicleOwner(player, vehicle) == false)
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_car_keys);
                 }
@@ -554,7 +572,7 @@ namespace WiredPlayers.vehicles
                 Vehicle vehicle = Globals.GetClosestVehicle(player, 3.75f);
                 if (vehicle != null)
                 {
-                    if (HasPlayerVehicleKeys(player, vehicle) == false && player.GetData(EntityData.PLAYER_JOB) != Constants.JOB_MECHANIC)
+                    if (IsPlayerVehicleOwner(player, vehicle) == false && player.GetData(EntityData.PLAYER_JOB) != Constants.JOB_MECHANIC)
                     {
                         player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_car_keys);
                     }
@@ -595,7 +613,7 @@ namespace WiredPlayers.vehicles
                     switch (action.ToLower())
                     {
                         case Commands.ARG_OPEN:
-                            if (!HasPlayerVehicleKeys(player, vehicle) && vehicle.GetData(EntityData.VEHICLE_FACTION) == Constants.FACTION_NONE)
+                            if (!IsPlayerVehicleOwner(player, vehicle) && vehicle.GetData(EntityData.VEHICLE_FACTION) == Constants.FACTION_NONE)
                             {
                                 player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_car_keys);
                             }
@@ -610,7 +628,7 @@ namespace WiredPlayers.vehicles
                             }
                             break;
                         case Commands.ARG_CLOSE:
-                            if (!HasPlayerVehicleKeys(player, vehicle) && vehicle.GetData(EntityData.VEHICLE_FACTION) == Constants.FACTION_NONE)
+                            if (!IsPlayerVehicleOwner(player, vehicle) && vehicle.GetData(EntityData.VEHICLE_FACTION) == Constants.FACTION_NONE)
                             {
                                 player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_car_keys);
                             }
@@ -821,7 +839,7 @@ namespace WiredPlayers.vehicles
                         }
                     }
 
-                    if (!HasPlayerVehicleKeys(player, vehicle))
+                    if (!IsPlayerVehicleOwner(player, vehicle))
                     {
                         player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_car_keys);
                     }
@@ -896,7 +914,7 @@ namespace WiredPlayers.vehicles
 
                 if (vehModel != null)
                 {
-                    if (HasPlayerVehicleKeys(player, vehModel) == false)
+                    if (IsPlayerVehicleOwner(player, vehModel) == false)
                     {
                         player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_car_keys);
                     }
@@ -919,7 +937,7 @@ namespace WiredPlayers.vehicles
             }
             else
             {
-                if (HasPlayerVehicleKeys(player, vehicle) == false)
+                if (IsPlayerVehicleOwner(player, vehicle) == false)
                 {
                     player.SendChatMessage(Constants.COLOR_ERROR + ErrRes.not_car_keys);
                 }
@@ -974,7 +992,7 @@ namespace WiredPlayers.vehicles
                     else
                     {
                         int vehicleFaction = vehicle.GetData(EntityData.VEHICLE_FACTION);
-                        if (HasPlayerVehicleKeys(player, vehicle) || vehicleFaction == faction || vehicleFaction + 100 == job)
+                        if (IsPlayerVehicleOwner(player, vehicle) || vehicleFaction == faction || vehicleFaction + 100 == job)
                         {
                             float gasRefueled = 0.0f;
                             float currentGas = vehicle.GetData(EntityData.VEHICLE_GAS);
@@ -1037,7 +1055,7 @@ namespace WiredPlayers.vehicles
                     Vehicle vehicle = Globals.GetClosestVehicle(player);
                     if (vehicle != null)
                     {
-                        if (HasPlayerVehicleKeys(player, vehicle) == true || player.GetData(EntityData.PLAYER_JOB) == Constants.JOB_MECHANIC)
+                        if (IsPlayerVehicleOwner(player, vehicle) == true || player.GetData(EntityData.PLAYER_JOB) == Constants.JOB_MECHANIC)
                         {
                             float gas = vehicle.GetData(EntityData.VEHICLE_GAS);
                             vehicle.SetData(EntityData.VEHICLE_GAS, gas + Constants.GAS_CAN_LITRES > 50.0f ? 50.0f : gas + Constants.GAS_CAN_LITRES);

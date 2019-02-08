@@ -1847,6 +1847,7 @@ namespace WiredPlayers.admin
         [Command(Commands.COM_INFO, Commands.HLP_INFO_COMMAND)]
         public void InfoCommand(Client player, string targetString)
         {
+
             if (player.GetData(EntityData.PLAYER_ADMIN_RANK) > Constants.STAFF_SUPPORT)
             {
                 Client target = int.TryParse(targetString, out int targetId) ? Globals.GetPlayerById(targetId) : NAPI.Player.GetPlayerFromName(targetString);
